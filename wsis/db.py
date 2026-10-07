@@ -11,6 +11,7 @@ Collections:
 - challenge_runs: Step 5 agentic challenge loop runs stress-testing hypotheses
 - final_opportunities: Validated and re-ranked final product opportunities
 - competitor_assessments: Step 6 competitor benchmark matrices & strategic market gap analysis
+- product_specs: Step 7 evidence-traceable actionable product specifications
 """
 from __future__ import annotations
 
@@ -30,6 +31,7 @@ from .opportunities.models import OpportunityAnalysis
 from .reviews.models import ReviewIntelligence
 from .reviews.problem_models import ProblemAnalysis
 from .schema import ResearchSet
+from .spec.models import ProductSpec
 
 logger = logging.getLogger("wsis.db")
 
@@ -125,6 +127,9 @@ class MongoStorage:
             self.db.competitor_assessments.create_index([("run_id", pymongo.ASCENDING)], unique=True)
             self.db.competitor_assessments.create_index([("query", pymongo.ASCENDING), ("created_at", pymongo.DESCENDING)])
             self.db.competitor_profiles.create_index([("run_id", pymongo.ASCENDING), ("id", pymongo.ASCENDING)])
+
+            self.db.product_specs.create_index([("run_id", pymongo.ASCENDING)], unique=True)
+            self.db.product_specs.create_index([("query", pymongo.ASCENDING), ("created_at", pymongo.DESCENDING)])
         except PyMongoError as err:
             logger.warning(f"Failed to create MongoDB indexes: {err}")
 
@@ -268,6 +273,18 @@ class MongoStorage:
             comp_doc["_id"] = comp_id
             self.db.competitor_profiles.replace_one({"_id": comp_id}, comp_doc, upsert=True)
 
+        return doc_id
+
+    def save_product_spec(self, spec: ProductSpec, run_id: str) -> str:
+        """Store Step 7 evidence-traceable product specification."""
+        data = spec.model_dump()
+        doc_id = f"{run_id}_spec"
+        data["_id"] = doc_id
+        data["run_id"] = run_id
+        data["query"] = spec.query
+        data["market"] = spec.market
+
+        self.db.product_specs.replace_one({"_id": doc_id}, data, upsert=True)
         return doc_id
 
     def close(self) -> None:
