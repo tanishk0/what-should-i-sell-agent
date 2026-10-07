@@ -241,6 +241,28 @@ def test_mongo_save_reviews_and_problems():
     mock_db.competitor_assessments.replace_one.assert_called_once()
     mock_db.competitor_profiles.replace_one.assert_called_once()
 
+    from wsis.spec.models import ProductSpec, SpecItem
+
+    spec = ProductSpec(
+        query="yoga mat",
+        market="us",
+        currency="USD",
+        opportunity_id="opp_01",
+        opportunity_title="Non-Slip Grip Layer",
+        verdict="CONFIRMED",
+        confidence=0.8,
+        build=SpecItem(field="build", statement="6mm textured yoga mat"),
+        must_have=[SpecItem(field="must_have", statement="Non-slip polyurethane grip")],
+        avoid=[SpecItem(field="avoid", statement="Chemical odor")],
+        target_price=SpecItem(field="target_price", statement="$28–$34"),
+        primary_customer=SpecItem(field="primary_customer", statement="hot-yoga practitioners"),
+        created_at=datetime.now(timezone.utc),
+    )
+
+    spec_doc_id = storage.save_product_spec(spec, run_id="run-123")
+    assert spec_doc_id == "run-123_spec"
+    mock_db.product_specs.replace_one.assert_called_once()
+
 
 def test_mongo_ping():
     mock_client = MagicMock()
