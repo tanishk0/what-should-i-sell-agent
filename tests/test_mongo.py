@@ -142,6 +142,105 @@ def test_mongo_save_reviews_and_problems():
     mock_db.problem_analyses.replace_one.assert_called_once()
     mock_db.problem_clusters.replace_one.assert_called_once()
 
+    from wsis.opportunities.models import CandidateOpportunity, OpportunityAnalysis
+
+    opp_analysis = OpportunityAnalysis(
+        query="yoga mat",
+        market="us",
+        created_at=datetime.now(timezone.utc),
+        total_problems_evaluated=1,
+        opportunities=[
+            CandidateOpportunity(
+                id="opp_01",
+                title="Non-Slip Grip Layer",
+                problem_id="prob-1",
+                problem_name="Slippery surface",
+                category="performance",
+                improvement_type="material_upgrade",
+                improvement_concept="Laser-textured moisture wicking surface.",
+                differentiation_angle="Zero slip guarantee.",
+                implementation_feasibility="high",
+                expected_impact="High rating lift.",
+                target_price_impact="cost_neutral",
+                priority_score=0.92,
+            )
+        ],
+    )
+
+    opp_doc_id = storage.save_opportunity_analysis(opp_analysis, run_id="run-123")
+    assert opp_doc_id == "run-123_opportunities"
+    mock_db.opportunity_analyses.replace_one.assert_called_once()
+    mock_db.candidate_opportunities.replace_one.assert_called_once()
+
+    from wsis.challenge.models import ChallengeLoopAnalysis, FinalOpportunity
+
+    challenge_analysis = ChallengeLoopAnalysis(
+        query="yoga mat",
+        market="us",
+        created_at=datetime.now(timezone.utc),
+        hypotheses_evaluated=1,
+        final_opportunities=[
+            FinalOpportunity(
+                rank=1,
+                opportunity_id="opp_01",
+                hypothesis_id="hyp_01",
+                title="Non-Slip Grip Layer",
+                problem_name="Slippery surface",
+                category="performance",
+                improvement_type="material_upgrade",
+                improvement_concept="Laser textured.",
+                differentiation_angle="Zero slip.",
+                verdict="STRENGTHENED",
+                final_score=1.15,
+                confidence=0.88,
+                recommendation="PURSUE_HIGH_CONVICTION",
+                competitor_prevalence="9/15 competitors (60.0%)",
+                agent_assessment="Confirmed endemic failure.",
+            )
+        ],
+    )
+
+    chal_doc_id = storage.save_challenge_analysis(challenge_analysis, run_id="run-123")
+    assert chal_doc_id == "run-123_challenge"
+    mock_db.challenge_runs.replace_one.assert_called_once()
+    mock_db.final_opportunities.replace_one.assert_called_once()
+
+    from wsis.assessment.models import CompetitorAssessment, CompetitorProfile, MarketGapAnalysis
+
+    assessment = CompetitorAssessment(
+        query="yoga mat",
+        market="us",
+        opportunity_id="opp_01",
+        opportunity_title="Non-Slip Grip Layer",
+        target_problem="Slippery surface",
+        competitors=[
+            CompetitorProfile(
+                id="p1",
+                name="Brand Alpha",
+                price_display="$24.99",
+                price=24.99,
+                rating=4.2,
+                review_count=120,
+                main_strength="Compact",
+                problem="Slippery",
+                url="https://example.com/p1",
+            )
+        ],
+        gap_analysis=MarketGapAnalysis(
+            where_is_the_gap="The gap is at the $28-$35 range.",
+            unmet_need_summary="High grip without bulk.",
+            price_gap_range="$28 - $35",
+            tradeoff_to_break="Comfort vs Grip",
+            winning_positioning="Zero-slip guarantee.",
+        ),
+        created_at=datetime.now(timezone.utc),
+    )
+
+    assess_doc_id = storage.save_competitor_assessment(assessment, run_id="run-123")
+    assert assess_doc_id == "run-123_assessment"
+    mock_db.competitor_assessments.replace_one.assert_called_once()
+    mock_db.competitor_profiles.replace_one.assert_called_once()
+
 
 def test_mongo_ping():
     mock_client = MagicMock()
