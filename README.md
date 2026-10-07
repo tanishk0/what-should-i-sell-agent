@@ -84,6 +84,109 @@ Goal: Turn thousands of individual complaints into meaningful, ranked problem th
 
 ---
 
+## Step 4: Generate candidate opportunities ✅
+Goal: Convert recurring buyer problems into actionable, differentiated product opportunities.
+
+For each major problem cluster discovered in Step 3, the agent queries the model:
+> *"What product improvement could directly solve this problem?"*
+
+```powershell
+# Full pipeline: research competitors -> fetch reviews -> discover problems -> generate opportunities:
+.\.venv\Scripts\python -m wsis "yoga mat" --with-reviews --review-limit 5 --max-opportunities 10
+```
+
+### Opportunity Generation Pipeline ([wsis/opportunities/generator.py](wsis/opportunities/generator.py))
+1. **Core Problem Prompting**:
+   - Evaluates top problem clusters ranked by `opportunity_score`.
+   - Uses **Google Gemini** (`gemini-2.5-flash`) via structured JSON schema to formulate targeted solutions.
+   - Offline heuristic fallback provides domain-tailored improvements based on complaint category & keywords.
+2. **Candidate Opportunity Schema ([wsis/opportunities/models.py](wsis/opportunities/models.py))**:
+   - `title`: Benefit-driven, memorable product improvement concept.
+   - `problem_id` & `problem_name`: Linked directly to the root problem cluster.
+   - `improvement_type`: Innovation classification (`material_upgrade`, `mechanical_redesign`, `manufacturing_process`, `feature_addition`, `ergonomic_enhancement`, `bundle_accessory`).
+   - `improvement_concept`: Direct engineering and design answer to what solves the problem.
+   - `differentiation_angle`: Marketing and positioning angle against incumbent competitors.
+   - `implementation_feasibility`: Feasibility rating (`high`, `medium`, `low`).
+   - `target_price_impact`: Pricing tiers (`cost_neutral`, `minor_premium`, `premium_tier`).
+   - `priority_score`: Calculated from problem opportunity score × feasibility multiplier.
+   - `supporting_evidence_quotes`: Direct verbatim buyer quotes grounding the opportunity.
+3. **Output Artifacts**:
+   - Saved locally to `data/runs/<query>-<timestamp>-opportunities.json`.
+
+---
+
+## Step 5: Agentic challenge loop (The Hackathon Core) ⚡
+Instead of naively prompting an LLM *"What should I sell?"*, WSIS executes an adversarial validation loop:
+
+```
+Research competitors
+        ↓
+Find recurring problem
+        ↓
+Form opportunity hypothesis
+        ↓
+Search again
+        ↓
+Look for contradictory evidence
+        ↓
+Check additional competitors
+        ↓
+Strengthen / weaken hypothesis
+        ↓
+Final opportunity
+```
+
+```powershell
+# Run full end-to-end pipeline with agentic challenge loop:
+.\.venv\Scripts\python -m wsis "yoga mat" --with-reviews --review-limit 5
+```
+
+### The Challenge Mechanism ([wsis/challenge/loop.py](wsis/challenge/loop.py))
+1. **Hypothesis Formulation**: Converts Step 4 candidates into testable, falsifiable claims and generates adversarial search queries.
+2. **Search Again & Broader Cohort Audit**: Audits expanded competitors (e.g., 15 competitors across the category) and executes targeted verification queries.
+3. **Contradictory Evidence Mining**:
+   - **Isolated Defect Check**: If complaints occur in only a small minority of competitors (e.g. **2/15 products** or <25%), the agent recognizes this as an isolated vendor issue rather than an industry gap, and **downgrades** the opportunity.
+   - **Incumbent Pre-emption Check**: Checks whether high-rated competitors (≥4.7★) already solve this problem with high satisfaction.
+   - **Trade-off Detection**: Flags negative side-effects caused by proposed improvements.
+4. **Corroborating Evidence Mining**:
+   - **Widespread Category Failure**: If complaints span ≥50% of competitors, the agent **strengthens** the opportunity.
+5. **Verdict & Score Recalibration**:
+   - `STRENGTHENED`: +25% score boost, high conviction (`PURSUE_HIGH_CONVICTION`).
+   - `CONFIRMED`: Maintained score, moderate conviction (`PROCEED_WITH_CAUTION`).
+   - `WEAKENED`: -30% score discount (`PROCEED_WITH_CAUTION`).
+   - `DOWNGRADED`: -55% score discount, flagged as high risk (`DE-PRIORITIZE`).
+6. **Artifact Output**:
+   - Saved locally to `data/runs/<query>-<timestamp>-challenge.json`.
+
+---
+
+## Step 6: Build competitor assessment & market gap analysis ✅
+For the validated opportunity, the agent builds a head-to-head competitor matrix and answers:
+> **"Where is the gap?"**
+
+```powershell
+# Full pipeline through competitor assessment:
+.\.venv\Scripts\python -m wsis "yoga mat" --with-reviews --review-limit 5
+```
+
+### Competitor Matrix Output ([wsis/assessment/builder.py](wsis/assessment/builder.py))
+```
+Competitor     Price     Rating    Main Strength    Problem
+Product A      ₹699      4.2       Compact          Leaks
+Product B      ₹899      4.4       Durable          Bulky
+Product C      ₹599      4.0       Cheap            Poor seal
+```
+
+### Strategic Gap Analysis
+- **Where is the gap?**: Synthesizes the exact price and performance whitespace across price tiers.
+- **Unmet Need**: Pinpoints what combination of benefits no existing competitor delivers.
+- **Target Price Window**: Identifies the margin-healthy pricing window (e.g. `₹749 - ₹849` or `$28 - $35`).
+- **Trade-off to Break**: Identifies false compromises buyers currently make (e.g. `Compact vs Leakproof`, `Soft cushioning vs High traction`).
+- **Winning Positioning**: Concise value proposition for market entry.
+- Output saved to `data/runs/<query>-<timestamp>-assessment.json`.
+
+---
+
 ## MongoDB Persistence
 
 WSIS automatically persists research runs to MongoDB when configured via `.env`:
@@ -100,5 +203,11 @@ MONGO_DB_NAME=wsis                      # optional, defaults to wsis
 - **`review_intelligence`**: Detailed buyer sentiment and verified complaints per competitor.
 - **`problem_analyses`**: Clustered problem summaries with methodology and metadata.
 - **`problem_clusters`**: Individual problem themes indexed by `(query, opportunity_score)` and `category`.
+- **`opportunity_analyses`**: Step 4 candidate product opportunities runs.
+- **`candidate_opportunities`**: Individual product improvement opportunities indexed by `(query, priority_score)`, `problem_id`, and `category`.
+- **`challenge_runs`**: Step 5 agentic challenge loop runs stress-testing hypotheses.
+- **`final_opportunities`**: Validated and re-ranked final product opportunities indexed by `(query, final_score)`, `verdict`, and `recommendation`.
+- **`competitor_assessments`**: Step 6 competitive matrices and strategic market gap analyses.
+- **`competitor_profiles`**: Individual competitor benchmarks indexed by `(run_id, id)`.
 
 *Note: If `MONGODB_URI` is omitted, WSIS safely operates in file-only mode writing to `data/runs/`.*
