@@ -22,6 +22,18 @@ def get_api_key() -> str:
     return key
 
 
+def get_gemini_api_key() -> str | None:
+    return os.getenv("GEMINI_API_KEY", "").strip() or None
+
+
+def get_mongo_uri() -> str | None:
+    return os.getenv("MONGODB_URI", "").strip() or os.getenv("MONGO_URI", "").strip() or None
+
+
+def get_mongo_db_name() -> str:
+    return os.getenv("MONGODB_DB_NAME", "").strip() or os.getenv("MONGO_DB_NAME", "").strip() or "wsis"
+
+
 @dataclass(frozen=True)
 class Market:
     """Keeps Amazon and Google Shopping pointed at the same country/currency
