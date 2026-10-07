@@ -12,6 +12,7 @@ Collections:
 - final_opportunities: Validated and re-ranked final product opportunities
 - competitor_assessments: Step 6 competitor benchmark matrices & strategic market gap analysis
 - product_specs: Step 7 evidence-traceable actionable product specifications
+- final_reports: Step 8 evidence-backed final opportunity reports
 """
 from __future__ import annotations
 
@@ -28,6 +29,7 @@ from .assessment.models import CompetitorAssessment
 from .challenge.models import ChallengeLoopAnalysis
 from .config import get_mongo_db_name, get_mongo_uri
 from .opportunities.models import OpportunityAnalysis
+from .report.models import FinalOpportunityReport
 from .reviews.models import ReviewIntelligence
 from .reviews.problem_models import ProblemAnalysis
 from .schema import ResearchSet
@@ -130,6 +132,9 @@ class MongoStorage:
 
             self.db.product_specs.create_index([("run_id", pymongo.ASCENDING)], unique=True)
             self.db.product_specs.create_index([("query", pymongo.ASCENDING), ("created_at", pymongo.DESCENDING)])
+
+            self.db.final_reports.create_index([("run_id", pymongo.ASCENDING)], unique=True)
+            self.db.final_reports.create_index([("query", pymongo.ASCENDING), ("created_at", pymongo.DESCENDING)])
         except PyMongoError as err:
             logger.warning(f"Failed to create MongoDB indexes: {err}")
 
@@ -285,6 +290,18 @@ class MongoStorage:
         data["market"] = spec.market
 
         self.db.product_specs.replace_one({"_id": doc_id}, data, upsert=True)
+        return doc_id
+
+    def save_final_report(self, report: FinalOpportunityReport, run_id: str) -> str:
+        """Store Step 8 evidence-backed final opportunity report."""
+        data = report.model_dump()
+        doc_id = f"{run_id}_report"
+        data["_id"] = doc_id
+        data["run_id"] = run_id
+        data["query"] = report.query
+        data["market"] = report.market
+
+        self.db.final_reports.replace_one({"_id": doc_id}, data, upsert=True)
         return doc_id
 
     def close(self) -> None:
