@@ -214,6 +214,83 @@ Artifacts saved:
 
 ---
 
+## Step 8: Build the evidence-backed final report ✅
+The capstone terminal UI and deliverable of the agent: an **evidence-backed product opportunity report**.
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                    PRODUCT OPPORTUNITY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+COMPACT LEAKPROOF LUNCH BOX
+
+Opportunity confidence: HIGH
+
+Why this opportunity?
+Analysis of customer reviews reveals persistent category failure in liquid
+sealing. Incumbents force buyers into false compromises. Delivering an
+engineered solution captures clear whitespace where incumbents underdeliver.
+
+CUSTOMER PROBLEM
+─────────────────
+Leakage when carrying liquids sideways.
+
+Evidence
+• 23 unique reviews
+• 8 competing products
+• 23.0% of analyzed reviews mentioning defect
+
+"Lid snaps open inside backpack and soup leaks everywhere."
+(★1.0 Milton Compact Lunch Box)
+
+"Cannot put dal or curry, it leaks through the corner gasket."
+(★2.0 Cello Max Fresh)
+
+PRODUCT GAP
+─────────────────
+Existing products solve portability OR leak resistance, but few
+combine both without increasing bulk.
+
+WHAT TO BUILD
+─────────────────
+✓ 700–900ml capacity
+✓ compact footprint
+✓ improved silicone seal
+✓ locking lid
+✕ avoid bulky compartments
+
+PRICE
+─────────────────
+₹699–₹899
+
+COMPETITORS
+─────────────────
+• Milton Compact (₹699 | ★4.2)
+  Main strength: Compact | Problem: Leaks
+• Cello Max Fresh (₹899 | ★4.4)
+  Main strength: Durable | Problem: Bulky
+
+EVIDENCE
+─────────────────
+• [rev_01] ★1.0 Review (Milton Compact)
+  https://amazon.com/rev1
+• [prod_01] Competitor: Milton Compact Lunch Box
+  https://amazon.com/dp/B001
+
+COUNTER-EVIDENCE
+─────────────────
+• Gasket degradation: High-temperature dishwasher cycles degrade silicone elasticity after 6 months.
+• Tooling cost premium: Food-grade silicone overmolding adds unit BOM costs, compressing margins below ₹699.
+• Isolated defect concentration: 40% of complaints originate from 2 budget suppliers with inferior latch molds.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+Artifacts saved:
+- `data/runs/<query>-<timestamp>-report.json`: Machine-readable final report with metrics and evidence chains.
+- `data/runs/<query>-<timestamp>-report.md`: Polished markdown executive brief.
+
+---
+
 ## MongoDB Persistence
 
 WSIS automatically persists research runs to MongoDB when configured via `.env`:
@@ -237,5 +314,6 @@ MONGO_DB_NAME=wsis                      # optional, defaults to wsis
 - **`competitor_assessments`**: Step 6 competitive matrices and strategic market gap analyses.
 - **`competitor_profiles`**: Individual competitor benchmarks indexed by `(run_id, id)`.
 - **`product_specs`**: Step 7 actionable product specifications indexed by `(query, created_at)`.
+- **`final_reports`**: Step 8 evidence-backed final opportunity reports indexed by `(query, created_at)`.
 
 *Note: If `MONGODB_URI` is omitted, WSIS safely operates in file-only mode writing to `data/runs/`.*
