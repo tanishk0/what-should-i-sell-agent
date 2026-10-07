@@ -78,6 +78,7 @@ def main(argv: list[str] | None = None) -> int:
     opp_analysis = None
     challenge_analysis = None
     assessment = None
+    spec = None
     if args.with_reviews:
         from .reviews.pipeline import run_review_intelligence
         with console.status(f"Analyzing reviews for top {args.review_limit} competitors (credit budget: {args.credit_budget})..."):
@@ -275,6 +276,35 @@ def main(argv: list[str] | None = None) -> int:
             )
             console.print(Panel(gap_text, title="[bold]Strategic Gap Analysis[/bold]", expand=False))
 
+            # Step 7: Generate actionable, evidence-traceable product specification
+            from .spec import build_product_spec, spec_to_markdown
+            if prob_analysis and opp_analysis:
+                with console.status("Generating evidence-traceable product specification..."):
+                    spec = build_product_spec(
+                        result,
+                        rev_intel,
+                        prob_analysis,
+                        opp_analysis,
+                        top_opp,
+                        assessment=assessment,
+                    )
+
+                spec_lines = [
+                    f"[bold cyan]Build:[/bold cyan] {spec.build.statement}",
+                ]
+                for m in spec.must_have:
+                    spec_lines.append(f"[bold green]Must have:[/bold green] {m.statement}")
+                for a in spec.avoid:
+                    spec_lines.append(f"[bold red]Avoid:[/bold red] {a.statement}")
+                spec_lines.append(f"[bold yellow]Target price:[/bold yellow] {spec.target_price.statement}")
+                spec_lines.append(f"[bold magenta]Primary customer:[/bold magenta] {spec.primary_customer.statement}")
+
+                spec_panel_text = "\n".join(spec_lines)
+                if spec.caveats:
+                    spec_panel_text += "\n\n[dim]Caveats:\n" + "\n".join(f"- {c}" for c in spec.caveats) + "[/dim]"
+
+                console.print(Panel(spec_panel_text, title="[bold]Product Specification (Step 7)[/bold]", expand=False))
+
     slug = re.sub(r"[^a-z0-9]+", "-", args.query.lower()).strip("-")
     run_timestamp = datetime.now()
     run_id = f"{slug}-{run_timestamp:%Y%m%d-%H%M%S}"
@@ -306,6 +336,15 @@ def main(argv: list[str] | None = None) -> int:
             assess_out = out.parent / f"{out.stem}-assessment.json"
             assess_out.write_text(assessment.model_dump_json(indent=2), encoding="utf-8")
             console.print(f"[green]Saved competitor assessment ->[/green] {assess_out}")
+
+        if spec:
+            spec_out = out.parent / f"{out.stem}-spec.json"
+            spec_out.write_text(spec.model_dump_json(indent=2), encoding="utf-8")
+            console.print(f"[green]Saved product specification JSON ->[/green] {spec_out}")
+
+            spec_md_out = out.parent / f"{out.stem}-spec.md"
+            spec_md_out.write_text(spec_to_markdown(spec), encoding="utf-8")
+            console.print(f"[green]Saved product specification Markdown ->[/green] {spec_md_out}")
 
     if not args.no_mongo:
         from .db import MongoStorage
@@ -348,6 +387,12 @@ def main(argv: list[str] | None = None) -> int:
                             console.print(
                                 f"[bold green]Saved competitor assessment to MongoDB ->[/bold green] "
                                 f"collections: competitor_assessments, competitor_profiles"
+                            )
+                        if spec:
+                            storage.save_product_spec(spec, run_id=run_id)
+                            console.print(
+                                f"[bold green]Saved product specification to MongoDB ->[/bold green] "
+                                f"collection: product_specs"
                             )
                 except Exception as err:
                     console.print(f"[yellow]Warning: Failed to save to MongoDB ({err}). File outputs remain intact.[/yellow]")
