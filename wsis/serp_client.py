@@ -51,6 +51,10 @@ class SerpClient:
     def _cache_path(self, params: dict[str, Any]) -> Path:
         return self.cache_dir / str(params.get("engine", "unknown")) / f"{self.cache_key(params)}.json"
 
+    def is_cached(self, params: dict[str, Any]) -> bool:
+        """True if `search(params)` would be served locally (costs no credit)."""
+        return (self.use_cache or self.offline) and self._cache_path(params).exists()
+
     def search(self, params: dict[str, Any]) -> tuple[dict[str, Any], bool]:
         """Run a search. Returns (response_json, served_from_cache)."""
         path = self._cache_path(params)
