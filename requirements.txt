@@ -3,3 +3,5 @@ pydantic>=2.11
 python-dotenv>=1.0
 rich>=13.7
 pytest>=8.0
+google-genai>=1.0.0
+pymongo>=4.0
