@@ -79,6 +79,7 @@ def main(argv: list[str] | None = None) -> int:
     challenge_analysis = None
     assessment = None
     spec = None
+    final_report = None
     if args.with_reviews:
         from .reviews.pipeline import run_review_intelligence
         with console.status(f"Analyzing reviews for top {args.review_limit} competitors (credit budget: {args.credit_budget})..."):
@@ -305,6 +306,22 @@ def main(argv: list[str] | None = None) -> int:
 
                 console.print(Panel(spec_panel_text, title="[bold]Product Specification (Step 7)[/bold]", expand=False))
 
+        # Step 8: Build the evidence-backed final opportunity report
+        from .report import build_final_report, render_terminal_report, render_markdown_report
+        with console.status("Synthesizing evidence-backed final opportunity report (Step 8)..."):
+            final_report = build_final_report(
+                result,
+                review_intel=rev_intel,
+                prob_analysis=prob_analysis,
+                challenge_analysis=challenge_analysis,
+                assessment=assessment,
+                spec=spec,
+            )
+
+        console.print()
+        console.print(render_terminal_report(final_report))
+        console.print()
+
     slug = re.sub(r"[^a-z0-9]+", "-", args.query.lower()).strip("-")
     run_timestamp = datetime.now()
     run_id = f"{slug}-{run_timestamp:%Y%m%d-%H%M%S}"
@@ -345,6 +362,15 @@ def main(argv: list[str] | None = None) -> int:
             spec_md_out = out.parent / f"{out.stem}-spec.md"
             spec_md_out.write_text(spec_to_markdown(spec), encoding="utf-8")
             console.print(f"[green]Saved product specification Markdown ->[/green] {spec_md_out}")
+
+        if final_report:
+            report_out = out.parent / f"{out.stem}-report.json"
+            report_out.write_text(final_report.model_dump_json(indent=2), encoding="utf-8")
+            console.print(f"[green]Saved final opportunity report JSON ->[/green] {report_out}")
+
+            report_md_out = out.parent / f"{out.stem}-report.md"
+            report_md_out.write_text(render_markdown_report(final_report), encoding="utf-8")
+            console.print(f"[green]Saved final opportunity report Markdown ->[/green] {report_md_out}")
 
     if not args.no_mongo:
         from .db import MongoStorage
@@ -393,6 +419,12 @@ def main(argv: list[str] | None = None) -> int:
                             console.print(
                                 f"[bold green]Saved product specification to MongoDB ->[/bold green] "
                                 f"collection: product_specs"
+                            )
+                        if final_report:
+                            storage.save_final_report(final_report, run_id=run_id)
+                            console.print(
+                                f"[bold green]Saved final opportunity report to MongoDB ->[/bold green] "
+                                f"collection: final_reports"
                             )
                 except Exception as err:
                     console.print(f"[yellow]Warning: Failed to save to MongoDB ({err}). File outputs remain intact.[/yellow]")
