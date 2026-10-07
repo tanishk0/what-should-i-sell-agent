@@ -1,0 +1,1438 @@
+{
+  "search_metadata": {
+    "id": "6ac627aff7ae8df8962ee9a9",
+    "status": "Success",
+    "json_endpoint": "https://serpapi.com/searches/qVzqLTkYsF2toS__TcGfXL62J4ZogbumGQT3eKsLNQI/6ac627aff7ae8df8962ee9a9.json",
+    "markdown_endpoint": "https://serpapi.com/searches/qVzqLTkYsF2toS__TcGfXL62J4ZogbumGQT3eKsLNQI/6ac627aff7ae8df8962ee9a9.md",
+    "created_at": "2026-10-07 11:06:23 UTC",
+    "processed_at": "2026-10-07 11:06:23 UTC",
+    "amazon_product_url": "https://www.amazon.com/dp/B0DQC2WV8Y/?",
+    "raw_html_file": "https://serpapi.com/searches/qVzqLTkYsF2toS__TcGfXL62J4ZogbumGQT3eKsLNQI/6ac627aff7ae8df8962ee9a9.html",
+    "total_time_taken": 6.57
+  },
+  "search_parameters": {
+    "engine": "amazon_product",
+    "asin": "B0DQC2WV8Y",
+    "amazon_domain": "amazon.com",
+    "device": "desktop"
+  },
+  "product_results": {
+    "categories": [
+      {
+        "position": 1,
+        "name": "Sports & Outdoors",
+        "link": "https://www.amazon.com/sports-outdoors/b/ref=dp_bc_1?ie=UTF8&node=3375251",
+        "node": "3375251",
+        "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&device=desktop&engine=amazon&node=3375251"
+      },
+      {
+        "position": 2,
+        "name": "Exercise & Fitness",
+        "link": "https://www.amazon.com/Exercise-Equipment-Gym-Equipment/b/ref=dp_bc_2?ie=UTF8&node=3407731",
+        "node": "3407731",
+        "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&device=desktop&engine=amazon&node=3407731"
+      },
+      {
+        "position": 3,
+        "name": "Yoga",
+        "link": "https://www.amazon.com/yoga/b/ref=dp_bc_3?ie=UTF8&node=3422251",
+        "node": "3422251",
+        "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&device=desktop&engine=amazon&node=3422251"
+      },
+      {
+        "position": 4,
+        "name": "Mats",
+        "link": "https://www.amazon.com/yoga-mat/b/ref=dp_bc_4?ie=UTF8&node=3422301",
+        "node": "3422301",
+        "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&device=desktop&engine=amazon&node=3422301"
+      }
+    ],
+    "asin": "B0DQC2WV8Y",
+    "title": "Fitvids 1/2-inch Thick High Density Exercise Yoga Mat with Carrying Strap",
+    "link": "https://www.amazon.com/Fitvids-Exercise-Anti-Tear-Carrying-Exercises/dp/B0DQC2WV8Y/",
+    "link_clean": "https://www.amazon.com/dp/B0DQC2WV8Y/",
+    "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0DQC2WV8Y&device=desktop&engine=amazon_product",
+    "variants": [
+      {
+        "title": "Color",
+        "items": [
+          {
+            "position": 1,
+            "asin": "B0DQC2WV8Y",
+            "name": "Taro Purple",
+            "image": "https://m.media-amazon.com/images/I/31TZ-4CiCbL._SS64_.jpg",
+            "selected": true,
+            "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0DQC2WV8Y&device=desktop&engine=amazon_product"
+          },
+          {
+            "position": 2,
+            "asin": "B0DQC2WGHG",
+            "name": "Aqua",
+            "image": "https://m.media-amazon.com/images/I/31Can1hxp7L._SS64_.jpg",
+            "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0DQC2WGHG&device=desktop&engine=amazon_product"
+          },
+          {
+            "position": 3,
+            "asin": "B00FO9U46W",
+            "name": "Black",
+            "image": "https://m.media-amazon.com/images/I/41s5VzrrrCL._SS64_.jpg",
+            "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B00FO9U46W&device=desktop&engine=amazon_product"
+          },
+          {
+            "position": 4,
+            "asin": "B00JW3CTTQ",
+            "name": "Blue",
+            "image": "https://m.media-amazon.com/images/I/31Gx9P5PEwL._SS64_.jpg",
+            "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B00JW3CTTQ&device=desktop&engine=amazon_product"
+          },
+          {
+            "position": 5,
+            "asin": "B0F1N1R5M6",
+            "name": "Deep Wine",
+            "image": "https://m.media-amazon.com/images/I/312Cdma8tVL._SS64_.jpg",
+            "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0F1N1R5M6&device=desktop&engine=amazon_product"
+          },
+          {
+            "position": 6,
+            "asin": "B0F1MYHKJN",
+            "name": "Graphite",
+            "image": "https://m.media-amazon.com/images/I/31NAyJf0n6L._SS64_.jpg",
+            "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0F1MYHKJN&device=desktop&engine=amazon_product"
+          },
+          {
+            "position": 7,
+            "asin": "B00RWFQYG0",
+            "name": "Gray",
+            "image": "https://m.media-amazon.com/images/I/31IyLQooguL._SS64_.jpg",
+            "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B00RWFQYG0&device=desktop&engine=amazon_product"
+          },
+          {
+            "position": 8,
+            "asin": "B00FO9ZRZ0",
+            "name": "Green",
+            "image": "https://m.media-amazon.com/images/I/31c3CQF3aqL._SS64_.jpg",
+            "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B00FO9ZRZ0&device=desktop&engine=amazon_product"
+          },
+          {
+            "position": 9,
+            "asin": "B0DQBZK7CK",
+            "name": "Green Jasper",
+            "image": "https://m.media-amazon.com/images/I/31XHj3qsOUL._SS64_.jpg",
+            "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0DQBZK7CK&device=desktop&engine=amazon_product"
+          },
+          {
+            "position": 10,
+            "asin": "B0F1N28R3H",
+            "name": "Midnight",
+            "image": "https://m.media-amazon.com/images/I/21B-Kmo5nML._SS64_.jpg",
+            "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0F1N28R3H&device=desktop&engine=amazon_product"
+          },
+          {
+            "position": 11,
+            "asin": "B0F1N17LQW",
+            "name": "Navy Blue",
+            "image": "https://m.media-amazon.com/images/I/31hUR1W1kxL._SS64_.jpg",
+            "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0F1N17LQW&device=desktop&engine=amazon_product"
+          },
+          {
+            "position": 12,
+            "asin": "B0DQC5XLFH",
+            "name": "Pearly Pink",
+            "image": "https://m.media-amazon.com/images/I/31ngyuFS05L._SS64_.jpg",
+            "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0DQC5XLFH&device=desktop&engine=amazon_product"
+          },
+          {
+            "position": 13,
+            "asin": "B00FO9ZRZK",
+            "name": "Pink",
+            "image": "https://m.media-amazon.com/images/I/3186zRduisL._SS64_.jpg",
+            "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B00FO9ZRZK&device=desktop&engine=amazon_product"
+          },
+          {
+            "position": 14,
+            "asin": "B00FO9ZRYG",
+            "name": "Purple",
+            "image": "https://m.media-amazon.com/images/I/31ha1pR5SfL._SS64_.jpg",
+            "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B00FO9ZRYG&device=desktop&engine=amazon_product"
+          },
+          {
+            "position": 15,
+            "asin": "B00FO9ZRYQ",
+            "name": "Red",
+            "image": "https://m.media-amazon.com/images/I/31CVz2PNbQL._SS64_.jpg",
+            "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B00FO9ZRYQ&device=desktop&engine=amazon_product"
+          }
+        ]
+      }
+    ],
+    "brand": "Visit the Fitvids Store",
+    "thumbnail": "https://m.media-amazon.com/images/I/71WJvgWQy-L._AC_SY300_SX300_QL70_FMwebp_.jpg",
+    "thumbnails": [
+      "https://m.media-amazon.com/images/I/71WJvgWQy-L._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/61GO+UJMq-L._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/712yGu0zy1L._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/71so5lwCTIL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/81BqGCRxXFL._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/81nD8pYiX0L._AC_SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/81enrDz1k9L._AC_SL1500_.jpg"
+    ],
+    "rating": 4.5,
+    "reviews": 94461,
+    "bought_last_month": "800+ bought in past month",
+    "discount": "-10%",
+    "price": "$19.99",
+    "extracted_price": 19.99,
+    "old_price": "$22.21",
+    "extracted_old_price": 22.21,
+    "prime": true,
+    "delivery": [
+      "FREE delivery Tomorrow, October 8. Order within 8 hrs 53 mins. Details"
+    ],
+    "stock": "In Stock",
+    "description": "Experience total comfort during your workouts with the Fitvids 1/2-Inch Thick High Density Foam Exercise Yoga Mat, designed to support your body through every pose, stretch, or exercise. Whether you're practicing yoga, pilates, or general fitness routines, this mat offers the ideal blend of cushioning, durability, and convenience. Measuring 71 inches long and 24 inches wide, this full-size yoga mat provides ample space for users of all shapes and sizes. Made from premium high-density foam, the 1/2-inch thick mat delivers exceptional support and comfort to cushion your spine, hips, knees, elbows, and other pressure points on hard flooring. Say goodbye to discomfort and hello to deeper, more focused sessions. Stay safe and grounded thanks to the double-sided non-slip surface that provides unbeatable grip. Whether you're flowing through Vinyasa sequences or holding a plank, the mat\u2019s textured surface minimizes the risk of injury by preventing slips and maintaining stability. Built with moisture-resistant technology, this mat is simple to clean with just soap and water. Its resilience helps maintain balance during intense workouts and retains shape over time. Despite its thickness, the mat is lightweight and comes with a carrying strap, making it easy to roll up, tie, and transport. Perfect for home, studio, or on-the-go use. Elevate your fitness journey with the Fitvids Yoga Mat, a blend of comfort, performance, and portability in one essential accessory."
+  },
+  "purchase_options": {
+    "buy_new": {
+      "caption": "Buy New",
+      "price": "$19.99",
+      "extracted_price": 19.99,
+      "delivery": [
+        "FREE delivery Tomorrow, October 8. Order within 8 hrs 53 mins. Details"
+      ],
+      "stock": "In Stock",
+      "features": {
+        "shipper_seller": {
+          "text": "Spreetail",
+          "details": {
+            "heading": "Shipper / Seller",
+            "content": "Spreetail"
+          },
+          "link": {
+            "text": "Spreetail",
+            "link": "https://www.amazon.com/gp/help/seller/at-a-glance.html/ref=dp_merchant_link?ie=UTF8&seller=A1DXN92KCKEQV4&asin=B0DQC2WV8Y&ref_=dp_merchant_link"
+          }
+        },
+        "returns": {
+          "text": "FREE 30-day refund/replacement",
+          "details": {
+            "heading": "FREE 30-day refund/replacement"
+          },
+          "link": {
+            "text": "See exceptions",
+            "link": "https://www.amazon.com/gp/help/customer/display.html/?nodeId=GKQNFKFK5CF3C54B"
+          }
+        },
+        "payment": {
+          "text": "Secure transaction",
+          "details": {
+            "heading": "Your transaction is secure",
+            "content": "We work hard to protect your security and privacy. Our payment security system encrypts your information during transmission. We don\u2019t share your credit card details with third-party sellers, and we don\u2019t sell your information to others. Learn more"
+          },
+          "link": {
+            "text": "Learn more",
+            "link": "https://www.amazon.com/gp/help/customer/display.html?nodeId=201909010"
+          }
+        }
+      }
+    },
+    "buy_used": {
+      "caption": "Used - Like New",
+      "price": "$18.07",
+      "extracted_price": 18.07,
+      "delivery": [
+        "FREE delivery Tuesday, October 13. Order within 9 hrs 53 mins. Details"
+      ],
+      "stock": "Only 17 left in stock - order soon.",
+      "features": {
+        "ships_from": "Spreetail",
+        "sold_by": "Spreetail"
+      }
+    }
+  },
+  "item_specifications": {
+    "color": "Taro Purple",
+    "brand": "Fitvids",
+    "material": "Nitrile Butadiene Rubber",
+    "product_care_instructions": "Hand Wash Only",
+    "product_dimensions": "71\"L x 24\"W x 0.5\"Th",
+    "item_weight": "1.32 kg",
+    "unit_count": "1 Count",
+    "manufacturer": "Fitvids",
+    "upc": "810180850643",
+    "number_of_items": "1"
+  },
+  "about_item": [
+    "Superior Comfort & Support: Extra-large (71\" x 24\") and 1/2-inch thick high-density foam yoga mat provides cushioned support for spine, hips, knees, and elbows on hard floors",
+    "Non-Slip Safety: Double-sided anti-slip surface ensures maximum grip and stability during yoga, pilates, and other workouts to help prevent injuries",
+    "Easy to Clean: Moisture-resistant material makes it quick and simple to wipe clean with soap and water after use",
+    "Lightweight & Portable: Includes a convenient carrying strap; easy to roll up, tie, and take anywhere\u2014from home to the studio or gym",
+    "Durable & Resilient: Designed to withstand daily use while maintaining shape and performance for long-term reliability"
+  ],
+  "bought_together": [
+    {
+      "position": 1,
+      "title": "Fitvids 1/2-inch Thick High Density Exercise Yoga Mat with Carrying Strap | Mat with Carrying Strap, For Cushioning the Body Against Hard Floors",
+      "thumbnail": "https://images-na.ssl-images-amazon.com/images/I/71WJvgWQy-L._AC_UL116_SR116,116_.jpg",
+      "price": "$19.99",
+      "extracted_price": 19.99,
+      "delivery": [
+        "Get it as soon as Tomorrow, Oct 8"
+      ],
+      "stock": "In Stock"
+    },
+    {
+      "position": 2,
+      "title": "Amazon Basics Neoprene Dumbbell Hand Weights for Exercise and Muscle Toning",
+      "link": "https://www.amazon.com/AmazonBasics-Pound-Neoprene-Dumbbells-Weights/dp/B01LR5RG08/ref=pd_bxgy_thbs_d_sccl_1/146-0292801-8754106?pd_rd_w=iH4z4&content-id=amzn1.sym.1fbb380b-ee1d-4eeb-a44a-61f4d3013ea6&pf_rd_p=1fbb380b-ee1d-4eeb-a44a-61f4d3013ea6&pf_rd_r=GJPVZ3SZEAXT0XK0DDSK&pd_rd_wg=iKS6n&pd_rd_r=47e91d09-d62a-4c9d-b111-4cb368bdbaa4&pd_rd_i=B01LR5RG08&psc=1",
+      "asin": "B01LR5RG08",
+      "link_clean": "https://www.amazon.com/AmazonBasics-Pound-Neoprene-Dumbbells-Weights/dp/B01LR5RG08/",
+      "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B01LR5RG08&device=desktop&engine=amazon_product",
+      "thumbnail": "https://images-na.ssl-images-amazon.com/images/I/61UEXxKIlrL._AC_UL116_SR116,116_.jpg",
+      "price": "$9.45",
+      "extracted_price": 9.45,
+      "delivery": [
+        "Get it as soon as Monday, Oct 12"
+      ],
+      "stock": "In Stock"
+    },
+    {
+      "position": 3,
+      "title": "Yoga Blocks 2 Pack with Supportive Non-Slip Foam for Yoga Pilate Stretching | Soft non-slip yoga blocks with supportive foam for proper alignment, deeper stretches, and stable yoga and pilates practices.",
+      "link": "https://www.amazon.com/Trideer-Supportive-Lightweight-Accessories-Meditation/dp/B0D2VLM94X/ref=pd_bxgy_thbs_d_sccl_2/146-0292801-8754106?pd_rd_w=iH4z4&content-id=amzn1.sym.1fbb380b-ee1d-4eeb-a44a-61f4d3013ea6&pf_rd_p=1fbb380b-ee1d-4eeb-a44a-61f4d3013ea6&pf_rd_r=GJPVZ3SZEAXT0XK0DDSK&pd_rd_wg=iKS6n&pd_rd_r=47e91d09-d62a-4c9d-b111-4cb368bdbaa4&pd_rd_i=B0D2VLM94X&psc=1",
+      "asin": "B0D2VLM94X",
+      "link_clean": "https://www.amazon.com/Trideer-Supportive-Lightweight-Accessories-Meditation/dp/B0D2VLM94X/",
+      "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0D2VLM94X&device=desktop&engine=amazon_product",
+      "thumbnail": "https://images-na.ssl-images-amazon.com/images/I/51HNEt5iF2L._AC_UL116_SR116,116_.jpg",
+      "price": "$14.99",
+      "extracted_price": 14.99,
+      "delivery": [
+        "Get it as soon as Monday, Oct 12"
+      ],
+      "stock": "In Stock"
+    }
+  ],
+  "related_products": [
+    {
+      "position": 1,
+      "asin": "B0CW2BGDTJ",
+      "title": "Stakt The Original Foldable Yoga Mat - Non-Slip | Premium foldable exercise & workout mat with non-slip surface, portable for studio or home use, as seen on Shark Tank",
+      "link": "https://www.amazon.com/sspa/click?ie=UTF8&spc=MToyNTg2MzYwMjYyNzY0OTI3OjE3OTEzNzExODg6c3BfZGV0YWlsX3RoZW1hdGljOjMwMTE4NDMzNjk0NzUwMjo6Ojo&url=%2Fdp%2FB0CW2BGDTJ%2Fref%3Dsspa_dk_detail_0%3Fpsc%3D1%26pd_rd_i%3DB0CW2BGDTJ%26pd_rd_w%3DXEjRx%26content-id%3Damzn1.sym.3bc66c0a-cc61-4816-aa2d-e53327eaddb6%26pf_rd_p%3D3bc66c0a-cc61-4816-aa2d-e53327eaddb6%26pf_rd_r%3DGJPVZ3SZEAXT0XK0DDSK%26pd_rd_wg%3DiKS6n%26pd_rd_r%3D47e91d09-d62a-4c9d-b111-4cb368bdbaa4%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWxfdGhlbWF0aWM",
+      "link_clean": "https://www.amazon.com/dp/B0CW2BGDTJ/",
+      "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0CW2BGDTJ&device=desktop&engine=amazon_product",
+      "sponsored": true,
+      "badges": [
+        "Prime Big Deal"
+      ],
+      "thumbnail": "https://m.media-amazon.com/images/I/61uxohoRRLL._AC_UF480,480_SR480,480_.jpg",
+      "rating": 4.1,
+      "reviews": 307,
+      "discount": "-20%",
+      "price": "$75.20",
+      "extracted_price": 75.2,
+      "old_price": "null"
+    },
+    {
+      "position": 2,
+      "asin": "B07H9PZ6MH",
+      "title": "Gaiam Thick Yoga Mat, Exercise & Fitness Mat with Easy-Cinch Carrying Strap | Non-Slip NBR Foam | Joint Cushioning | Yoga, Pilates, Fitness & Floor Workouts | 72\"L x 24\"W",
+      "link": "https://www.amazon.com/sspa/click?ie=UTF8&spc=MToyNTg2MzYwMjYyNzY0OTI3OjE3OTEzNzExODg6c3BfZGV0YWlsX3RoZW1hdGljOjMwMDYxOTE2NDU0OTEwMjo6Ojo&url=%2Fdp%2FB07H9PZ6MH%2Fref%3Dsspa_dk_detail_1%3Fpsc%3D1%26pd_rd_i%3DB07H9PZ6MH%26pd_rd_w%3DXEjRx%26content-id%3Damzn1.sym.3bc66c0a-cc61-4816-aa2d-e53327eaddb6%26pf_rd_p%3D3bc66c0a-cc61-4816-aa2d-e53327eaddb6%26pf_rd_r%3DGJPVZ3SZEAXT0XK0DDSK%26pd_rd_wg%3DiKS6n%26pd_rd_r%3D47e91d09-d62a-4c9d-b111-4cb368bdbaa4%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWxfdGhlbWF0aWM",
+      "link_clean": "https://www.amazon.com/dp/B07H9PZ6MH/",
+      "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B07H9PZ6MH&device=desktop&engine=amazon_product",
+      "sponsored": true,
+      "badges": [
+        "#1 Best Seller",
+        "Prime Big Deal"
+      ],
+      "thumbnail": "https://m.media-amazon.com/images/I/81s9TLcupfL._AC_UF480,480_SR480,480_.jpg",
+      "rating": 4.6,
+      "reviews": 46710,
+      "discount": "-22%",
+      "price": "$19.47",
+      "extracted_price": 19.47,
+      "old_price": "null"
+    },
+    {
+      "position": 3,
+      "asin": "B077V135W7",
+      "title": "Gaiam Premium Yoga Mat, 6mm Thick Print Mat | Premium 6mm thick cushioning for joint support. Non-slip print design for yoga, Pilates & floor workouts.",
+      "link": "https://www.amazon.com/sspa/click?ie=UTF8&spc=MToyNTg2MzYwMjYyNzY0OTI3OjE3OTEzNzExODg6c3BfZGV0YWlsX3RoZW1hdGljOjMwMDc1NDg3MTAzNTgwMjo6Ojo&url=%2Fdp%2FB077V135W7%2Fref%3Dsspa_dk_detail_2%3Fpsc%3D1%26pd_rd_i%3DB077V135W7%26pd_rd_w%3DXEjRx%26content-id%3Damzn1.sym.3bc66c0a-cc61-4816-aa2d-e53327eaddb6%26pf_rd_p%3D3bc66c0a-cc61-4816-aa2d-e53327eaddb6%26pf_rd_r%3DGJPVZ3SZEAXT0XK0DDSK%26pd_rd_wg%3DiKS6n%26pd_rd_r%3D47e91d09-d62a-4c9d-b111-4cb368bdbaa4%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWxfdGhlbWF0aWM",
+      "link_clean": "https://www.amazon.com/dp/B077V135W7/",
+      "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B077V135W7&device=desktop&engine=amazon_product",
+      "sponsored": true,
+      "badges": [
+        "Prime Big Deal"
+      ],
+      "thumbnail": "https://m.media-amazon.com/images/I/910EtLaSVSL._AC_UF480,480_SR480,480_.jpg",
+      "rating": 4.7,
+      "reviews": 22211,
+      "discount": "-30%",
+      "price": "$16.58",
+      "extracted_price": 16.58,
+      "old_price": "null"
+    },
+    {
+      "position": 4,
+      "asin": "B0FX3RZ2YN",
+      "title": "Gruper Yoga Mat Non Slip, Anti-Tear Workout Mat with Carrying Strap and Bag | Pro TPE Yoga Mats for Women, Eco Friendly Exercise Mats for Home, Pilates and Floor Exercises, 72\"L x 24\"W x 0.24\"TH",
+      "link": "https://www.amazon.com/sspa/click?ie=UTF8&spc=MToyNTg2MzYwMjYyNzY0OTI3OjE3OTEzNzExODg6c3BfZGV0YWlsX3RoZW1hdGljOjMwMTQ4MjczNzE4NjgwMjo6Ojo&url=%2Fdp%2FB0FX3RZ2YN%2Fref%3Dsspa_dk_detail_3%3Fpsc%3D1%26pd_rd_i%3DB0FX3RZ2YN%26pd_rd_w%3DXEjRx%26content-id%3Damzn1.sym.3bc66c0a-cc61-4816-aa2d-e53327eaddb6%26pf_rd_p%3D3bc66c0a-cc61-4816-aa2d-e53327eaddb6%26pf_rd_r%3DGJPVZ3SZEAXT0XK0DDSK%26pd_rd_wg%3DiKS6n%26pd_rd_r%3D47e91d09-d62a-4c9d-b111-4cb368bdbaa4%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWxfdGhlbWF0aWM",
+      "link_clean": "https://www.amazon.com/dp/B0FX3RZ2YN/",
+      "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0FX3RZ2YN&device=desktop&engine=amazon_product",
+      "sponsored": true,
+      "badges": [
+        "Prime Big Deal"
+      ],
+      "thumbnail": "https://m.media-amazon.com/images/I/71pBRbyl-TL._AC_UF480,480_SR480,480_.jpg",
+      "rating": 4.5,
+      "reviews": 558,
+      "discount": "-18%",
+      "price": "$21.37",
+      "extracted_price": 21.37,
+      "old_price": "null"
+    },
+    {
+      "position": 5,
+      "asin": "B08G1HLMKL",
+      "title": "Hatha Yoga Extra Thick TPE Yoga Mat - 72\"x 32\" Thickness 1/2 Inch -Eco Friendly- With High Density Anti-Tear Exercise Mats For Home Gym Travel & Floor Outside",
+      "link": "https://www.amazon.com/sspa/click?ie=UTF8&spc=MToyNTg2MzYwMjYyNzY0OTI3OjE3OTEzNzExODg6c3BfZGV0YWlsX3RoZW1hdGljOjIwMDA0MDE0ODM4MDIzMTo6Ojo&url=%2Fdp%2FB08G1HLMKL%2Fref%3Dsspa_dk_detail_4%3Fpsc%3D1%26pd_rd_i%3DB08G1HLMKL%26pd_rd_w%3DXEjRx%26content-id%3Damzn1.sym.3bc66c0a-cc61-4816-aa2d-e53327eaddb6%26pf_rd_p%3D3bc66c0a-cc61-4816-aa2d-e53327eaddb6%26pf_rd_r%3DGJPVZ3SZEAXT0XK0DDSK%26pd_rd_wg%3DiKS6n%26pd_rd_r%3D47e91d09-d62a-4c9d-b111-4cb368bdbaa4%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWxfdGhlbWF0aWM",
+      "link_clean": "https://www.amazon.com/dp/B08G1HLMKL/",
+      "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B08G1HLMKL&device=desktop&engine=amazon_product",
+      "sponsored": true,
+      "badges": [
+        "Prime Big Deal"
+      ],
+      "thumbnail": "https://m.media-amazon.com/images/I/71tAeuRh6sL._AC_UF480,480_SR480,480_.jpg",
+      "rating": 4.6,
+      "reviews": 1661,
+      "discount": "-15%",
+      "price": "$50.05",
+      "extracted_price": 50.05,
+      "old_price": "null",
+      "save_with_coupon": "Save 5%"
+    },
+    {
+      "position": 6,
+      "asin": "B0CNG8MDWB",
+      "title": "AIRHOP 0.56in Thick 48 Sq Ft Exercise Equipment Mats, 12 Tiles Upgraded Rubber Top with High Density EVA Foam, Large Interlocking Puzzle Gym Flooring for Home Gym, Heavy Weight Workout, 24 x 24in",
+      "link": "https://www.amazon.com/sspa/click?ie=UTF8&spc=MToyNTg2MzYwMjYyNzY0OTI3OjE3OTEzNzExODg6c3BfZGV0YWlsX3RoZW1hdGljOjMwMTUwODQzMzkzNDgwMjo6Ojo&url=%2Fdp%2FB0CNG8MDWB%2Fref%3Dsspa_dk_detail_5%3Fpsc%3D1%26pd_rd_i%3DB0CNG8MDWB%26pd_rd_w%3DXEjRx%26content-id%3Damzn1.sym.3bc66c0a-cc61-4816-aa2d-e53327eaddb6%26pf_rd_p%3D3bc66c0a-cc61-4816-aa2d-e53327eaddb6%26pf_rd_r%3DGJPVZ3SZEAXT0XK0DDSK%26pd_rd_wg%3DiKS6n%26pd_rd_r%3D47e91d09-d62a-4c9d-b111-4cb368bdbaa4%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWxfdGhlbWF0aWM",
+      "link_clean": "https://www.amazon.com/dp/B0CNG8MDWB/",
+      "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0CNG8MDWB&device=desktop&engine=amazon_product",
+      "sponsored": true,
+      "badges": [
+        "Prime Big Deal"
+      ],
+      "thumbnail": "https://m.media-amazon.com/images/I/71AbAjpVGmL._AC_UF480,480_SR480,480_.jpg",
+      "rating": 4.6,
+      "reviews": 1806,
+      "discount": "-21%",
+      "price": "$94.98",
+      "extracted_price": 94.98,
+      "old_price": "null",
+      "climate_pledge_friendly": true
+    },
+    {
+      "position": 7,
+      "asin": "B089NCPHJX",
+      "title": "Fit Simplify Resistance Loop Exercise Bands with Instruction Guide and Carry Bag, Set of 5",
+      "link": "https://www.amazon.com/sspa/click?ie=UTF8&spc=MToyNTg2MzYwMjYyNzY0OTI3OjE3OTEzNzExODg6c3BfZGV0YWlsX3RoZW1hdGljOjMwMDE1NzE3NzkxNzQwMjo6Ojo&url=%2Fdp%2FB089NCPHJX%2Fref%3Dsspa_dk_detail_6%3Fpsc%3D1%26pd_rd_i%3DB089NCPHJX%26pd_rd_w%3DXEjRx%26content-id%3Damzn1.sym.3bc66c0a-cc61-4816-aa2d-e53327eaddb6%26pf_rd_p%3D3bc66c0a-cc61-4816-aa2d-e53327eaddb6%26pf_rd_r%3DGJPVZ3SZEAXT0XK0DDSK%26pd_rd_wg%3DiKS6n%26pd_rd_r%3D47e91d09-d62a-4c9d-b111-4cb368bdbaa4%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWxfdGhlbWF0aWM",
+      "link_clean": "https://www.amazon.com/dp/B089NCPHJX/",
+      "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B089NCPHJX&device=desktop&engine=amazon_product",
+      "sponsored": true,
+      "badges": [
+        "#1 Best Seller",
+        "Prime Big Deal"
+      ],
+      "thumbnail": "https://m.media-amazon.com/images/I/61v9SvpN7IL._AC_UF480,480_SR480,480_.jpg",
+      "rating": 4.5,
+      "reviews": 137142,
+      "discount": "-19%",
+      "price": "$8.06",
+      "extracted_price": 8.06,
+      "old_price": "null"
+    },
+    {
+      "position": 8,
+      "asin": "B0D9PH9L6H",
+      "title": "Stakt The Original Foldable Yoga Mat - Non-Slip | Premium foldable exercise & workout mat with non-slip surface, portable for studio or home use, as seen on Shark Tank",
+      "link": "https://www.amazon.com/sspa/click?ie=UTF8&spc=MTo4NTAyMzI3MTc3OTk3MTc6MTc5MTM3MTE4ODpzcF9kZXRhaWwyOjMwMTE4NDMzNjk0NzcwMjo6Ojo&url=%2Fdp%2FB0D9PH9L6H%2Fref%3Dsspa_dk_detail_0%3Fpsc%3D1%26pd_rd_i%3DB0D9PH9L6H%26pd_rd_w%3DBaND5%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DGJPVZ3SZEAXT0XK0DDSK%26pd_rd_wg%3DiKS6n%26pd_rd_r%3D47e91d09-d62a-4c9d-b111-4cb368bdbaa4%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy",
+      "link_clean": "https://www.amazon.com/dp/B0D9PH9L6H/",
+      "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0D9PH9L6H&device=desktop&engine=amazon_product",
+      "sponsored": true,
+      "badges": [
+        "Prime Big Deal"
+      ],
+      "thumbnail": "https://m.media-amazon.com/images/I/51frxoRF5TL._AC_UF480,480_SR480,480_.jpg",
+      "rating": 4.1,
+      "reviews": 307,
+      "discount": "-20%",
+      "price": "$75.20",
+      "extracted_price": 75.2,
+      "old_price": "null"
+    },
+    {
+      "position": 9,
+      "asin": "B0CNG8MDWB",
+      "title": "AIRHOP 0.56in Thick 48 Sq Ft Exercise Equipment Mats, 12 Tiles Upgraded Rubber Top with High Density EVA Foam, Large Interlocking Puzzle Gym Flooring for Home Gym, Heavy Weight Workout, 24 x 24in",
+      "link": "https://www.amazon.com/sspa/click?ie=UTF8&spc=MTo4NTAyMzI3MTc3OTk3MTc6MTc5MTM3MTE4ODpzcF9kZXRhaWwyOjMwMTUwODQzMzkzNDgwMjo6Ojo&url=%2Fdp%2FB0CNG8MDWB%2Fref%3Dsspa_dk_detail_1%3Fpsc%3D1%26pd_rd_i%3DB0CNG8MDWB%26pd_rd_w%3DBaND5%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DGJPVZ3SZEAXT0XK0DDSK%26pd_rd_wg%3DiKS6n%26pd_rd_r%3D47e91d09-d62a-4c9d-b111-4cb368bdbaa4%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy",
+      "link_clean": "https://www.amazon.com/dp/B0CNG8MDWB/",
+      "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0CNG8MDWB&device=desktop&engine=amazon_product",
+      "sponsored": true,
+      "badges": [
+        "Prime Big Deal"
+      ],
+      "thumbnail": "https://m.media-amazon.com/images/I/71AbAjpVGmL._AC_UF480,480_SR480,480_.jpg",
+      "rating": 4.6,
+      "reviews": 1806,
+      "discount": "-21%",
+      "price": "$94.98",
+      "extracted_price": 94.98,
+      "old_price": "null",
+      "climate_pledge_friendly": true
+    },
+    {
+      "position": 10,
+      "asin": "B0D3FCPGQ3",
+      "title": "AIRHOP 0.79in Thick 48 Sq Ft Exercise Equipment Mats, 12 Tiles Upgraded Rubber Top with High Density EVA Foam, Large Interlocking Puzzle Gym Flooring for Home Gym, Heavy Weight Workout,Black & White",
+      "link": "https://www.amazon.com/sspa/click?ie=UTF8&spc=MTo4NTAyMzI3MTc3OTk3MTc6MTc5MTM3MTE4ODpzcF9kZXRhaWwyOjMwMTMyMDczNjE1NDMwMjo6Ojo&url=%2Fdp%2FB0D3FCPGQ3%2Fref%3Dsspa_dk_detail_2%3Fpsc%3D1%26pd_rd_i%3DB0D3FCPGQ3%26pd_rd_w%3DBaND5%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DGJPVZ3SZEAXT0XK0DDSK%26pd_rd_wg%3DiKS6n%26pd_rd_r%3D47e91d09-d62a-4c9d-b111-4cb368bdbaa4%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy",
+      "link_clean": "https://www.amazon.com/dp/B0D3FCPGQ3/",
+      "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0D3FCPGQ3&device=desktop&engine=amazon_product",
+      "sponsored": true,
+      "badges": [
+        "Prime Big Deal"
+      ],
+      "thumbnail": "https://m.media-amazon.com/images/I/81lV+eFTHmL._AC_UF480,480_SR480,480_.jpg",
+      "rating": 4.7,
+      "reviews": 336,
+      "discount": "-19%",
+      "price": "$113.93",
+      "extracted_price": 113.93,
+      "price_unit": "$9.49 / count",
+      "extracted_price_unit": 9.49,
+      "old_price": "null",
+      "climate_pledge_friendly": true
+    },
+    {
+      "position": 11,
+      "asin": "B0H6DFR6DK",
+      "title": "Art3d 24-Pack 24\"x24\" EVA Interlocking Exercise Mats,96 Sq.Ft,Teak | 1/2\" Thick Foam Puzzle Flooring, Ideal for Workout, Gym Equipment and Training Areas",
+      "link": "https://www.amazon.com/sspa/click?ie=UTF8&spc=MTo4NTAyMzI3MTc3OTk3MTc6MTc5MTM3MTE4ODpzcF9kZXRhaWwyOjMwMTQxMTM4MDUxNzUwMjo6Ojo&url=%2Fdp%2FB0H6DFR6DK%2Fref%3Dsspa_dk_detail_3%3Fpsc%3D1%26pd_rd_i%3DB0H6DFR6DK%26pd_rd_w%3DBaND5%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DGJPVZ3SZEAXT0XK0DDSK%26pd_rd_wg%3DiKS6n%26pd_rd_r%3D47e91d09-d62a-4c9d-b111-4cb368bdbaa4%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy",
+      "link_clean": "https://www.amazon.com/dp/B0H6DFR6DK/",
+      "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0H6DFR6DK&device=desktop&engine=amazon_product",
+      "sponsored": true,
+      "thumbnail": "https://m.media-amazon.com/images/I/81MLBCQ1ZFL._AC_UF480,480_SR480,480_.jpg",
+      "rating": 4.5,
+      "reviews": 62,
+      "discount": "-15%",
+      "price": "$75.65",
+      "extracted_price": 75.65,
+      "price_unit": "$3.15 / count",
+      "extracted_price_unit": 3.15,
+      "old_price": "null"
+    },
+    {
+      "position": 12,
+      "asin": "B0CTS236C2",
+      "title": "12 Pack, 48 SQFT - 24\" x 24\" - 1/2\" Extra Thick Floor Exercise Mat for Home Gym or Floor Padding - High-Density EVA Interlocking Foam Floor Tiles for Gym Equipment, Play Area | Yoga, Cardio, Weights",
+      "link": "https://www.amazon.com/sspa/click?ie=UTF8&spc=MTo4NTAyMzI3MTc3OTk3MTc6MTc5MTM3MTE4ODpzcF9kZXRhaWwyOjMwMTMzOTAxMjQwMzkwMjo6Ojo&url=%2Fdp%2FB0CTS236C2%2Fref%3Dsspa_dk_detail_4%3Fpsc%3D1%26pd_rd_i%3DB0CTS236C2%26pd_rd_w%3DBaND5%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DGJPVZ3SZEAXT0XK0DDSK%26pd_rd_wg%3DiKS6n%26pd_rd_r%3D47e91d09-d62a-4c9d-b111-4cb368bdbaa4%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy",
+      "link_clean": "https://www.amazon.com/dp/B0CTS236C2/",
+      "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0CTS236C2&device=desktop&engine=amazon_product",
+      "sponsored": true,
+      "thumbnail": "https://m.media-amazon.com/images/I/81YfzVDAMWL._AC_UF480,480_SR480,480_.jpg",
+      "rating": 4.6,
+      "reviews": 553,
+      "price": "$39.40",
+      "extracted_price": 39.4,
+      "price_unit": "$3.28 / count",
+      "extracted_price_unit": 3.28
+    },
+    {
+      "position": 13,
+      "asin": "B0B5S33ZQW",
+      "title": "BodyForge Yoga Mat Thick Exercise Mat Thick 8mm TPE Eco-Friendly with Alignment Marks Non-Slip Extra Thick High-Density for Women and Men Workout Pilates",
+      "link": "https://www.amazon.com/sspa/click?ie=UTF8&spc=MTo4NTAyMzI3MTc3OTk3MTc6MTc5MTM3MTE4ODpzcF9kZXRhaWwyOjMwMDYyODg5OTQ2MzIwMjo6Ojo&url=%2Fdp%2FB0B5S33ZQW%2Fref%3Dsspa_dk_detail_5%3Fpsc%3D1%26pd_rd_i%3DB0B5S33ZQW%26pd_rd_w%3DBaND5%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DGJPVZ3SZEAXT0XK0DDSK%26pd_rd_wg%3DiKS6n%26pd_rd_r%3D47e91d09-d62a-4c9d-b111-4cb368bdbaa4%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy",
+      "link_clean": "https://www.amazon.com/dp/B0B5S33ZQW/",
+      "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0B5S33ZQW&device=desktop&engine=amazon_product",
+      "sponsored": true,
+      "thumbnail": "https://m.media-amazon.com/images/I/51DELE6UsgL._AC_UF480,480_SR480,480_.jpg",
+      "rating": 4.6,
+      "reviews": 19,
+      "price": "$52.40",
+      "extracted_price": 52.4
+    },
+    {
+      "position": 14,
+      "asin": "B07H9PZ6MH",
+      "title": "Gaiam Thick Yoga Mat, Exercise & Fitness Mat with Easy-Cinch Carrying Strap | Non-Slip NBR Foam | Joint Cushioning | Yoga, Pilates, Fitness & Floor Workouts | 72\"L x 24\"W",
+      "link": "https://www.amazon.com/sspa/click?ie=UTF8&spc=MTo4NTAyMzI3MTc3OTk3MTc6MTc5MTM3MTE4ODpzcF9kZXRhaWwyOjMwMDYxOTE2NDU0OTEwMjo6Ojo&url=%2Fdp%2FB07H9PZ6MH%2Fref%3Dsspa_dk_detail_6%3Fpsc%3D1%26pd_rd_i%3DB07H9PZ6MH%26pd_rd_w%3DBaND5%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DGJPVZ3SZEAXT0XK0DDSK%26pd_rd_wg%3DiKS6n%26pd_rd_r%3D47e91d09-d62a-4c9d-b111-4cb368bdbaa4%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy",
+      "link_clean": "https://www.amazon.com/dp/B07H9PZ6MH/",
+      "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B07H9PZ6MH&device=desktop&engine=amazon_product",
+      "sponsored": true,
+      "badges": [
+        "#1 Best Seller",
+        "Prime Big Deal"
+      ],
+      "thumbnail": "https://m.media-amazon.com/images/I/81s9TLcupfL._AC_UF480,480_SR480,480_.jpg",
+      "rating": 4.6,
+      "reviews": 46710,
+      "discount": "-22%",
+      "price": "$19.47",
+      "extracted_price": 19.47,
+      "old_price": "null"
+    }
+  ],
+  "related_product_sections": [
+    {
+      "title": "Deals on related products",
+      "items": [
+        {
+          "position": 1,
+          "asin": "B0CW2BGDTJ",
+          "title": "Stakt The Original Foldable Yoga Mat - Non-Slip | Premium foldable exercise & workout mat with non-slip surface, portable for studio or home use, as seen on Shark Tank",
+          "link": "https://www.amazon.com/sspa/click?ie=UTF8&spc=MToyNTg2MzYwMjYyNzY0OTI3OjE3OTEzNzExODg6c3BfZGV0YWlsX3RoZW1hdGljOjMwMTE4NDMzNjk0NzUwMjo6Ojo&url=%2Fdp%2FB0CW2BGDTJ%2Fref%3Dsspa_dk_detail_0%3Fpsc%3D1%26pd_rd_i%3DB0CW2BGDTJ%26pd_rd_w%3DXEjRx%26content-id%3Damzn1.sym.3bc66c0a-cc61-4816-aa2d-e53327eaddb6%26pf_rd_p%3D3bc66c0a-cc61-4816-aa2d-e53327eaddb6%26pf_rd_r%3DGJPVZ3SZEAXT0XK0DDSK%26pd_rd_wg%3DiKS6n%26pd_rd_r%3D47e91d09-d62a-4c9d-b111-4cb368bdbaa4%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWxfdGhlbWF0aWM",
+          "link_clean": "https://www.amazon.com/dp/B0CW2BGDTJ/",
+          "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0CW2BGDTJ&device=desktop&engine=amazon_product",
+          "sponsored": true,
+          "badges": [
+            "Prime Big Deal"
+          ],
+          "thumbnail": "https://m.media-amazon.com/images/I/61uxohoRRLL._AC_UF480,480_SR480,480_.jpg",
+          "rating": 4.1,
+          "reviews": 307,
+          "discount": "-20%",
+          "price": "$75.20",
+          "extracted_price": 75.2,
+          "old_price": "null"
+        },
+        {
+          "position": 2,
+          "asin": "B07H9PZ6MH",
+          "title": "Gaiam Thick Yoga Mat, Exercise & Fitness Mat with Easy-Cinch Carrying Strap | Non-Slip NBR Foam | Joint Cushioning | Yoga, Pilates, Fitness & Floor Workouts | 72\"L x 24\"W",
+          "link": "https://www.amazon.com/sspa/click?ie=UTF8&spc=MToyNTg2MzYwMjYyNzY0OTI3OjE3OTEzNzExODg6c3BfZGV0YWlsX3RoZW1hdGljOjMwMDYxOTE2NDU0OTEwMjo6Ojo&url=%2Fdp%2FB07H9PZ6MH%2Fref%3Dsspa_dk_detail_1%3Fpsc%3D1%26pd_rd_i%3DB07H9PZ6MH%26pd_rd_w%3DXEjRx%26content-id%3Damzn1.sym.3bc66c0a-cc61-4816-aa2d-e53327eaddb6%26pf_rd_p%3D3bc66c0a-cc61-4816-aa2d-e53327eaddb6%26pf_rd_r%3DGJPVZ3SZEAXT0XK0DDSK%26pd_rd_wg%3DiKS6n%26pd_rd_r%3D47e91d09-d62a-4c9d-b111-4cb368bdbaa4%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWxfdGhlbWF0aWM",
+          "link_clean": "https://www.amazon.com/dp/B07H9PZ6MH/",
+          "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B07H9PZ6MH&device=desktop&engine=amazon_product",
+          "sponsored": true,
+          "badges": [
+            "#1 Best Seller",
+            "Prime Big Deal"
+          ],
+          "thumbnail": "https://m.media-amazon.com/images/I/81s9TLcupfL._AC_UF480,480_SR480,480_.jpg",
+          "rating": 4.6,
+          "reviews": 46710,
+          "discount": "-22%",
+          "price": "$19.47",
+          "extracted_price": 19.47,
+          "old_price": "null"
+        },
+        {
+          "position": 3,
+          "asin": "B077V135W7",
+          "title": "Gaiam Premium Yoga Mat, 6mm Thick Print Mat | Premium 6mm thick cushioning for joint support. Non-slip print design for yoga, Pilates & floor workouts.",
+          "link": "https://www.amazon.com/sspa/click?ie=UTF8&spc=MToyNTg2MzYwMjYyNzY0OTI3OjE3OTEzNzExODg6c3BfZGV0YWlsX3RoZW1hdGljOjMwMDc1NDg3MTAzNTgwMjo6Ojo&url=%2Fdp%2FB077V135W7%2Fref%3Dsspa_dk_detail_2%3Fpsc%3D1%26pd_rd_i%3DB077V135W7%26pd_rd_w%3DXEjRx%26content-id%3Damzn1.sym.3bc66c0a-cc61-4816-aa2d-e53327eaddb6%26pf_rd_p%3D3bc66c0a-cc61-4816-aa2d-e53327eaddb6%26pf_rd_r%3DGJPVZ3SZEAXT0XK0DDSK%26pd_rd_wg%3DiKS6n%26pd_rd_r%3D47e91d09-d62a-4c9d-b111-4cb368bdbaa4%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWxfdGhlbWF0aWM",
+          "link_clean": "https://www.amazon.com/dp/B077V135W7/",
+          "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B077V135W7&device=desktop&engine=amazon_product",
+          "sponsored": true,
+          "badges": [
+            "Prime Big Deal"
+          ],
+          "thumbnail": "https://m.media-amazon.com/images/I/910EtLaSVSL._AC_UF480,480_SR480,480_.jpg",
+          "rating": 4.7,
+          "reviews": 22211,
+          "discount": "-30%",
+          "price": "$16.58",
+          "extracted_price": 16.58,
+          "old_price": "null"
+        },
+        {
+          "position": 4,
+          "asin": "B0FX3RZ2YN",
+          "title": "Gruper Yoga Mat Non Slip, Anti-Tear Workout Mat with Carrying Strap and Bag | Pro TPE Yoga Mats for Women, Eco Friendly Exercise Mats for Home, Pilates and Floor Exercises, 72\"L x 24\"W x 0.24\"TH",
+          "link": "https://www.amazon.com/sspa/click?ie=UTF8&spc=MToyNTg2MzYwMjYyNzY0OTI3OjE3OTEzNzExODg6c3BfZGV0YWlsX3RoZW1hdGljOjMwMTQ4MjczNzE4NjgwMjo6Ojo&url=%2Fdp%2FB0FX3RZ2YN%2Fref%3Dsspa_dk_detail_3%3Fpsc%3D1%26pd_rd_i%3DB0FX3RZ2YN%26pd_rd_w%3DXEjRx%26content-id%3Damzn1.sym.3bc66c0a-cc61-4816-aa2d-e53327eaddb6%26pf_rd_p%3D3bc66c0a-cc61-4816-aa2d-e53327eaddb6%26pf_rd_r%3DGJPVZ3SZEAXT0XK0DDSK%26pd_rd_wg%3DiKS6n%26pd_rd_r%3D47e91d09-d62a-4c9d-b111-4cb368bdbaa4%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWxfdGhlbWF0aWM",
+          "link_clean": "https://www.amazon.com/dp/B0FX3RZ2YN/",
+          "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0FX3RZ2YN&device=desktop&engine=amazon_product",
+          "sponsored": true,
+          "badges": [
+            "Prime Big Deal"
+          ],
+          "thumbnail": "https://m.media-amazon.com/images/I/71pBRbyl-TL._AC_UF480,480_SR480,480_.jpg",
+          "rating": 4.5,
+          "reviews": 558,
+          "discount": "-18%",
+          "price": "$21.37",
+          "extracted_price": 21.37,
+          "old_price": "null"
+        },
+        {
+          "position": 5,
+          "asin": "B08G1HLMKL",
+          "title": "Hatha Yoga Extra Thick TPE Yoga Mat - 72\"x 32\" Thickness 1/2 Inch -Eco Friendly- With High Density Anti-Tear Exercise Mats For Home Gym Travel & Floor Outside",
+          "link": "https://www.amazon.com/sspa/click?ie=UTF8&spc=MToyNTg2MzYwMjYyNzY0OTI3OjE3OTEzNzExODg6c3BfZGV0YWlsX3RoZW1hdGljOjIwMDA0MDE0ODM4MDIzMTo6Ojo&url=%2Fdp%2FB08G1HLMKL%2Fref%3Dsspa_dk_detail_4%3Fpsc%3D1%26pd_rd_i%3DB08G1HLMKL%26pd_rd_w%3DXEjRx%26content-id%3Damzn1.sym.3bc66c0a-cc61-4816-aa2d-e53327eaddb6%26pf_rd_p%3D3bc66c0a-cc61-4816-aa2d-e53327eaddb6%26pf_rd_r%3DGJPVZ3SZEAXT0XK0DDSK%26pd_rd_wg%3DiKS6n%26pd_rd_r%3D47e91d09-d62a-4c9d-b111-4cb368bdbaa4%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWxfdGhlbWF0aWM",
+          "link_clean": "https://www.amazon.com/dp/B08G1HLMKL/",
+          "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B08G1HLMKL&device=desktop&engine=amazon_product",
+          "sponsored": true,
+          "badges": [
+            "Prime Big Deal"
+          ],
+          "thumbnail": "https://m.media-amazon.com/images/I/71tAeuRh6sL._AC_UF480,480_SR480,480_.jpg",
+          "rating": 4.6,
+          "reviews": 1661,
+          "discount": "-15%",
+          "price": "$50.05",
+          "extracted_price": 50.05,
+          "old_price": "null",
+          "save_with_coupon": "Save 5%"
+        },
+        {
+          "position": 6,
+          "asin": "B0CNG8MDWB",
+          "title": "AIRHOP 0.56in Thick 48 Sq Ft Exercise Equipment Mats, 12 Tiles Upgraded Rubber Top with High Density EVA Foam, Large Interlocking Puzzle Gym Flooring for Home Gym, Heavy Weight Workout, 24 x 24in",
+          "link": "https://www.amazon.com/sspa/click?ie=UTF8&spc=MToyNTg2MzYwMjYyNzY0OTI3OjE3OTEzNzExODg6c3BfZGV0YWlsX3RoZW1hdGljOjMwMTUwODQzMzkzNDgwMjo6Ojo&url=%2Fdp%2FB0CNG8MDWB%2Fref%3Dsspa_dk_detail_5%3Fpsc%3D1%26pd_rd_i%3DB0CNG8MDWB%26pd_rd_w%3DXEjRx%26content-id%3Damzn1.sym.3bc66c0a-cc61-4816-aa2d-e53327eaddb6%26pf_rd_p%3D3bc66c0a-cc61-4816-aa2d-e53327eaddb6%26pf_rd_r%3DGJPVZ3SZEAXT0XK0DDSK%26pd_rd_wg%3DiKS6n%26pd_rd_r%3D47e91d09-d62a-4c9d-b111-4cb368bdbaa4%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWxfdGhlbWF0aWM",
+          "link_clean": "https://www.amazon.com/dp/B0CNG8MDWB/",
+          "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0CNG8MDWB&device=desktop&engine=amazon_product",
+          "sponsored": true,
+          "badges": [
+            "Prime Big Deal"
+          ],
+          "thumbnail": "https://m.media-amazon.com/images/I/71AbAjpVGmL._AC_UF480,480_SR480,480_.jpg",
+          "rating": 4.6,
+          "reviews": 1806,
+          "discount": "-21%",
+          "price": "$94.98",
+          "extracted_price": 94.98,
+          "old_price": "null",
+          "climate_pledge_friendly": true
+        },
+        {
+          "position": 7,
+          "asin": "B089NCPHJX",
+          "title": "Fit Simplify Resistance Loop Exercise Bands with Instruction Guide and Carry Bag, Set of 5",
+          "link": "https://www.amazon.com/sspa/click?ie=UTF8&spc=MToyNTg2MzYwMjYyNzY0OTI3OjE3OTEzNzExODg6c3BfZGV0YWlsX3RoZW1hdGljOjMwMDE1NzE3NzkxNzQwMjo6Ojo&url=%2Fdp%2FB089NCPHJX%2Fref%3Dsspa_dk_detail_6%3Fpsc%3D1%26pd_rd_i%3DB089NCPHJX%26pd_rd_w%3DXEjRx%26content-id%3Damzn1.sym.3bc66c0a-cc61-4816-aa2d-e53327eaddb6%26pf_rd_p%3D3bc66c0a-cc61-4816-aa2d-e53327eaddb6%26pf_rd_r%3DGJPVZ3SZEAXT0XK0DDSK%26pd_rd_wg%3DiKS6n%26pd_rd_r%3D47e91d09-d62a-4c9d-b111-4cb368bdbaa4%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWxfdGhlbWF0aWM",
+          "link_clean": "https://www.amazon.com/dp/B089NCPHJX/",
+          "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B089NCPHJX&device=desktop&engine=amazon_product",
+          "sponsored": true,
+          "badges": [
+            "#1 Best Seller",
+            "Prime Big Deal"
+          ],
+          "thumbnail": "https://m.media-amazon.com/images/I/61v9SvpN7IL._AC_UF480,480_SR480,480_.jpg",
+          "rating": 4.5,
+          "reviews": 137142,
+          "discount": "-19%",
+          "price": "$8.06",
+          "extracted_price": 8.06,
+          "old_price": "null"
+        }
+      ]
+    },
+    {
+      "title": "Products related to this item",
+      "items": [
+        {
+          "position": 1,
+          "asin": "B0D9PH9L6H",
+          "title": "Stakt The Original Foldable Yoga Mat - Non-Slip | Premium foldable exercise & workout mat with non-slip surface, portable for studio or home use, as seen on Shark Tank",
+          "link": "https://www.amazon.com/sspa/click?ie=UTF8&spc=MTo4NTAyMzI3MTc3OTk3MTc6MTc5MTM3MTE4ODpzcF9kZXRhaWwyOjMwMTE4NDMzNjk0NzcwMjo6Ojo&url=%2Fdp%2FB0D9PH9L6H%2Fref%3Dsspa_dk_detail_0%3Fpsc%3D1%26pd_rd_i%3DB0D9PH9L6H%26pd_rd_w%3DBaND5%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DGJPVZ3SZEAXT0XK0DDSK%26pd_rd_wg%3DiKS6n%26pd_rd_r%3D47e91d09-d62a-4c9d-b111-4cb368bdbaa4%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy",
+          "link_clean": "https://www.amazon.com/dp/B0D9PH9L6H/",
+          "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0D9PH9L6H&device=desktop&engine=amazon_product",
+          "sponsored": true,
+          "badges": [
+            "Prime Big Deal"
+          ],
+          "thumbnail": "https://m.media-amazon.com/images/I/51frxoRF5TL._AC_UF480,480_SR480,480_.jpg",
+          "rating": 4.1,
+          "reviews": 307,
+          "discount": "-20%",
+          "price": "$75.20",
+          "extracted_price": 75.2,
+          "old_price": "null"
+        },
+        {
+          "position": 2,
+          "asin": "B0CNG8MDWB",
+          "title": "AIRHOP 0.56in Thick 48 Sq Ft Exercise Equipment Mats, 12 Tiles Upgraded Rubber Top with High Density EVA Foam, Large Interlocking Puzzle Gym Flooring for Home Gym, Heavy Weight Workout, 24 x 24in",
+          "link": "https://www.amazon.com/sspa/click?ie=UTF8&spc=MTo4NTAyMzI3MTc3OTk3MTc6MTc5MTM3MTE4ODpzcF9kZXRhaWwyOjMwMTUwODQzMzkzNDgwMjo6Ojo&url=%2Fdp%2FB0CNG8MDWB%2Fref%3Dsspa_dk_detail_1%3Fpsc%3D1%26pd_rd_i%3DB0CNG8MDWB%26pd_rd_w%3DBaND5%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DGJPVZ3SZEAXT0XK0DDSK%26pd_rd_wg%3DiKS6n%26pd_rd_r%3D47e91d09-d62a-4c9d-b111-4cb368bdbaa4%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy",
+          "link_clean": "https://www.amazon.com/dp/B0CNG8MDWB/",
+          "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0CNG8MDWB&device=desktop&engine=amazon_product",
+          "sponsored": true,
+          "badges": [
+            "Prime Big Deal"
+          ],
+          "thumbnail": "https://m.media-amazon.com/images/I/71AbAjpVGmL._AC_UF480,480_SR480,480_.jpg",
+          "rating": 4.6,
+          "reviews": 1806,
+          "discount": "-21%",
+          "price": "$94.98",
+          "extracted_price": 94.98,
+          "old_price": "null",
+          "climate_pledge_friendly": true
+        },
+        {
+          "position": 3,
+          "asin": "B0D3FCPGQ3",
+          "title": "AIRHOP 0.79in Thick 48 Sq Ft Exercise Equipment Mats, 12 Tiles Upgraded Rubber Top with High Density EVA Foam, Large Interlocking Puzzle Gym Flooring for Home Gym, Heavy Weight Workout,Black & White",
+          "link": "https://www.amazon.com/sspa/click?ie=UTF8&spc=MTo4NTAyMzI3MTc3OTk3MTc6MTc5MTM3MTE4ODpzcF9kZXRhaWwyOjMwMTMyMDczNjE1NDMwMjo6Ojo&url=%2Fdp%2FB0D3FCPGQ3%2Fref%3Dsspa_dk_detail_2%3Fpsc%3D1%26pd_rd_i%3DB0D3FCPGQ3%26pd_rd_w%3DBaND5%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DGJPVZ3SZEAXT0XK0DDSK%26pd_rd_wg%3DiKS6n%26pd_rd_r%3D47e91d09-d62a-4c9d-b111-4cb368bdbaa4%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy",
+          "link_clean": "https://www.amazon.com/dp/B0D3FCPGQ3/",
+          "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0D3FCPGQ3&device=desktop&engine=amazon_product",
+          "sponsored": true,
+          "badges": [
+            "Prime Big Deal"
+          ],
+          "thumbnail": "https://m.media-amazon.com/images/I/81lV+eFTHmL._AC_UF480,480_SR480,480_.jpg",
+          "rating": 4.7,
+          "reviews": 336,
+          "discount": "-19%",
+          "price": "$113.93",
+          "extracted_price": 113.93,
+          "price_unit": "$9.49 / count",
+          "extracted_price_unit": 9.49,
+          "old_price": "null",
+          "climate_pledge_friendly": true
+        },
+        {
+          "position": 4,
+          "asin": "B0H6DFR6DK",
+          "title": "Art3d 24-Pack 24\"x24\" EVA Interlocking Exercise Mats,96 Sq.Ft,Teak | 1/2\" Thick Foam Puzzle Flooring, Ideal for Workout, Gym Equipment and Training Areas",
+          "link": "https://www.amazon.com/sspa/click?ie=UTF8&spc=MTo4NTAyMzI3MTc3OTk3MTc6MTc5MTM3MTE4ODpzcF9kZXRhaWwyOjMwMTQxMTM4MDUxNzUwMjo6Ojo&url=%2Fdp%2FB0H6DFR6DK%2Fref%3Dsspa_dk_detail_3%3Fpsc%3D1%26pd_rd_i%3DB0H6DFR6DK%26pd_rd_w%3DBaND5%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DGJPVZ3SZEAXT0XK0DDSK%26pd_rd_wg%3DiKS6n%26pd_rd_r%3D47e91d09-d62a-4c9d-b111-4cb368bdbaa4%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy",
+          "link_clean": "https://www.amazon.com/dp/B0H6DFR6DK/",
+          "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0H6DFR6DK&device=desktop&engine=amazon_product",
+          "sponsored": true,
+          "thumbnail": "https://m.media-amazon.com/images/I/81MLBCQ1ZFL._AC_UF480,480_SR480,480_.jpg",
+          "rating": 4.5,
+          "reviews": 62,
+          "discount": "-15%",
+          "price": "$75.65",
+          "extracted_price": 75.65,
+          "price_unit": "$3.15 / count",
+          "extracted_price_unit": 3.15,
+          "old_price": "null"
+        },
+        {
+          "position": 5,
+          "asin": "B0CTS236C2",
+          "title": "12 Pack, 48 SQFT - 24\" x 24\" - 1/2\" Extra Thick Floor Exercise Mat for Home Gym or Floor Padding - High-Density EVA Interlocking Foam Floor Tiles for Gym Equipment, Play Area | Yoga, Cardio, Weights",
+          "link": "https://www.amazon.com/sspa/click?ie=UTF8&spc=MTo4NTAyMzI3MTc3OTk3MTc6MTc5MTM3MTE4ODpzcF9kZXRhaWwyOjMwMTMzOTAxMjQwMzkwMjo6Ojo&url=%2Fdp%2FB0CTS236C2%2Fref%3Dsspa_dk_detail_4%3Fpsc%3D1%26pd_rd_i%3DB0CTS236C2%26pd_rd_w%3DBaND5%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DGJPVZ3SZEAXT0XK0DDSK%26pd_rd_wg%3DiKS6n%26pd_rd_r%3D47e91d09-d62a-4c9d-b111-4cb368bdbaa4%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy",
+          "link_clean": "https://www.amazon.com/dp/B0CTS236C2/",
+          "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0CTS236C2&device=desktop&engine=amazon_product",
+          "sponsored": true,
+          "thumbnail": "https://m.media-amazon.com/images/I/81YfzVDAMWL._AC_UF480,480_SR480,480_.jpg",
+          "rating": 4.6,
+          "reviews": 553,
+          "price": "$39.40",
+          "extracted_price": 39.4,
+          "price_unit": "$3.28 / count",
+          "extracted_price_unit": 3.28
+        },
+        {
+          "position": 6,
+          "asin": "B0B5S33ZQW",
+          "title": "BodyForge Yoga Mat Thick Exercise Mat Thick 8mm TPE Eco-Friendly with Alignment Marks Non-Slip Extra Thick High-Density for Women and Men Workout Pilates",
+          "link": "https://www.amazon.com/sspa/click?ie=UTF8&spc=MTo4NTAyMzI3MTc3OTk3MTc6MTc5MTM3MTE4ODpzcF9kZXRhaWwyOjMwMDYyODg5OTQ2MzIwMjo6Ojo&url=%2Fdp%2FB0B5S33ZQW%2Fref%3Dsspa_dk_detail_5%3Fpsc%3D1%26pd_rd_i%3DB0B5S33ZQW%26pd_rd_w%3DBaND5%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DGJPVZ3SZEAXT0XK0DDSK%26pd_rd_wg%3DiKS6n%26pd_rd_r%3D47e91d09-d62a-4c9d-b111-4cb368bdbaa4%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy",
+          "link_clean": "https://www.amazon.com/dp/B0B5S33ZQW/",
+          "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0B5S33ZQW&device=desktop&engine=amazon_product",
+          "sponsored": true,
+          "thumbnail": "https://m.media-amazon.com/images/I/51DELE6UsgL._AC_UF480,480_SR480,480_.jpg",
+          "rating": 4.6,
+          "reviews": 19,
+          "price": "$52.40",
+          "extracted_price": 52.4
+        },
+        {
+          "position": 7,
+          "asin": "B07H9PZ6MH",
+          "title": "Gaiam Thick Yoga Mat, Exercise & Fitness Mat with Easy-Cinch Carrying Strap | Non-Slip NBR Foam | Joint Cushioning | Yoga, Pilates, Fitness & Floor Workouts | 72\"L x 24\"W",
+          "link": "https://www.amazon.com/sspa/click?ie=UTF8&spc=MTo4NTAyMzI3MTc3OTk3MTc6MTc5MTM3MTE4ODpzcF9kZXRhaWwyOjMwMDYxOTE2NDU0OTEwMjo6Ojo&url=%2Fdp%2FB07H9PZ6MH%2Fref%3Dsspa_dk_detail_6%3Fpsc%3D1%26pd_rd_i%3DB07H9PZ6MH%26pd_rd_w%3DBaND5%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DGJPVZ3SZEAXT0XK0DDSK%26pd_rd_wg%3DiKS6n%26pd_rd_r%3D47e91d09-d62a-4c9d-b111-4cb368bdbaa4%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy",
+          "link_clean": "https://www.amazon.com/dp/B07H9PZ6MH/",
+          "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B07H9PZ6MH&device=desktop&engine=amazon_product",
+          "sponsored": true,
+          "badges": [
+            "#1 Best Seller",
+            "Prime Big Deal"
+          ],
+          "thumbnail": "https://m.media-amazon.com/images/I/81s9TLcupfL._AC_UF480,480_SR480,480_.jpg",
+          "rating": 4.6,
+          "reviews": 46710,
+          "discount": "-22%",
+          "price": "$19.47",
+          "extracted_price": 19.47,
+          "old_price": "null"
+        }
+      ]
+    }
+  ],
+  "videos": [
+    {
+      "position": 1,
+      "title": "Muscle recovery techniques with 321 Foam Roller",
+      "link": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-us-east-1-prod/a4480d21-9bff-4a3a-b55b-f0e74580ff32/default.vertical.jobtemplate.hls.m3u8",
+      "thumbnail": "https://m.media-amazon.com/images/I/614dp-lbVLL.jpg",
+      "duration": "0:19",
+      "vendor": "\u2728 Carmina \u2728",
+      "vendor_thumbnail": "https://m.media-amazon.com/images/I/A1N7dDHAqOL._CR0,0,2859,2859_._FMjpg_._SL34_.jpg",
+      "date": "Mar 18, 2024"
+    },
+    {
+      "position": 2,
+      "title": "Yoga mat workout mat #pilates #yoga #mat #homeworkout",
+      "link": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-us-east-1-prod/cfa86186-26db-4657-bba5-451ec05ba1ed/default.vertical.jobtemplate.hls.m3u8",
+      "thumbnail": "https://m.media-amazon.com/images/I/A1PUp3EQM3L.jpg",
+      "duration": "0:50",
+      "vendor": "Quianna Agent",
+      "vendor_thumbnail": "https://m.media-amazon.com/images/I/B1QFXZZqNxL._CR0,754,1284,1284_._FMjpg_._SL34_.jpg",
+      "date": "Oct 20, 2025"
+    },
+    {
+      "position": 3,
+      "title": "Once you go extra thick on your mat you will never go back!",
+      "link": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-us-east-1-prod/07bdb053-ba19-48f6-9e91-d2f4718c97cb/default.jobtemplate.hls.m3u8",
+      "thumbnail": "https://m.media-amazon.com/images/I/71HdfsjnZGL.png",
+      "duration": "1:33",
+      "vendor": "\u2b50\ufe0f Allison",
+      "vendor_thumbnail": "https://m.media-amazon.com/images/I/71Rc7uITLRL._CR0,0,1073,1073_._FMjpg_._SL34_.jpg",
+      "date": "Jun 4, 2025"
+    },
+    {
+      "position": 4,
+      "title": "Soft, comfortable and comes with a strap for carrying",
+      "link": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-us-east-1-prod/5618aa27-55d8-4d60-968d-ff755bd27a78/default.vertical.jobtemplate.hls.m3u8",
+      "thumbnail": "https://m.media-amazon.com/images/I/61-YNPffDaL.jpg",
+      "duration": "0:33",
+      "vendor": "Charity Reginelli",
+      "vendor_thumbnail": "https://m.media-amazon.com/images/I/915nDZeVc+L._CR0,0,2316,2316_._FMjpg_._SL34_.jpg",
+      "date": "Sep 27, 2025"
+    },
+    {
+      "position": 5,
+      "title": "Must listen before you buy!",
+      "link": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-us-east-1-prod/0efe2130-20fc-406a-8541-3a6178a9d84d/default.vertical.jobtemplate.hls.m3u8",
+      "thumbnail": "https://m.media-amazon.com/images/I/7116TITk7cL.jpg",
+      "duration": "0:41",
+      "vendor": "\u25aa\ufe0fGet Gibby With It\u25aa\ufe0f",
+      "vendor_thumbnail": "https://m.media-amazon.com/images/I/71JH7o85ERL._CR0,0,742,742_._FMjpg_._SL34_.jpg",
+      "date": "Apr 30, 2025"
+    },
+    {
+      "position": 6,
+      "title": "Review Fitvids Yoga Mat Extra Thick High Density",
+      "link": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-us-east-1-prod/b48f52a2-c601-43fa-801a-db2f74c78583/default.jobtemplate.hls.m3u8",
+      "thumbnail": "https://m.media-amazon.com/images/I/A1envgyTz+L.png",
+      "duration": "0:21",
+      "vendor": "Jamel Vincent",
+      "vendor_thumbnail": "https://m.media-amazon.com/images/I/71YM4ATI2kL._CR0,0,1019,1019_._FMjpg_._SL34_.jpg",
+      "date": "Jun 12, 2026"
+    },
+    {
+      "position": 7,
+      "title": "I purchased Fitvids Yoga Mat to cushion my knees!",
+      "link": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-us-east-1-prod/60c13c76-379f-4d0d-a7bc-e5a2e0eafeab/default.jobtemplate.hls.m3u8",
+      "thumbnail": "https://m.media-amazon.com/images/I/A1zJns6UGeL.png",
+      "duration": "0:50",
+      "vendor": "Laurie Bloom",
+      "vendor_thumbnail": "https://m.media-amazon.com/images/I/91gbw35WVrL._CR0,0,2161,2161_._FMjpg_._SL34_.jpg",
+      "date": "Dec 26, 2024"
+    },
+    {
+      "position": 8,
+      "title": "Thick Yoga Exercise Mat",
+      "link": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-us-east-1-prod/0e15b817-2285-430d-af96-1f5bfbbe43c3/default.jobtemplate.hls.m3u8",
+      "thumbnail": "https://m.media-amazon.com/images/I/A1VFiYEK6PL.jpg",
+      "duration": "1:02",
+      "vendor": "Mary Lou Verbois",
+      "vendor_thumbnail": "https://m.media-amazon.com/images/I/B1cjBTb-XKL._CR0,0,4480,4480_._FMjpg_._SL34_.jpg",
+      "date": "Mar 24, 2025"
+    },
+    {
+      "position": 9,
+      "title": "Is the BalanceFrom Go Yoga Mat Worth Your Money? Find Out!",
+      "link": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-us-east-1-prod/ae244491-5e6c-4122-81d6-aa4673f068a0/default.vertical.jobtemplate.hls.m3u8",
+      "thumbnail": "https://m.media-amazon.com/images/I/71VCjYv6iPL.jpg",
+      "duration": "0:40",
+      "vendor": "Cain Brands Reviews",
+      "vendor_thumbnail": "https://m.media-amazon.com/images/I/51pcC65c0oL._CR0,0,1024,1024_._FMjpg_._SL34_.jpg",
+      "date": "Aug 29, 2025"
+    },
+    {
+      "position": 10,
+      "title": "Perfect yoga mat for pilates!",
+      "link": "https://m.media-amazon.com/images/S/vse-vms-transcoding-artifact-us-east-1-prod/75821b02-6f38-4ccf-a710-bbe583ebde2d/default.vertical.jobtemplate.hls.m3u8",
+      "thumbnail": "https://m.media-amazon.com/images/I/71293+0FytL.jpg",
+      "duration": "2:08",
+      "vendor": "Haley Besnyl",
+      "vendor_thumbnail": "https://m.media-amazon.com/images/I/51HIInVnWRL._CR0,0,892,892_._FMjpg_._SL34_.jpg",
+      "date": "Aug 2, 2025"
+    }
+  ],
+  "product_description": [
+    {
+      "position": 1
+    },
+    {
+      "position": 2,
+      "carousel_images": [
+        {
+          "position": 1,
+          "title": "High Density Exercise Mat",
+          "image": "https://m.media-amazon.com/images/S/aplus-media-library-service-media/be8b065b-b456-45e4-ae7f-a13e994f7570.__CR0,0,1464,600_PT0_SX1464_V1___.jpg"
+        },
+        {
+          "position": 2,
+          "title": "High Density Exercise Mat",
+          "image": "https://m.media-amazon.com/images/S/aplus-media-library-service-media/1d929acd-bb8e-498b-a9c3-bcbfb50dd170.__CR0,0,1464,600_PT0_SX1464_V1___.jpg"
+        },
+        {
+          "position": 3,
+          "title": "High Density Exercise Mat",
+          "image": "https://m.media-amazon.com/images/S/aplus-media-library-service-media/981e05b0-3554-4666-a2d2-cd7bb2692fe1.__CR0,0,1464,600_PT0_SX1464_V1___.jpg"
+        },
+        {
+          "position": 4,
+          "title": "High Density Exercise Mat",
+          "image": "https://m.media-amazon.com/images/S/aplus-media-library-service-media/57db96db-980c-4166-b762-ce628d6ef32d.__CR0,0,1464,600_PT0_SX1464_V1___.jpg"
+        },
+        {
+          "position": 5,
+          "title": "High Density Exercise Mat",
+          "image": "https://m.media-amazon.com/images/S/aplus-media-library-service-media/1f76fcc8-04a4-4ad8-a033-797999b83125.__CR0,0,1464,600_PT0_SX1464_V1___.jpg"
+        },
+        {
+          "position": 6,
+          "title": "High Density Exercise Mat",
+          "image": "https://m.media-amazon.com/images/S/aplus-media-library-service-media/e7b98555-9b2e-4886-a484-84e85bc6807d.__CR0,0,1464,600_PT0_SX1464_V1___.jpg"
+        }
+      ]
+    },
+    {
+      "position": 3,
+      "title": "High Density Exercise Mat",
+      "image": "https://m.media-amazon.com/images/S/aplus-media-library-service-media/695e9ed5-6e78-4222-b628-370279422038.__CR0,0,1464,600_PT0_SX1464_V1___.jpg"
+    },
+    {
+      "position": 4,
+      "carousel_images": [
+        {
+          "position": 1,
+          "title": "High Density Exercise Mat",
+          "image": "https://m.media-amazon.com/images/S/aplus-media-library-service-media/e6874302-1a44-427f-8fae-6398bc085cf0.__CR0,0,800,600_PT0_SX800_V1___.jpg"
+        },
+        {
+          "position": 2,
+          "title": "High Density Exercise Mat",
+          "image": "https://m.media-amazon.com/images/S/aplus-media-library-service-media/42a9adcb-774c-40f9-bee4-20e3515951fb.__CR0,0,800,600_PT0_SX800_V1___.jpg"
+        },
+        {
+          "position": 3,
+          "title": "High Density Exercise Mat",
+          "image": "https://m.media-amazon.com/images/S/aplus-media-library-service-media/913348d5-41e0-4749-928a-f50c47a0c2de.__CR0,0,800,600_PT0_SX800_V1___.jpg"
+        },
+        {
+          "position": 4,
+          "title": "High Density Exercise Mat",
+          "image": "https://m.media-amazon.com/images/S/aplus-media-library-service-media/690ba88e-2ab1-44dc-84c4-d942d326c112.__CR0,0,800,600_PT0_SX800_V1___.jpg"
+        }
+      ]
+    },
+    {
+      "position": 5,
+      "title": "High Density Exercise Mat",
+      "image": "https://m.media-amazon.com/images/S/aplus-media-library-service-media/4dc3079d-a2ae-45aa-9a85-85f96d6bb479.__CR0,0,1464,600_PT0_SX1464_V1___.jpg"
+    },
+    {
+      "position": 6,
+      "title": "High Density Exercise Mat",
+      "image": "https://m.media-amazon.com/images/S/aplus-media-library-service-media/19fb7ea2-1790-4175-9a08-de3b65af1722.__CR0,0,1464,600_PT0_SX1464_V1___.jpg"
+    }
+  ],
+  "product_details": {
+    "brand_name": "Fitvids",
+    "unit_count": "1 Count",
+    "manufacturer": "Fitvids",
+    "upc": "810180850643",
+    "number_of_items": "1",
+    "number_of_packs": "1",
+    "model_number": "AP6-TAROPP",
+    "part_number": "AP6-TAROPP",
+    "best_sellers_rank": [
+      {
+        "text": "#714 in Sports & Outdoors (See Top 100 in Sports & Outdoors)",
+        "extracted_rank": 714,
+        "link": "https://www.amazon.com/gp/bestsellers/sporting-goods/ref=pd_zg_ts_sporting-goods",
+        "link_text": "See Top 100 in Sports & Outdoors"
+      },
+      {
+        "text": "#7 in Yoga Mats",
+        "extracted_rank": 7,
+        "link": "https://www.amazon.com/gp/bestsellers/sporting-goods/3422301/ref=pd_zg_hrsr_sporting-goods",
+        "link_text": "Yoga Mats"
+      }
+    ],
+    "asin": "B0DQC2WV8Y",
+    "customer_reviews": "4.5 out of 5 stars",
+    "rating": 4.5,
+    "reviews": 94461,
+    "material": "Nitrile Butadiene Rubber",
+    "product_care_instructions": "Hand Wash Only",
+    "item_dimensions_l_x_w_x_thickness": "71\"L x 24\"W x 0.5\"Th",
+    "item_weight": "1.32 kg",
+    "color": "Taro Purple"
+  },
+  "sponsored_brands": [
+    {
+      "position": 1,
+      "asin": "B0B74MRJS3",
+      "title": "KEEP Extra Wide Yoga Mat, 7mm Thick 72\" x 32\" Exercise Mat | 7mm thick Extra wide yoga mat with carry strap for home workout, yoga, exercise and Pilates",
+      "link": "https://aax-us-east-retail-direct.amazon.com/x/c/JI_ZaTnU3XDpU5h5RGzXD_4AAAGhFgsYiwEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDEgICDdSfCO/clv1c_ek-wxXfSFcbaTCmJpR1bsTBwCexDaKh0FNSma3LMC2kKLXMTZjBu0lRWI4VEo3pRi6OaYrcKtpgdKVOzAVDgpMRQy1dyyumSQhVFOlaHtOy26pdikJJbU_yY4vVSkpqq_zFb-DEy-hvNGnvaMF1L21DfqNlctlUjFsju2dcCjAYZStFU8fhvwi0KUlhZU0kBESDNZkpVCTMQ4Uz9dvzU982Zmt29x6yRz1POMhoUKTPm5ZNK_eeCR_-JgL-bdR0KUXMWDAKAOVVQRy1PQ3txGqtVXruwQmlzcnYqh6plNVLexebw8t50Nb7sMVsXRqhr6zNNdssI7zSrNFDCrSJ69wrSS2KYcTkk5mPZUUwpyNRGozzgXjLZU3qhNcD1sp_q1qbOpcjVp54DEEQJMVs-dznsVajzh_u1-2nZxAKjgQsGdOAAlc25o0mk8WRTflyj-6GesLIuu_q08ntb878AP5oIW5BuqmujDumwfjtPIDLzLvlvqh8QZi8qMKhJoFS9FzlH2FPNtfMMnGBI78hQw_VWxE6LfjKoTVccCEmTN8E_2JKKXXKliifHBFXxndbuExfPOGba-AFHsXK-nmGYpzYIUj2Ps1s3BBDM5Fg6nSffMfo-LkouRb4NFSjWUmusRKS5fzs8nTdbywRG__L0tRKEEyE-LfPUyKOPWpmpH7d3YQp-N1aL7IIX3jB3LSbRNe3OU3XBxrGaJ5TKT7igtr8x37WXedoY9kg-6QVl7-7QC17HtD83k15VCfVWAcbe72PoM7-WlQmXUpTKPo--Ufsj0QLBJNMNml0yJt5euIZWKKW42xP966a9AOemCWq_3trJDJPmX7L_SNo5gRuWhah_3YjwQasTsewEWo6SzI7EbxN43X9Tr5O6KFLkSbeaVY0KD_REOu8tvhjHoYU1K2mtWM3v_UXnnWYUYvKah8E0aMgfPRTREhNTlHnNDGpa3RgQrb2WAfpELq9Jwk13RoKjpOX24kFEVvm4OnLCm7z32HOOYBnpqrRqmYG4mMKdaRBz7EskSxxDvhzdNeTsx78r2u3ge6xzPtPbwTCdSQb4Slv33Sn7Elz3BiibVhHvoLRAA83Kc0SBPtwpGzGvW4MZbvNdJQcCzHTNShpWROI4pkKXpv8KgH10WvfBhti4KciEQXDj_oFcpIQ8wtaUBsnZsqxQhsZc2DF2oc-OujGxnv2jqDIaXabLz1cufWPz1ns3rlqLvMe3A73Rryo-2NFZzDOIP1ezV0l-mN86x0O95jzp2jUxla44pZosH6N3yjqf5UvllKAbVFl_UDm95N4y50FkV0vKjxWgpP05N8zZKY6VoM25fI_Z8f7LzRr2bg2Abb3fUux_QcSghIU2roDSHLp1QZXTdQAs1P_BUSKheJw8vDMMeVPYQv5ZD9FJkg12t3GCHUkQPkoh4iguKL_rA968ovwG01V09sb4gb2voE37vmWa-xIzNHb2rphzoSjBsVrbmANPyReYbwLOgdalC5ZLv3gPi93vEuZBxHNcn_qCAIe0D7m9TgsuGSNhUZgvlP8cBnMPATzFN6eaSS82VAHdsf08tOtE27KBPJDQ1oxXs2QjmcZfDmEwEXy5UUI5Eg/https://www.amazon.com/dp/B0B74MRJS3/?_encoding=UTF8&pd_rd_i=B0B74MRJS3&pd_rd_i=B0B74MRJS3&ref_=sbx_be_s_sparkle_ssd_cta&pd_rd_w=0e3fc&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=GJPVZ3SZEAXT0XK0DDSK&pd_rd_wg=iKS6n&pd_rd_r=47e91d09-d62a-4c9d-b111-4cb368bdbaa4",
+      "link_clean": "https://www.amazon.com/dp/B0B74MRJS3/",
+      "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0B74MRJS3&device=desktop&engine=amazon_product",
+      "thumbnail": "https://m.media-amazon.com/images/I/31nTDmkvxhL._AC_SR100,100_QL65_.jpg",
+      "video": {
+        "link": "https://m.media-amazon.com/images/S/al-na-9d5791cf-3faf/9397d1d6-4dac-454d-a355-d404a78120b3.mp4/productVideoOptimized.mp4",
+        "thumbnail": "https://m.media-amazon.com/images/S/al-na-9d5791cf-3faf/9397d1d6-4dac-454d-a355-d404a78120b3.mp4/r/THUMBNAIL_360P_FRAME_3_CAPTURE_2.JPG"
+      },
+      "rating": 4.5,
+      "reviews": 770,
+      "price": "$29.99",
+      "extracted_price": 29.99,
+      "old_price": "$34.99",
+      "extracted_old_price": 34.99
+    },
+    {
+      "position": 2,
+      "asin": "B0DTC2VZY6",
+      "title": "MICRODRY Deluxe Fitness Exercise Yoga Mat for Home & Gym, Extra Thick for High Impact Training, Multi Layered Skid Resistant Surface, Odor Neutralizing with Carrying Strap",
+      "link": "https://aax-us-east-retail-direct.amazon.com/x/c/JFT5GkR7R4lA6UnBk6425WkAAAGhFgsYjQEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDEgICBfVwK6/clv1c_ek-wxXXWasTaTdOorhewS4x7Ni4N9shy-gsvaGRZ8ulRl1Ib6NzFobG3U2cq_j_0x6g_XBq6bNU7uMTSBnaZEbn2STPMng7CjNlDCrcl98iyqlmKiWdvpEuIUvlxsXR9wEGPLn_ia-kRv4tshrcL3V_bur0MF9Xmpu6kh0cqiIEVdbMtEVJM6-6xkkr0vHTMENdWCForXoXL1srwjWhw3zPNCM_v1BqqSu9shptZChJaCzwdyv7aEWgpPOB_OEP1QnO50fM1-Dy85Sz0TpcLkDLPIJiSER8dpLxC4IICmNnFpl-FrcTgiU7R-rll2nWtxrNxfaNaLXgIhp4IKiSACsOmR1xQXSgaE7UlOJr1U7NBEZzJ50J9vGrAD0ryQ_FnfHqkyfApaorGh2BbzBYg-hKB1UVclJDZkCbxXJSx0vSp1ZlXrSm-SA1a7WQ7GTzHGuNSJBhs3fUycBCtsyCHZBnEKy7vSEPQvHEb_3_AXWIyY5WrpdcQbpj7t3vJzZrQrhyW3L21pL2-xsf64-IQhWPtgWdEAFT8-2opTjsKrLaU1KkrQ9yO8Ne5DefFdk1t9QT1lEdyei_evp_SUTCdcpC8XHUa740VWZoeOEYW5YGqiUygb-B6mL2mvWDtAWqzRKS5f_t2ofEnjD5LikYlVDXDBtA-sqlYI-wA4BBidt2vd9ArQnvZfAjCmJyRPkm6W_in-PtbLsUEm5VfHOU67y8w_t-Xl7jNv-YJxy_EifPCBROLVAzlBz6davNTdeGbPjBGlSACW0Q5VdJFK5gjPg_JCuJBY_TNgaXelQPspH7xyVv85DREn5G7WWXdhmvuvy2TUrW2Htf4HW6K3vezMKJ8cHDi4zF3Frsx6hnuCrOmbaBRMeZShglj7wJ133SQUKsdnGPJ-UAT8sF4rSZ8-lUCuk2fIIeJABmKJ6jjfFL5BIKejx0dqeleU7adImC0Qutf_5JcLEYZbIGCmE0SlbR7XWcULvQVifVeuhYkuiCixE0rkZncBSzUdyn0vtvnmb0yqbXhjmYY7f9A1wDyKKNzQ5YpuZ4A8Wwd_Zhukp0PJ4fqItcotWdjM_MrjNGu2t5N2_DfretCQgb9-5elPqZe5t8XZAasxSLiL-HhnvnwJlF8uRrHC6KkNJnbrHqKURD-TE9HKeNghoW1QBWcIUo63liwekbUemy4qxJT-ngF3lgnoqYmVb4ir9JHDOHLm0Gi8mDdvdlyczKtL6-ffmmSOXD9Dxk70Il7RTbAb6X1cHAoW0jO3jN6K6aUu9H6_eQmavD24VoNRjRf0y0o9M7GNEo8Xx1cbOW0aeAu8NF1Jse5yAej4Vor_3B0PZSE-P0alv6X63cGkZa7IfQJKA-oH3A-BLPwGJh57N0BzsxBqGlDh7Ro2uIDnucRnUA2hPXvrzuL8ujih-L0PIXbBdij2rlzU8PuAgPQBAdE8zdgg5UxK4B4Zs2lu3cINUPBcgA4C1Iviisg0eXoNaLEXrm6S5V7toh7scuaQlOdcXzAfcCLfhPguoMyuibShxEVXu5g24TCVLX9XeVaOe4GTuCQI23P67FcqTCzPfJd/https://www.amazon.com/dp/B0DTC2VZY6/?_encoding=UTF8&pd_rd_i=B0DTC2VZY6&pd_rd_i=B0DTC2VZY6&ref_=sbx_be_s_sparkle_ssd_cta&pd_rd_w=0e3fc&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=GJPVZ3SZEAXT0XK0DDSK&pd_rd_wg=iKS6n&pd_rd_r=47e91d09-d62a-4c9d-b111-4cb368bdbaa4",
+      "link_clean": "https://www.amazon.com/dp/B0DTC2VZY6/",
+      "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0DTC2VZY6&device=desktop&engine=amazon_product",
+      "thumbnail": "https://m.media-amazon.com/images/I/41ID1E9C0NL._AC_SR100,100_QL65_.jpg",
+      "video": {
+        "link": "https://m.media-amazon.com/images/S/al-na-9d5791cf-3faf/a63d4d6c-6330-445f-bcb8-1002dbcc2650.mp4/productVideoOptimized.mp4",
+        "thumbnail": "https://m.media-amazon.com/images/S/al-na-9d5791cf-3faf/a63d4d6c-6330-445f-bcb8-1002dbcc2650.mp4/r/THUMBNAIL_360P_FRAME_3_CAPTURE_2.JPG"
+      },
+      "rating": 4.2,
+      "reviews": 224,
+      "price": "$79.99",
+      "extracted_price": 79.99
+    },
+    {
+      "position": 3,
+      "asin": "B07H9PZ6MH",
+      "title": "Gaiam Thick Yoga Mat, Exercise & Fitness Mat with Easy-Cinch Carrying Strap | Non-Slip NBR Foam | Joint Cushioning | Yoga, Pilates, Fitness & Floor Workouts | 72\"L x 24\"W",
+      "link": "https://aax-us-east-retail-direct.amazon.com/x/c/JMyZLUgq6KQqRRz06_3IVI0AAAGhFgsYjgEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDEgICCh4YSu/clv1c_ek-wBXfWUsbWH32mJ7bC83NASP0DAxh4zky_LvjfDil1Jv6hlbP8ZxsQjviMlc5aaeFQh_DRpPM2rMWfBzuYlhP1SIDMfA049iYqTHmz5Jhjg3CI5CZKKnigYnl5pdSyVY2bUjEqlA_UlG7VMXP-x_LzIJ-eike6epTRDTao384vOaj5se7o60uAMsI94zW3WI2NoElAPRvQpY0tts6tuPi5nt--pV4-ot0wOG3o133eV4L5y1UycOiasVV1sJtSXPbUbw_GjQuc-UTq5vFm6cqNjZtukvNvEJoWEKhTrrzVq7g6ygzs1Q-ynSb3z9bhBx-UwFpSLX89tCDSzHhFEn7Mkj9E8RL42SU7Bu1Rc1i_Qs9nWgwm-251oNB7iBSLSim8Fje8BgCGUyBLCFfwJCGCy8inxc4TDvbAtMLeyciOisPmJfXySAta7WRGAj7N5rahk9FOyLnIOxqzWboInprgnhbVra34t1O3wdI5hhkjcg0yoqMRdstZGIHtcSvON8ecDxhBL8EyPfi47ERzI1HBQxf-Noffh27z1yahTIbfWV3IxH_bYXkThfUPpIjjmDaKErIdP1IfgczVfU4KEyrUnXtbe0HnK2_1bh6VhiE3H71ieUI_BnNRTPLJG97i5p1l0oGTSxM5lTghaFsq52m0DUhwRsi3fWS2w7KWJWkvF-FuRHMOaw9yXByMCt0Tt3o_wBs4Yep-INbA_pwXR31qhXm-1Dhod5_wymE8KQMb8e8aqQ43k75VSfVesxR0oRPc1HPMZTuIPbuol-KjMirikbyBSHKjq21KEReKoBlUOmsuKOcVdYlzfM-1I2o-Kj91b9jpP9yItow1Ncx9CagFB_WCXQc1yAIHDrYhegXX0RMsc84JSWz0T270_kEQJRKOqqlftnG9vGrxSUo0N99wXw4hc4TH5Nz9WXEyTSt3JEhIooVfXtVLGjGUDDF5uZiLBJPtbEzWT6roCFNajOwQHfCTDOFt3EUgD6eYpqJpF8yuwYfwShDy-WpZ9WAIcKoG6fY921imUlgtFmU85Bl0p1FQefWHJr57X2r7Fp746dvrsWa5yoZEOJIdx4sGRlsBuE_72XjSvKxyHIzkuYmr5Y_C4PHrXYukmgocVwcjS205DVyRQGl-cDnNwQicyXkM60sy_ZJpICoNQ_sdZ6O2LDX4D9KvxfS5Hp6oPlutXc-hz7M_Gkwpb0lTmUUNgKGELLQmNpKW4J_w5CVsYBidmLFt__H5AUXGWMwpcHsxdxoLiE-6iIV2P8SXdIpBtkMNSpaibtD6sNejrOxfgb1UBo-vHVK-sjYcKck9ogMBdwVrwql5jf9FA_v6kYRHsQYtxyI1KzYXo4gQAml2rlHY_ZIxAjZ5vCTWBQ4xlS_iLPM5K7EElMCskd5tSS5TKROxgY3uBF_G8l4RXiV5MDaqfQg8EhKAN7Uf42N1ZNRjKHJTnBYIACAFZfnEjCACEin9nu4PljY4Z-dLwOvfaUxKOTUa7ted_WmfQM6m8FsME3AtCwpAhW81qUtYPIWXleBgnQbeGSjue24DyIKveqfp9B4AEdZE9eh7/https://www.amazon.com/dp/B07H9PZ6MH/?_encoding=UTF8&pd_rd_i=B07H9PZ6MH&pd_rd_i=B07H9PZ6MH&ref_=sbx_be_s_sparkle_ssd_cta&pd_rd_w=0e3fc&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=GJPVZ3SZEAXT0XK0DDSK&pd_rd_wg=iKS6n&pd_rd_r=47e91d09-d62a-4c9d-b111-4cb368bdbaa4",
+      "link_clean": "https://www.amazon.com/dp/B07H9PZ6MH/",
+      "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B07H9PZ6MH&device=desktop&engine=amazon_product",
+      "thumbnail": "https://m.media-amazon.com/images/I/41UVISdSDIL._AC_SR100,100_QL65_.jpg",
+      "video": {
+        "link": "https://m.media-amazon.com/images/S/al-na-9d5791cf-3faf/85f449cd-0990-415a-9a2e-a9312f8561dd.mp4/productVideoOptimized.mp4",
+        "thumbnail": "https://m.media-amazon.com/images/S/al-na-9d5791cf-3faf/85f449cd-0990-415a-9a2e-a9312f8561dd.mp4/r/THUMBNAIL_360P_FRAME_3_CAPTURE_2.JPG"
+      },
+      "rating": 4.6,
+      "reviews": 46710,
+      "price": "$19.47",
+      "extracted_price": 19.47,
+      "old_price": "$24.98",
+      "extracted_old_price": 24.98
+    },
+    {
+      "position": 4,
+      "asin": "B0H299KBV7",
+      "title": "Yoga Mat - Non Slip Natural Rubber Yoga Mat, Alignment Lines, Ultimate Grip | Anti-Tear, Durable & Thick 0.16\"/0.2\", Skin-Friendly with Free Carry Strap, Bag for Yoga, Pilates Fitness and Floor Exercises",
+      "link": "https://aax-us-east-retail-direct.amazon.com/x/c/JHxfZVEGajOh5oNO6rIOTXUAAAGhFgsYjwEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDEgICCWPmAC/clv1c_ek-YBQvWUsbWHX0mJrYAB16WhAyCmebMBPwZpNOqzj_WjUMi5KozWcLOq3lcM5kcQdcl1TWau4qOet4LQ_QpjF-afRz9lWbN3z0qFORl2Y0-yhny6O1-EDu3iol0pWUnuwNSPwDAvMEawt-fEJ-d3UOcoNDsXhWolEL-3RPSjCccVH1Bxkj0H3dY54UuN246kuLf_-q3SQ_Px9ilRyHw8-_wVU1uAl-7GcZm8XVmBcyUcISk02Eo1Q6hlAK_48Kbp6S7tKe4c8IPKkOPe_qYHqeKgW_BTPxsyu9qu1uvWjmEcJlBcSRfAs2euImNZd8RanXJyRJKoUKtUnfRui-uYgumPLJptaQ4pLJNcGYw0bcvE5qwDXAWQ_oLpyl-BmiIvHWQnWVsEJR1nN7MS5g9XOP5HoN8D_Dveutge7TEPFNzuzR5DdSOlQA0xE6fcFq0N3TfjqV_RGqitO6DCgWQinY8jgpdF_qrjdlBBLNxgMk7sSgNOVFNPXwM_Z8iPoGMlQrgodChxvFeLyOcPQ5LtlYF79y2B-Y5dxSBsO-okaT8XULXMesI1R7sPNIEQCL61EpCQ9zYWX6J0aZN7xCFlWUqxBZ7V0XDr4YAo2sD9HHDMuhZqUDfCDmwpLq-R8cZCWj_GhbSEq4N2w1jjXgJsYV9p1G95QnO-0ggmX1bqcHluerkxXvus0Zg2ErHvvW-tzpdu7o4EbFP9JHaAz2eILO5rHKXn9qd1JyPanU4nuEf6mKqw5V6kHm4Yyn28P_LpLxNFG3-4m2UtLafMsQFO8zLzoaeeviokUGeSPHCzD0SeWXwv7DPh70PqhPSe-WrU3asj0zkOsH-pdHar2eVoZ9kgiZlUAIjhdDNh87lkDArvlj2pLMuKlNsy2VpFnohqL49s3LmQnUQsDCTYfH0n5zq9C5jBNwgdG_5QcYB31KcOozP6N8BxlBWk0yyTlmGQXnRb5n0YAp3Q8lVIVQkMXFOWvSVRqkvQo1f1QR9GCARs5PTZ2kfkzhC6iMnHf0MKaaqGQF1JH7QWFXZ33EqBwQ6mBGjOcIS52qn10_eo12mDtqy7Gso0fwZWLgUzCxcn5FAOLMq2RMhNBL6iLnZZ-u_C23hgk_T1RULwOqBLdF_rE5B57Yn9HzW8TBZZbecKR4zhshJoqQI2UXerLg95QWq711wHY9mYOz241vR1_WQznwlrNWy7CbDUUmJeXU3HsZR5UhA9g70cmO0Ibl_LBcAHj-W2YaTmBkzrXLTSR6x8Sje3Ebr1WTi-KWWQECY-h7U-WoUxooBCRVcIIfR2I3ZSeYvujdFtwb0W82G_TtK5edLfzwsD4p3-h_8AJttuYnMB9-I8QRme8BojPgN-oTp_HrOq8FmfaIVzaqn45wa3kUaPMyvO_6eFlWajoeEFaAyQ_59rLV_wV2McLG2T5bTwQSLCtJEaxV5AE_LlcnI7TBgRvOpgR2r4zEoyjLuHeogtiQE2Fx6MBKHV48mehktotnw6q6hMVX_IiKZlWIlDvzsaoTnB96hXeb4NsrFwyoN6refiqXNse6rowgslZcNRKTZqAI0LC-vIxU_vYz_hMKJA-9RFA/https://www.amazon.com/dp/B0H299KBV7/?_encoding=UTF8&pd_rd_i=B0H299KBV7&pd_rd_i=B0H299KBV7&ref_=sbx_be_s_sparkle_ssd_cta&pd_rd_w=0e3fc&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=GJPVZ3SZEAXT0XK0DDSK&pd_rd_wg=iKS6n&pd_rd_r=47e91d09-d62a-4c9d-b111-4cb368bdbaa4",
+      "link_clean": "https://www.amazon.com/dp/B0H299KBV7/",
+      "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B0H299KBV7&device=desktop&engine=amazon_product",
+      "thumbnail": "https://m.media-amazon.com/images/I/31x8VDW0-YL._AC_SR100,100_QL65_.jpg",
+      "video": {
+        "link": "https://m.media-amazon.com/images/S/al-na-9d5791cf-3faf/9c178f82-6766-49de-9305-4462ad0ead0c.mp4/productVideoOptimized.mp4",
+        "thumbnail": "https://m.media-amazon.com/images/S/al-na-9d5791cf-3faf/9c178f82-6766-49de-9305-4462ad0ead0c.mp4/r/THUMBNAIL_360P_FRAME_3_CAPTURE_2.JPG"
+      },
+      "rating": 4.6,
+      "reviews": 110,
+      "price": "$89.99",
+      "extracted_price": 89.99
+    },
+    {
+      "position": 5,
+      "asin": "B08GWH88XD",
+      "title": "Yoga Mat Non Slip, Pilates Fitness Mats, Eco Friendly, Anti-Tear 1/4\" Thick Yoga Mats for Women, Exercise Mats for Home Workout with Carrying Sling and Storage Bag",
+      "link": "https://aax-us-east-retail-direct.amazon.com/x/c/JOBaytbFlEKtcd6fU7sqdYEAAAGhFgsYkAEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDEgICBazDLq/clv1c_ek-wxXH2FcTaDbXhvN8c-_tQinqSsAp9-TgZf4fklirBZu7dM3XrGfMGF9DdzUenA0RrPdPJ-YHMhh3lI_vq9t4Am1sgmSIxVResFJbjDfwyudKtt6W8QAyZ4_tCquq683u6OxHy-XvNHlraMF1F2VLZiJlct1cvEM7xwScCjAQeQk32_WD5JDtLxiLnK1y4jO3Ux437P8dJ1HP8qigY5HwQSh5_RY9VnA3lhh1yEswdijxbhJRjFqySvIBs_h9JVg4OxRuhjesyX3yZkcBAWwd77oUSX89Co_n6bMKIVMq2Ztfty2bRQv6-GRKYwyGAHJ8aEBIDDB3UPU8AGzcH35CuQHxqgf0fQzN6n1kodv2mLGJ-AFrNUcgtrytNAJAYICZ_1vk68-EIyZdcU_BRMra0L09bEmdQwfCr3nu_3BBJB1iOfGj31oQ3L8-2XR9MF7SU12fX_BkDdL8kdHH1N9oMqs4zA84Lnj8AWyMkpFilVqUR1FnOfKmtnXdP50Snnj4gT2L06ewBjxaMwQeUBNs0ZaAmiOtg1wA__7RnclrBkSyoXPzbZRy5rdgRoAzzlLJUvuVWG9zKIAnr7V883qIpUkwr3Cmfs5Br7-0dGwt_LpXV2Yo8lJJWSqJIia-k1pgjVx0UZBiFlZXMjlThdogh9WvkDLJepCy9pBo8oJfovuQJL2nDNy_FeiM7-smg3uwiDaO3z6UAy6VtdVgv6gH_J4byBQa-MueDYmxr2-7wG17HdZZItqM6MYaH3vDxuvKBvUYMmR9NCi_sdpFnhipWI22MMcgxHjjaoNutIhcR59fpJ7BPNXyhK0MbJ6zBQCviyWriRf8bSWjMGE1TVEp8HFikotgi5K0mGAQqfWATKeAcXn_5chctVJloA2rVWGJFeaEURUeDEu5KyMtseCTRux0HiZJXSujYLrOjBQOVPFygJWJDp7cb2t9I_WzR6__zxMYEjNRdk8bBfRHsLcdAY30rYN-X4Wz-B1daBXxVf65R9KMXO6B3wYYcADS779ca40cwIDAbJUmFPDJIPXcyaE3yeLpLPSXDdo2s_Gdm4FExkCkOWC9poe1um6g-hYin8ySo7AsDPafwM0-ENMHFBhw6iyMDz8Z2XD8xsc2aLlyzi0iuEVOz3A4oYwGX6enD9A4zI6j3FqxSSJ24qt6KEs2367yRaRj4do_vidFcYVQFOGH1sbuor4zOtUi-x67QvsGi5s6HVFFhmkdp3GlpNGP2NVD6B8dI9WDRrYIoK-hUkM7ignh-ckK7Nzn2qCchMio8QcP0DMXsVNTTdJLCoakEjPF2XA-vyw_YEpeflZQKe4dBdrWIBKn82ZEYWTS2ab_yTP3CWT5NK5tlvUgjgl462p0C7zRGeM8ltucyyEHIILqVCvuM5VUT7zGL1dI5GZjcqhhKG5BCaoS9qZUEHluzR6_X5bpZNVrhUKSnF8Gc37068eBq2SOGmCddhWmjJJq9IfJ4vfbE3b6ZOqoPzEqJjC2gRC-5kE1pVjHUodadgv64LYhgJ4JLF_REWa7mXZ3S9BWIvZ_wGamdkAO7wfLRGlcTpe4bIkOO3aF5uo2I3CYMxy47XFg8G3zMHFcR/https://www.amazon.com/dp/B08GWH88XD/?_encoding=UTF8&pd_rd_i=B08GWH88XD&pd_rd_i=B08GWH88XD&ref_=sbx_be_s_sparkle_ssd_cta&pd_rd_w=0e3fc&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=GJPVZ3SZEAXT0XK0DDSK&pd_rd_wg=iKS6n&pd_rd_r=47e91d09-d62a-4c9d-b111-4cb368bdbaa4",
+      "link_clean": "https://www.amazon.com/dp/B08GWH88XD/",
+      "serpapi_link": "https://serpapi.com/search.json?amazon_domain=amazon.com&asin=B08GWH88XD&device=desktop&engine=amazon_product",
+      "thumbnail": "https://m.media-amazon.com/images/I/31qvQRxLriL._AC_SR100,100_QL65_.jpg",
+      "video": {
+        "link": "https://m.media-amazon.com/images/S/al-na-9d5791cf-3faf/b389e33f-72e8-41ba-b76b-97ab3bd827e3.mp4/productVideoOptimized.mp4",
+        "thumbnail": "https://m.media-amazon.com/images/S/al-na-9d5791cf-3faf/b389e33f-72e8-41ba-b76b-97ab3bd827e3.mp4/r/THUMBNAIL_360P_FRAME_3_CAPTURE_2.JPG"
+      },
+      "rating": 4.5,
+      "reviews": 5007,
+      "price": "$26.32",
+      "extracted_price": 26.32,
+      "old_price": "$27.99",
+      "extracted_old_price": 27.99
+    }
+  ],
+  "reviews_information": {
+    "summary": {
+      "text": "Customers find the exercise mat to be of good quality, with thick padding that makes it comfortable and easy to roll up for storage. The mat works well for pilates and yoga, and customers consider it good value for money. Regarding durability and grip, opinions are mixed - while some find it durable and non-slippery, others report it tears easily and slides around during use.",
+      "insights": [
+        {
+          "title": "Quality",
+          "sentiment": "positive",
+          "mentions": {
+            "total": 15000,
+            "positive": 13202,
+            "negative": 1863
+          },
+          "summary": "Customers find the exercise mat to be fantastic and recommend it.",
+          "examples": [
+            {
+              "position": 1,
+              "snippet": "...Awesome color, look and feel. Five stars! BalanceFrom Go Yoga All Purpose Anti-Tear Exercise Yoga Mat with Carrying Strap, Purple",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/R3F4K4HX9QG255"
+            },
+            {
+              "position": 2,
+              "snippet": "Great product for a great price. I am a big man with sore knees from years of athletic competition the 1/2 inch mat offers support for this problem....",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/RT20BZOO65MZB"
+            },
+            {
+              "position": 3,
+              "snippet": "Great mat! I've been using it for 3 months now and it's still sturdy and serving it's purpose! Leaves prints when I wear mesh pin my leggings though.",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/R1WPM7XGZG4SM7"
+            },
+            {
+              "position": 4,
+              "snippet": "I'm a larger person who is working on moving my body more. This mat is nice and cushioned - comfortable to stand or sit or lie on when I'm stretching!",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/R2IC2X39JXHJPX"
+            }
+          ]
+        },
+        {
+          "title": "Thickness",
+          "sentiment": "positive",
+          "mentions": {
+            "total": 7500,
+            "positive": 6721,
+            "negative": 790
+          },
+          "summary": "Customers appreciate the exercise mat's thickness, noting that it provides good padding and is comfortable to use.",
+          "examples": [
+            {
+              "position": 1,
+              "snippet": "This Yoga mat is thick, has a strap to unroll and roll back into a wonderful mat when not in use. I love the color and size and thickness of the mat.",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/R3H61HNOKKNQDR"
+            },
+            {
+              "position": 2,
+              "snippet": "Mat is very thick providing lots of comfort. It also came with a strap to carry and keep it rolled which was great. We've now bought 3 for the family!",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/R2RFW25UNX6M3J"
+            },
+            {
+              "position": 3,
+              "snippet": "Love this mat! I am so happy with the size and thickness. A great exercise mat for a beginner or an expert. Easy to roll up and the strap is perfect.",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/R9RWT7HKXLNVV"
+            },
+            {
+              "position": 4,
+              "snippet": "This mat is the perfect thickness and gives my knees the support they need. I'm so happy I made the switch to a thicker mat, my knees are thanking me!",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/R5F0VV6DW9AX9"
+            }
+          ]
+        },
+        {
+          "title": "Comfort",
+          "sentiment": "positive",
+          "mentions": {
+            "total": 7300,
+            "positive": 7133,
+            "negative": 170
+          },
+          "summary": "Customers find the exercise mat comfortable, particularly noting that its thickness makes it easy on the body and knees, with one customer mentioning it doesn't hurt their back.",
+          "examples": [
+            {
+              "position": 1,
+              "snippet": "It's been a couple of days since I got this product. The mattress is comfortable and provides good support. It's on the thinner side but seems sturdy.",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/RNH8HT4N26M5H"
+            },
+            {
+              "position": 2,
+              "snippet": "Using this for yoga on a carpeted basement floor. Very comfortable. I especially love the way it rolls up and the straps make it easy for transport.",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/RC8OJXPP4JC6W"
+            },
+            {
+              "position": 3,
+              "snippet": "So far looks great and comfy! Going to try it and update my review. It looks bigger than I thought but I attribute that to higher quality and comfort.",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/R3M1W3GRV8EEXX"
+            },
+            {
+              "position": 4,
+              "snippet": "I loved the color and the comfort. The thickness is perfect. I also loved the carrying strap. It helps to bind and carry it. The size is also perfect.",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/R2K9N0KDI46JEU"
+            }
+          ]
+        },
+        {
+          "title": "Value for money",
+          "sentiment": "positive",
+          "mentions": {
+            "total": 4400,
+            "positive": 3858,
+            "negative": 572
+          },
+          "summary": "Customers find the exercise mat to be good value for money, describing it as well worth the price.",
+          "examples": [
+            {
+              "position": 1,
+              "snippet": "Very happy with this product. It was a great price for an excellent level of quality. I no longer have pain in my back or hips when doing ab workouts!",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/R22YTZCMIURPES"
+            },
+            {
+              "position": 2,
+              "snippet": "Great value. The mat is very comfortable and durable. The strap makes it easy to transport; lightweight. Would definitely recommend this product.",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/R1V9RJMVGDL8WB"
+            },
+            {
+              "position": 3,
+              "snippet": "Thicker pad, good price, and quick shipping. We had gone up scheels and they wanted 70 for one mat that was half the thickness without labeling it....",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/R3DBL4Y6WPJ37Q"
+            },
+            {
+              "position": 4,
+              "snippet": "Cheap but great quality mat. Easy to fold, soft, practical. Overall good for working at home. Only down site was that it took to long to arrive....",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/R2OCHEENNPL7F6"
+            }
+          ]
+        },
+        {
+          "title": "Portability",
+          "sentiment": "positive",
+          "mentions": {
+            "total": 2400,
+            "positive": 2322,
+            "negative": 137
+          },
+          "summary": "Customers appreciate the exercise mat's portability, as it rolls up easily for storage and comes with a strap for convenient carrying.",
+          "examples": [
+            {
+              "position": 1,
+              "snippet": "...This mat is thick, comfortable and easy to carry, also has a good material for gripping in sweaty hot yoga sessions! I would definitely recommend.",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/R2XSXO59OWZB1A"
+            },
+            {
+              "position": 2,
+              "snippet": "...I love that it is easy to roll up and store once I\u2019m finished using it. And the handle is great for packing, too! I definitely recommend this product.",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/R101APRT0G8EVJ"
+            },
+            {
+              "position": 3,
+              "snippet": "Bought this mat and have been using it twice weekly. It is easy to store, carry and it gives great cushion protection while allowing you to be able...",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/R3T959WV68H7PL"
+            },
+            {
+              "position": 4,
+              "snippet": "...up easily and strap with Velcro fastens into a carry handle so it\u2019s portable. Great price and I like the black so it won\u2019t show dirt. Very satisfied.",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/R2QKGDNIBYJXST"
+            }
+          ]
+        },
+        {
+          "title": "Functionality",
+          "sentiment": "positive",
+          "mentions": {
+            "total": 1800,
+            "positive": 1785,
+            "negative": 85
+          },
+          "summary": "Customers find that the exercise mat works well, particularly for pilates and yoga, with the strap functioning effectively.",
+          "examples": [
+            {
+              "position": 1,
+              "snippet": "...First one is green in my picture, I bought about a year ago and works great. Second one is black, was apparently lower quality compared to first one....",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/R3UINNTAMZ9EDS"
+            },
+            {
+              "position": 2,
+              "snippet": "...Perfect yoga mat. I just started PT and yoga. This is exactly what I needed. I would give it 10 stars. It even has a very sturdy carrying strap.",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/R2AV9MVFAJ7DBA"
+            },
+            {
+              "position": 3,
+              "snippet": "...I have no issues with the actual product. It works well and is soft and comfortable to use. It rolls up easily and stays secure with the strap....",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/RNO167IPO1I0J"
+            },
+            {
+              "position": 4,
+              "snippet": "Love this mat! Just what I needed to use on my hardwood floors. Nice sized mat. Full length....no slipping! Beautiful color! I got the purple!...",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/R3BMKI7J7HEILR"
+            }
+          ]
+        },
+        {
+          "title": "Durability",
+          "sentiment": "mixed",
+          "mentions": {
+            "total": 5000,
+            "positive": 2347,
+            "negative": 2742
+          },
+          "summary": "Customers have mixed experiences with the exercise mat's durability, with some finding it super durable and still in great shape, while others report that it tears easily and is easily dented.",
+          "examples": [
+            {
+              "position": 1,
+              "snippet": "Mat is comfortable but it is not durable. If you step or lay on it, the indentation stays for about 10 minutes before returning to its original form....",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/R3GWOLLAR8XKVT"
+            },
+            {
+              "position": 2,
+              "snippet": "This workout mat is awesome. It is thick and durable and stays in place from the second you unroll it. It is super easy to use and I HIGHLY recommend.",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/RCRAHFNGSGX7V"
+            },
+            {
+              "position": 3,
+              "snippet": "The mat is to soft and tears easily, it compresses when standing on it and does not come back to shape, foot prints are still in it the next day,...",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/RROWFGQPOJUC2"
+            },
+            {
+              "position": 4,
+              "snippet": "Due to COVID we now do all activities outdoors. I wanted a thick and sturdy mat I can use on a concrete patio and this one meets that need very well...",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/R2EJ69M0CXPE68"
+            }
+          ]
+        },
+        {
+          "title": "Grip",
+          "sentiment": "mixed",
+          "mentions": {
+            "total": 2300,
+            "positive": 1374,
+            "negative": 974
+          },
+          "summary": "Customers have mixed experiences with the exercise mat's grip, with some reporting that it doesn't slip at all and stays in place well, while others find it too slippery, particularly during yoga practice.",
+          "examples": [
+            {
+              "position": 1,
+              "snippet": "Amazing. Really durable and the perfect softness and texture. Doesn't slip and carry-straps are really easy to refit and use. Perfect!",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/RD3CAT11ZKQQM"
+            },
+            {
+              "position": 2,
+              "snippet": "...It\u2019s also very slippery! You could really hurt yourself with this thing. It wouldn\u2019t even stick to my laminate floor. It just kept sliding around....",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/R155IRHZFRZ7D8"
+            },
+            {
+              "position": 3,
+              "snippet": "This workout mat is awesome. It is thick and durable and stays in place from the second you unroll it. It is super easy to use and I HIGHLY recommend.",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/RCRAHFNGSGX7V"
+            },
+            {
+              "position": 4,
+              "snippet": "...Hence, the one star It is too slippery and stretchy to do poses It is too thick to keep your balance while doing poses...",
+              "link": "https://www.amazon.com/portal/customer-reviews/srp/-/RSWGW37UUXTJ9"
+            }
+          ]
+        }
+      ],
+      "customer_reviews": {
+        "5 star": 72,
+        "4 star": 15,
+        "3 star": 7,
+        "2 star": 2,
+        "1 star": 4
+      }
+    }
+  }
+}
