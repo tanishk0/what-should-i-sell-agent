@@ -30,6 +30,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--with-reviews", action="store_true", help="Run review intelligence on top competitors.")
     ap.add_argument("--review-limit", type=int, default=5, help="Number of competitors to fetch reviews for.")
     ap.add_argument("--credit-budget", type=int, default=10, help="Max fresh SerpAPI credits to spend on reviews.")
+    ap.add_argument("--max-opportunities", type=int, default=10, help="Max candidate opportunities to generate.")
+    ap.add_argument("--skip-challenge", action="store_true", help="Skip Step 5 adversarial challenge loop.")
     ap.add_argument("--out", help="Output JSON path (default: data/runs/<query>-<ts>.json)")
     ap.add_argument("--no-mongo", action="store_true", help="Skip saving results to MongoDB even if MONGODB_URI is set.")
     args = ap.parse_args(argv)
@@ -72,6 +74,10 @@ def main(argv: list[str] | None = None) -> int:
         console.print(f"[dim]Source {s.engine}: {s.serpapi_json_url} (cached={s.from_cache})[/dim]")
 
     rev_intel = None
+    prob_analysis = None
+    opp_analysis = None
+    challenge_analysis = None
+    assessment = None
     if args.with_reviews:
         from .reviews.pipeline import run_review_intelligence
         with console.status(f"Analyzing reviews for top {args.review_limit} competitors (credit budget: {args.credit_budget})..."):
@@ -133,6 +139,142 @@ def main(argv: list[str] | None = None) -> int:
         console.print(prob_table)
         console.print(f"[bold]Clustering Stats:[/bold] {prob_analysis.stats}")
 
+        # Step 4: Generate candidate opportunities
+        from .opportunities import generate_candidate_opportunities
+        with console.status("Generating candidate product opportunities from major problems..."):
+            opp_analysis = generate_candidate_opportunities(
+                prob_analysis,
+                max_problems=args.max_opportunities,
+            )
+
+        opp_table = Table(title=f"Candidate Product Opportunities ({opp_analysis.method})")
+        opp_table.add_column("#", width=3)
+        opp_table.add_column("Product Opportunity / Improvement", style="bold green", overflow="fold")
+        opp_table.add_column("Solves Problem", style="yellow", overflow="fold")
+        opp_table.add_column("Type", width=18)
+        opp_table.add_column("Feasibility", width=12)
+        opp_table.add_column("Price Impact", width=14)
+        opp_table.add_column("Priority", width=10)
+
+        for i, opp in enumerate(opp_analysis.opportunities, start=1):
+            opp_table.add_row(
+                str(i),
+                opp.title,
+                opp.problem_name,
+                opp.improvement_type.replace("_", " ").title(),
+                opp.implementation_feasibility.capitalize(),
+                opp.target_price_impact.replace("_", " ").title(),
+                f"{opp.priority_score:.3f}",
+            )
+        console.print(opp_table)
+        console.print(f"[bold]Opportunity Generation Stats:[/bold] {opp_analysis.stats}")
+
+        # Step 5: Agentic Challenge Loop
+        if not args.skip_challenge and opp_analysis:
+            from .challenge import run_challenge_loop
+            with console.status("Executing agentic challenge loop (stress-testing hypotheses)..."):
+                challenge_analysis = run_challenge_loop(
+                    result,
+                    rev_intel,
+                    prob_analysis,
+                    opp_analysis,
+                    serp_client=client,
+                    max_hypotheses=args.max_opportunities,
+                )
+
+            chal_table = Table(title=f"Final Validated Opportunities ({challenge_analysis.method})")
+            chal_table.add_column("Rank", width=4)
+            chal_table.add_column("Product Opportunity", style="bold green", overflow="fold")
+            chal_table.add_column("Solves Problem", overflow="fold")
+            chal_table.add_column("Breadth / Prevalence", width=22)
+            chal_table.add_column("Verdict", width=14)
+            chal_table.add_column("Final Score", width=11)
+            chal_table.add_column("Recommendation", width=22)
+
+            for opp in challenge_analysis.final_opportunities:
+                verdict_style = (
+                    "bold green" if opp.verdict == "STRENGTHENED"
+                    else "bold blue" if opp.verdict == "CONFIRMED"
+                    else "bold yellow" if opp.verdict == "WEAKENED"
+                    else "bold red"
+                )
+                chal_table.add_row(
+                    str(opp.rank),
+                    opp.title,
+                    opp.problem_name,
+                    opp.competitor_prevalence,
+                    f"[{verdict_style}]{opp.verdict}[/{verdict_style}]",
+                    f"{opp.final_score:.3f}",
+                    opp.recommendation.replace("_", " ").title(),
+                )
+            console.print(chal_table)
+            console.print(f"[bold]Challenge Loop Stats:[/bold] {challenge_analysis.stats}")
+
+        # Step 6: Build competitor assessment matrix & gap analysis
+        from .assessment import build_competitor_assessment
+        top_opp = (
+            challenge_analysis.final_opportunities[0]
+            if challenge_analysis and challenge_analysis.final_opportunities
+            else None
+        )
+        if not top_opp and opp_analysis and opp_analysis.opportunities:
+            from .challenge.models import FinalOpportunity
+            o = opp_analysis.opportunities[0]
+            top_opp = FinalOpportunity(
+                rank=1,
+                opportunity_id=o.id,
+                hypothesis_id="hyp_01",
+                title=o.title,
+                problem_name=o.problem_name,
+                category=o.category,
+                improvement_type=o.improvement_type,
+                improvement_concept=o.improvement_concept,
+                differentiation_angle=o.differentiation_angle,
+                verdict="CONFIRMED",
+                final_score=o.priority_score,
+                confidence=0.70,
+                recommendation="PROCEED_WITH_CAUTION",
+                competitor_prevalence="Initial sample",
+                agent_assessment=o.improvement_concept,
+                supporting_evidence_quotes=o.supporting_evidence_quotes,
+            )
+
+        if top_opp:
+            with console.status("Building competitor assessment and gap analysis..."):
+                assessment = build_competitor_assessment(
+                    result,
+                    top_opp,
+                    review_intel=rev_intel,
+                    limit=5,
+                )
+
+            matrix_table = Table(title=f"Competitor Assessment ({assessment.opportunity_title})")
+            matrix_table.add_column("Competitor", style="bold cyan", overflow="fold")
+            matrix_table.add_column("Price", width=12)
+            matrix_table.add_column("Rating", width=8)
+            matrix_table.add_column("Main Strength", style="bold green", width=18)
+            matrix_table.add_column("Problem", style="bold red", width=18)
+
+            for comp in assessment.competitors:
+                matrix_table.add_row(
+                    comp.name,
+                    comp.price_display,
+                    f"{comp.rating:.1f}" if comp.rating else "-",
+                    comp.main_strength,
+                    comp.problem,
+                )
+            console.print(matrix_table)
+
+            from rich.panel import Panel
+            gap_text = (
+                f"[bold yellow]Where is the gap?[/bold yellow]\n\n"
+                f"{assessment.gap_analysis.where_is_the_gap}\n\n"
+                f"[bold]Target Price Window:[/bold] {assessment.gap_analysis.price_gap_range}\n"
+                f"[bold]Trade-off to Break:[/bold] {assessment.gap_analysis.tradeoff_to_break}\n"
+                f"[bold]Winning Positioning:[/bold] [green]{assessment.gap_analysis.winning_positioning}[/green]"
+            )
+            console.print(Panel(gap_text, title="[bold]Strategic Gap Analysis[/bold]", expand=False))
+
     slug = re.sub(r"[^a-z0-9]+", "-", args.query.lower()).strip("-")
     run_timestamp = datetime.now()
     run_id = f"{slug}-{run_timestamp:%Y%m%d-%H%M%S}"
@@ -149,6 +291,21 @@ def main(argv: list[str] | None = None) -> int:
         prob_out = out.parent / f"{out.stem}-problems.json"
         prob_out.write_text(prob_analysis.model_dump_json(indent=2), encoding="utf-8")
         console.print(f"[green]Saved recurring problems ->[/green] {prob_out}")
+
+        if opp_analysis:
+            opp_out = out.parent / f"{out.stem}-opportunities.json"
+            opp_out.write_text(opp_analysis.model_dump_json(indent=2), encoding="utf-8")
+            console.print(f"[green]Saved candidate opportunities ->[/green] {opp_out}")
+
+        if challenge_analysis:
+            chal_out = out.parent / f"{out.stem}-challenge.json"
+            chal_out.write_text(challenge_analysis.model_dump_json(indent=2), encoding="utf-8")
+            console.print(f"[green]Saved final validated opportunities ->[/green] {chal_out}")
+
+        if assessment:
+            assess_out = out.parent / f"{out.stem}-assessment.json"
+            assess_out.write_text(assessment.model_dump_json(indent=2), encoding="utf-8")
+            console.print(f"[green]Saved competitor assessment ->[/green] {assess_out}")
 
     if not args.no_mongo:
         from .db import MongoStorage
@@ -174,6 +331,24 @@ def main(argv: list[str] | None = None) -> int:
                             f"[bold green]Saved recurring problems to MongoDB ->[/bold green] "
                             f"collections: problem_analyses, problem_clusters"
                         )
+                        if opp_analysis:
+                            storage.save_opportunity_analysis(opp_analysis, run_id=run_id)
+                            console.print(
+                                f"[bold green]Saved candidate opportunities to MongoDB ->[/bold green] "
+                                f"collections: opportunity_analyses, candidate_opportunities"
+                            )
+                        if challenge_analysis:
+                            storage.save_challenge_analysis(challenge_analysis, run_id=run_id)
+                            console.print(
+                                f"[bold green]Saved challenge loop results to MongoDB ->[/bold green] "
+                                f"collections: challenge_runs, final_opportunities"
+                            )
+                        if assessment:
+                            storage.save_competitor_assessment(assessment, run_id=run_id)
+                            console.print(
+                                f"[bold green]Saved competitor assessment to MongoDB ->[/bold green] "
+                                f"collections: competitor_assessments, competitor_profiles"
+                            )
                 except Exception as err:
                     console.print(f"[yellow]Warning: Failed to save to MongoDB ({err}). File outputs remain intact.[/yellow]")
                 finally:
