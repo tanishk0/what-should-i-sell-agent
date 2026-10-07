@@ -187,6 +187,33 @@ Product C      ₹599      4.0       Cheap            Poor seal
 
 ---
 
+## Step 7: Generate actionable product specification ✅
+Moving from market research to an actionable, concrete product idea.
+Instead of generic advice like *"Customers want better lunch boxes"*, the agent generates an executive product specification:
+
+```
+Build:            700–900ml compact lunch box
+Must have:        improved silicone seal + locking mechanism
+Avoid:            bulky multi-container design
+Target price:     ₹699–₹899
+Primary customer: office/college users carrying liquids
+```
+
+### Strict Traceability Guarantee
+Every recommendation in the specification is traceable back to observed buyer reviews and competitor listings:
+- **`Build`**: Form factor and volume class derived from title unit metrics (`ml`, `mm`, `L`, materials).
+- **`Must have`**: Directly resolves complaint clusters with verified review citations (`[rev_xyz]`).
+- **`Avoid`**: Directly cites competitor failure modes and negative trade-offs (`[prod_abc]`).
+- **`Target price`**: Statistically anchored to competitor price distributions and whitespace pricing windows.
+- **`Primary customer`**: Sourced from buyer personas self-identified in review texts (e.g. office, college, gym, commute).
+- **Anti-Hallucination Guard**: Unsupported claims or hallucinations without valid evidence citations are flagged and dropped.
+
+Artifacts saved:
+- `data/runs/<query>-<timestamp>-spec.json`: Complete structured specification with evidence links.
+- `data/runs/<query>-<timestamp>-spec.md`: Formatted executive product brief.
+
+---
+
 ## MongoDB Persistence
 
 WSIS automatically persists research runs to MongoDB when configured via `.env`:
@@ -209,5 +236,6 @@ MONGO_DB_NAME=wsis                      # optional, defaults to wsis
 - **`final_opportunities`**: Validated and re-ranked final product opportunities indexed by `(query, final_score)`, `verdict`, and `recommendation`.
 - **`competitor_assessments`**: Step 6 competitive matrices and strategic market gap analyses.
 - **`competitor_profiles`**: Individual competitor benchmarks indexed by `(run_id, id)`.
+- **`product_specs`**: Step 7 actionable product specifications indexed by `(query, created_at)`.
 
 *Note: If `MONGODB_URI` is omitted, WSIS safely operates in file-only mode writing to `data/runs/`.*
