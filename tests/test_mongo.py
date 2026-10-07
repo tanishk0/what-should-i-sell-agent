@@ -263,6 +263,33 @@ def test_mongo_save_reviews_and_problems():
     assert spec_doc_id == "run-123_spec"
     mock_db.product_specs.replace_one.assert_called_once()
 
+    from wsis.report.models import EvidenceStats, FinalOpportunityReport
+
+    report = FinalOpportunityReport(
+        query="yoga mat",
+        market="us",
+        created_at=datetime.now(timezone.utc),
+        title="NON-SLIP DUAL-LAYER YOGA MAT",
+        confidence="HIGH",
+        why_this_opportunity="High demand for non-slip traction during hot yoga.",
+        customer_problem="Slippery surface when wet.",
+        evidence_stats=EvidenceStats(
+            unique_reviews=15,
+            competing_products=4,
+            review_share_pct=25.0,
+            total_reviews_analyzed=60,
+            total_products_analyzed=8,
+        ),
+        product_gap="Portability vs grip compromise.",
+        what_to_build=["6mm thickness", "laser-etched alignment"],
+        what_to_avoid=["pungent odor"],
+        target_price="$28–$34",
+    )
+
+    report_doc_id = storage.save_final_report(report, run_id="run-123")
+    assert report_doc_id == "run-123_report"
+    mock_db.final_reports.replace_one.assert_called_once()
+
 
 def test_mongo_ping():
     mock_client = MagicMock()
