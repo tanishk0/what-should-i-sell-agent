@@ -1,319 +1,92 @@
-# What Should I Sell — SerpAPI market research agent
+# Amazon Market-Gap Research Agent
 
-## Step 1: Research foundation ✅
-One query → a clean, deduplicated, **cited** set of ~20–30 competing products from
-**Amazon** (`engine=amazon`) and **Google Shopping** (`engine=google_shopping`).
+An evidence-backed research agent for discovering genuine customer complaints, product defects, and market gaps on Amazon India (`amazon.in`) using SerpAPI and Gemini.
+
+---
+
+## What This Agent Does
+
+1. **Searches Amazon India** using SerpAPI to collect competing products.
+2. **Collects Customer Reviews** for top competitor listings.
+3. **Classifies Customer Complaints** using Gemini LLM strictly from actual review text (with verbatim substring verification).
+4. **Clusters Recurring Problems** semantically into problem themes without hardcoded templates.
+5. **Programmatically Computes Evidence Counts** directly from actual review and product arrays.
+6. **Cross-Checks Problems Across Competitors** to distinguish widespread systemic market gaps from isolated defects, capturing counter-evidence.
+7. **Generates an Evidence-Backed Report** with citations, verbatim quotes, and counter-evidence.
+
+> **Zero Speculation Guarantee:** The AI never invents product solutions, fabricates numbers, or tells the seller what to build. It identifies real, verified customer problems with transparent evidence.
+
+---
+
+## Clean Architecture Pipeline
+
+```text
+SerpAPI (Amazon India)
+  ├── 1. Products Collection & Deduplication
+  │      └── SerpClient -> normalize_amazon -> merge_listings -> select_top
+  ├── 2. Review Retrieval & Cleaning
+  │      └── fetch_product_reviews -> clean_reviews (dedup + noise filter)
+  ├── 3. LLM Review Classification
+  │      └── ReviewClassifier (Gemini 3.5 Flash) -> verify_evidence (verbatim check)
+  ├── 4. Semantic Complaint Clustering
+  │      └── cluster_complaints (Gemini 3.5 Flash)
+  ├── 5. Programmatic Aggregation (Source of Truth)
+  │      ├── review_count = len(supporting_reviews)
+  │      ├── product_count = len(supporting_products)
+  │      ├── unaffected_products (counter-evidence)
+  │      └── is_widespread_gap (cross-check across competitors)
+  └── 6. Evidence-Backed Market-Gap Report
+         ├── Terminal Report (Rich formatting)
+         ├── Markdown Report (*-report.md)
+         └── JSON Data Exports & Optional MongoDB Storage
+```
+
+---
+
+## Quickstart
+
+### 1. Environment Setup
 
 ```powershell
-python -m venv .venv; .\.venv\Scripts\python -m pip install -r requirements.txt
-# .env  ->  SERPAPI_KEY=...
-.\.venv\Scripts\python -m wsis "yoga mat" --market us --limit 30
-.\.venv\Scripts\python -m pytest            # offline, uses real captured responses
+# Create and activate virtual environment
+python -m venv .venv
+.\.venv\Scripts\python -m pip install -r requirements.txt
 ```
 
-Flags: `--market us|uk|in|ca|au|de|fr|jp`, `--amazon-pages N`, `--min-relevance 0.5`,
-`--no-cache` (force fresh), `--offline` (cache only). Output → `data/runs/*.json`.
-
-### Pipeline
-`fetch (2 SerpAPI calls, disk-cached)` → `normalize → Listing` → `drop no-price / wrong currency`
-→ `merge duplicates → Product` → `relevance filter` → `score & pick top N (both sources guaranteed)`
-
-### Schema ([wsis/schema.py](wsis/schema.py))
-- **Listing**: one result on one source: id (ASIN / Google product_id), title, url, seller,
-  price, original_price, currency, rating, review_count, bought_last_month, sponsored,
-  position, badges, `detail_api_url` (for the reviews step), metadata, **citation**.
-- **Citation**: engine, search_id, `serpapi_json_url` (archived raw JSON), the marketplace
-  search URL, the result's position, and when it was retrieved.
-- **Product**: canonical competitor merged from ≥1 listings (price min/max, sources, relevance, score).
-- **ResearchSet**: query, market, searches[], products[], funnel stats.
-
----
-
-## Step 2: Review intelligence ✅
-Goal: Understand what buyers actually dislike across competitors without hallucination.
-
-```powershell
-# In .env:
-# SERPAPI_KEY=...
-# GEMINI_API_KEY=... (optional, falls back to heuristic classifier if omitted)
-
-# Run research + review intelligence for top 5 competitors:
-.\.venv\Scripts\python -m wsis "yoga mat" --with-reviews --review-limit 5 --credit-budget 10
-```
-
-### Review Intelligence Pipeline ([wsis/reviews/pipeline.py](wsis/reviews/pipeline.py))
-1. **Credit Budget Guard (`CreditBudget`)**:
-   - Enforces a hard budget limit on *fresh* SerpAPI calls (cached calls cost 0 credits).
-   - Essential for free tier / 200 credits quota.
-2. **Review Retrieval (`fetch.py`)**:
-   - Amazon: retrieves `reviews_information` (aspect insights, customer sentiment summaries, reviewer quotes with permalinks).
-   - Google Shopping: retrieves `user_reviews` aggregated across retailers (Target, Walmart, etc.) with ratings and reviewer names.
-   - Retains original review text, URLs, and SerpAPI citations.
-3. **Cleaning & Deduplication (`clean.py`)**:
-   - Trims boilerplate ("Read more..."), drops noise/gibberish.
-   - Deduplicates identical review IDs, exact text across multiple aspect tags, and near-duplicates.
-   - Merges metadata without losing citations.
-4. **LLM Classification with Verbatim Evidence Verification (`classify.py`)**:
-   - Uses **Google Gemini** (`gemini-2.5-flash`) via `google-genai` SDK with structured JSON schemas.
-   - Categorizes complaints into structured frustration buckets (`durability`, `performance`, `comfort_ergonomics`, `materials_safety`, etc.).
-   - Extracts specific issues and severity ratings (1-3).
-   - **Zero Hallucination Guarantee**: Extracts `evidence_quote` and programmatically validates that it is an exact, verbatim substring of the customer's review text (`evidence_verified: True`).
-   - Graceful fallback: If `GEMINI_API_KEY` is not present, runs an offline heuristic classifier.
-
----
-
-## Step 3: Discover recurring problems (Clustering) ✅
-Goal: Turn thousands of individual complaints into meaningful, ranked problem themes.
-
-```powershell
-# Evaluates competitors, extracts reviews, and clusters recurring pain points:
-.\.venv\Scripts\python -m wsis "yoga mat" --with-reviews --review-limit 5
-```
-
-### Clustering Pipeline ([wsis/reviews/clustering.py](wsis/reviews/clustering.py))
-1. **Complaint Synthesis**: Aggregates verified buyer complaints across all evaluated competitors.
-2. **Semantic Clustering**:
-   - Uses **Google Gemini** (`gemini-2.5-flash`) to group complaints into root pain point clusters with actionable names, category taxonomy, and 2-3 sentence problem explanations.
-   - Offline heuristic fallback groups complaints based on classification taxonomy and key issue tags.
-3. **Opportunity & Severity Scoring**:
-   - Computes average severity (1.0 - 3.0), complaint frequency share, and competitor breadth (how many competing brands exhibit this failure).
-   - Generates an `opportunity_score` indexing the highest potential areas for a new product to solve.
-4. **Verbatim Evidence Linking**:
-   - Every `ProblemCluster` stores verified complaint citations (`ComplaintEvidence`) including review ID, original text, star rating, product URL, and SerpAPI search endpoint.
-   - Output saved to `data/runs/<query>-<timestamp>-problems.json`.
-
----
-
-## Step 4: Generate candidate opportunities ✅
-Goal: Convert recurring buyer problems into actionable, differentiated product opportunities.
-
-For each major problem cluster discovered in Step 3, the agent queries the model:
-> *"What product improvement could directly solve this problem?"*
-
-```powershell
-# Full pipeline: research competitors -> fetch reviews -> discover problems -> generate opportunities:
-.\.venv\Scripts\python -m wsis "yoga mat" --with-reviews --review-limit 5 --max-opportunities 10
-```
-
-### Opportunity Generation Pipeline ([wsis/opportunities/generator.py](wsis/opportunities/generator.py))
-1. **Core Problem Prompting**:
-   - Evaluates top problem clusters ranked by `opportunity_score`.
-   - Uses **Google Gemini** (`gemini-2.5-flash`) via structured JSON schema to formulate targeted solutions.
-   - Offline heuristic fallback provides domain-tailored improvements based on complaint category & keywords.
-2. **Candidate Opportunity Schema ([wsis/opportunities/models.py](wsis/opportunities/models.py))**:
-   - `title`: Benefit-driven, memorable product improvement concept.
-   - `problem_id` & `problem_name`: Linked directly to the root problem cluster.
-   - `improvement_type`: Innovation classification (`material_upgrade`, `mechanical_redesign`, `manufacturing_process`, `feature_addition`, `ergonomic_enhancement`, `bundle_accessory`).
-   - `improvement_concept`: Direct engineering and design answer to what solves the problem.
-   - `differentiation_angle`: Marketing and positioning angle against incumbent competitors.
-   - `implementation_feasibility`: Feasibility rating (`high`, `medium`, `low`).
-   - `target_price_impact`: Pricing tiers (`cost_neutral`, `minor_premium`, `premium_tier`).
-   - `priority_score`: Calculated from problem opportunity score × feasibility multiplier.
-   - `supporting_evidence_quotes`: Direct verbatim buyer quotes grounding the opportunity.
-3. **Output Artifacts**:
-   - Saved locally to `data/runs/<query>-<timestamp>-opportunities.json`.
-
----
-
-## Step 5: Agentic challenge loop (The Hackathon Core) ⚡
-Instead of naively prompting an LLM *"What should I sell?"*, WSIS executes an adversarial validation loop:
-
-```
-Research competitors
-        ↓
-Find recurring problem
-        ↓
-Form opportunity hypothesis
-        ↓
-Search again
-        ↓
-Look for contradictory evidence
-        ↓
-Check additional competitors
-        ↓
-Strengthen / weaken hypothesis
-        ↓
-Final opportunity
-```
-
-```powershell
-# Run full end-to-end pipeline with agentic challenge loop:
-.\.venv\Scripts\python -m wsis "yoga mat" --with-reviews --review-limit 5
-```
-
-### The Challenge Mechanism ([wsis/challenge/loop.py](wsis/challenge/loop.py))
-1. **Hypothesis Formulation**: Converts Step 4 candidates into testable, falsifiable claims and generates adversarial search queries.
-2. **Search Again & Broader Cohort Audit**: Audits expanded competitors (e.g., 15 competitors across the category) and executes targeted verification queries.
-3. **Contradictory Evidence Mining**:
-   - **Isolated Defect Check**: If complaints occur in only a small minority of competitors (e.g. **2/15 products** or <25%), the agent recognizes this as an isolated vendor issue rather than an industry gap, and **downgrades** the opportunity.
-   - **Incumbent Pre-emption Check**: Checks whether high-rated competitors (≥4.7★) already solve this problem with high satisfaction.
-   - **Trade-off Detection**: Flags negative side-effects caused by proposed improvements.
-4. **Corroborating Evidence Mining**:
-   - **Widespread Category Failure**: If complaints span ≥50% of competitors, the agent **strengthens** the opportunity.
-5. **Verdict & Score Recalibration**:
-   - `STRENGTHENED`: +25% score boost, high conviction (`PURSUE_HIGH_CONVICTION`).
-   - `CONFIRMED`: Maintained score, moderate conviction (`PROCEED_WITH_CAUTION`).
-   - `WEAKENED`: -30% score discount (`PROCEED_WITH_CAUTION`).
-   - `DOWNGRADED`: -55% score discount, flagged as high risk (`DE-PRIORITIZE`).
-6. **Artifact Output**:
-   - Saved locally to `data/runs/<query>-<timestamp>-challenge.json`.
-
----
-
-## Step 6: Build competitor assessment & market gap analysis ✅
-For the validated opportunity, the agent builds a head-to-head competitor matrix and answers:
-> **"Where is the gap?"**
-
-```powershell
-# Full pipeline through competitor assessment:
-.\.venv\Scripts\python -m wsis "yoga mat" --with-reviews --review-limit 5
-```
-
-### Competitor Matrix Output ([wsis/assessment/builder.py](wsis/assessment/builder.py))
-```
-Competitor     Price     Rating    Main Strength    Problem
-Product A      ₹699      4.2       Compact          Leaks
-Product B      ₹899      4.4       Durable          Bulky
-Product C      ₹599      4.0       Cheap            Poor seal
-```
-
-### Strategic Gap Analysis
-- **Where is the gap?**: Synthesizes the exact price and performance whitespace across price tiers.
-- **Unmet Need**: Pinpoints what combination of benefits no existing competitor delivers.
-- **Target Price Window**: Identifies the margin-healthy pricing window (e.g. `₹749 - ₹849` or `$28 - $35`).
-- **Trade-off to Break**: Identifies false compromises buyers currently make (e.g. `Compact vs Leakproof`, `Soft cushioning vs High traction`).
-- **Winning Positioning**: Concise value proposition for market entry.
-- Output saved to `data/runs/<query>-<timestamp>-assessment.json`.
-
----
-
-## Step 7: Generate actionable product specification ✅
-Moving from market research to an actionable, concrete product idea.
-Instead of generic advice like *"Customers want better lunch boxes"*, the agent generates an executive product specification:
-
-```
-Build:            700–900ml compact lunch box
-Must have:        improved silicone seal + locking mechanism
-Avoid:            bulky multi-container design
-Target price:     ₹699–₹899
-Primary customer: office/college users carrying liquids
-```
-
-### Strict Traceability Guarantee
-Every recommendation in the specification is traceable back to observed buyer reviews and competitor listings:
-- **`Build`**: Form factor and volume class derived from title unit metrics (`ml`, `mm`, `L`, materials).
-- **`Must have`**: Directly resolves complaint clusters with verified review citations (`[rev_xyz]`).
-- **`Avoid`**: Directly cites competitor failure modes and negative trade-offs (`[prod_abc]`).
-- **`Target price`**: Statistically anchored to competitor price distributions and whitespace pricing windows.
-- **`Primary customer`**: Sourced from buyer personas self-identified in review texts (e.g. office, college, gym, commute).
-- **Anti-Hallucination Guard**: Unsupported claims or hallucinations without valid evidence citations are flagged and dropped.
-
-Artifacts saved:
-- `data/runs/<query>-<timestamp>-spec.json`: Complete structured specification with evidence links.
-- `data/runs/<query>-<timestamp>-spec.md`: Formatted executive product brief.
-
----
-
-## Step 8: Build the evidence-backed final report ✅
-The capstone terminal UI and deliverable of the agent: an **evidence-backed product opportunity report**.
-
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-                    PRODUCT OPPORTUNITY
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-COMPACT LEAKPROOF LUNCH BOX
-
-Opportunity confidence: HIGH
-
-Why this opportunity?
-Analysis of customer reviews reveals persistent category failure in liquid
-sealing. Incumbents force buyers into false compromises. Delivering an
-engineered solution captures clear whitespace where incumbents underdeliver.
-
-CUSTOMER PROBLEM
-─────────────────
-Leakage when carrying liquids sideways.
-
-Evidence
-• 23 unique reviews
-• 8 competing products
-• 23.0% of analyzed reviews mentioning defect
-
-"Lid snaps open inside backpack and soup leaks everywhere."
-(★1.0 Milton Compact Lunch Box)
-
-"Cannot put dal or curry, it leaks through the corner gasket."
-(★2.0 Cello Max Fresh)
-
-PRODUCT GAP
-─────────────────
-Existing products solve portability OR leak resistance, but few
-combine both without increasing bulk.
-
-WHAT TO BUILD
-─────────────────
-✓ 700–900ml capacity
-✓ compact footprint
-✓ improved silicone seal
-✓ locking lid
-✕ avoid bulky compartments
-
-PRICE
-─────────────────
-₹699–₹899
-
-COMPETITORS
-─────────────────
-• Milton Compact (₹699 | ★4.2)
-  Main strength: Compact | Problem: Leaks
-• Cello Max Fresh (₹899 | ★4.4)
-  Main strength: Durable | Problem: Bulky
-
-EVIDENCE
-─────────────────
-• [rev_01] ★1.0 Review (Milton Compact)
-  https://amazon.com/rev1
-• [prod_01] Competitor: Milton Compact Lunch Box
-  https://amazon.com/dp/B001
-
-COUNTER-EVIDENCE
-─────────────────
-• Gasket degradation: High-temperature dishwasher cycles degrade silicone elasticity after 6 months.
-• Tooling cost premium: Food-grade silicone overmolding adds unit BOM costs, compressing margins below ₹699.
-• Isolated defect concentration: 40% of complaints originate from 2 budget suppliers with inferior latch molds.
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-```
-
-Artifacts saved:
-- `data/runs/<query>-<timestamp>-report.json`: Machine-readable final report with metrics and evidence chains.
-- `data/runs/<query>-<timestamp>-report.md`: Polished markdown executive brief.
-
----
-
-## MongoDB Persistence
-
-WSIS automatically persists research runs to MongoDB when configured via `.env`:
+Create a `.env` file at the root:
 
 ```env
-# In .env:
-MONGODB_URI=mongodb://localhost:27017/  # or MongoDB Atlas URI
-MONGO_DB_NAME=wsis                      # optional, defaults to wsis
+SERPAPI_KEY=your_serpapi_key_here
+GEMINI_API_KEY=your_gemini_api_key_here
+GEMINI_MODEL=gemini-3.5-flash
+DEFAULT_MARKET=in
 ```
 
-### Collections Schema:
-- **`research_runs`**: Complete `ResearchSet` runs with query, market, citations, and stats.
-- **`products`**: Canonical competitor products indexed by `(run_id, id)` and `(query, score)` for easy cross-run queries.
-- **`review_intelligence`**: Detailed buyer sentiment and verified complaints per competitor.
-- **`problem_analyses`**: Clustered problem summaries with methodology and metadata.
-- **`problem_clusters`**: Individual problem themes indexed by `(query, opportunity_score)` and `category`.
-- **`opportunity_analyses`**: Step 4 candidate product opportunities runs.
-- **`candidate_opportunities`**: Individual product improvement opportunities indexed by `(query, priority_score)`, `problem_id`, and `category`.
-- **`challenge_runs`**: Step 5 agentic challenge loop runs stress-testing hypotheses.
-- **`final_opportunities`**: Validated and re-ranked final product opportunities indexed by `(query, final_score)`, `verdict`, and `recommendation`.
-- **`competitor_assessments`**: Step 6 competitive matrices and strategic market gap analyses.
-- **`competitor_profiles`**: Individual competitor benchmarks indexed by `(run_id, id)`.
-- **`product_specs`**: Step 7 actionable product specifications indexed by `(query, created_at)`.
-- **`final_reports`**: Step 8 evidence-backed final opportunity reports indexed by `(query, created_at)`.
+### 2. Run Market Research
 
-*Note: If `MONGODB_URI` is omitted, WSIS safely operates in file-only mode writing to `data/runs/`.*
+```powershell
+# Run full market-gap research for sunglasses on Amazon India:
+.\.venv\Scripts\python -m wsis "sunglasses" --with-reviews --review-limit 5 --credit-budget 10
+
+# Run for lunch boxes:
+.\.venv\Scripts\python -m wsis "lunch box" --with-reviews --review-limit 5
+
+# Offline mode using cached SerpAPI data:
+.\.venv\Scripts\python -m wsis "yoga mat" --offline
+```
+
+### 3. Run Test Suite
+
+```powershell
+.\.venv\Scripts\python -m pytest tests/ -v
+```
+
+---
+
+## Key Principles & Guardrails
+
+- **Centralized Model Configuration:** Uses `gemini-3.5-flash` centralized in `wsis/config.py`.
+- **Evidence as Source of Truth:** The LLM only classifies and clusters. All review counts, competitor prevalence, and share percentages are calculated programmatically from actual lists.
+- **No Unsupported Claims:** Reviews are only attached to a problem if the LLM explicitly assigned that review as evidence for that problem.
+- **Counter-Evidence & Cross-Checking:** Highlights competing products where the defect did NOT appear, preventing false generalizations.
+- **Fail-Fast Error Handling:** Honest errors are raised immediately if keys are missing or API calls fail; no fake heuristic fallbacks or fabricated outputs.
