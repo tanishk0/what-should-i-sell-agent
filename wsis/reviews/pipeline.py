@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 
-from ..config import RUNS_DIR, get_gemini_api_key
+from ..config import DEFAULT_GEMINI_MODEL, get_gemini_api_key
 from ..schema import Product, ResearchSet
 from ..serp_client import SerpClient
 from .classify import ReviewClassifier
@@ -21,16 +21,19 @@ def run_review_intelligence(
     *,
     competitor_limit: int = 10,
     credit_budget: int = 15,
-    sources_per_product: int = 2,
+    sources_per_product: int = 1,
     gemini_api_key: Optional[str] = None,
-    gemini_model: str = "gemini-2.5-flash",
+    gemini_model: Optional[str] = None,
+    classifier: Optional[ReviewClassifier] = None,
+    on_progress: Optional[Any] = None,
 ) -> ReviewIntelligence:
-    """Analyze reviews for the top competitors in a research set.
+    """Analyze reviews for the top competitors in a research set using Gemini LLM.
 
     Honors SerpAPI free-plan budget limits strictly and uses cached responses whenever available.
     """
-    api_key = gemini_api_key or get_gemini_api_key()
-    classifier = ReviewClassifier(api_key=api_key, model=gemini_model)
+    model_name = gemini_model or DEFAULT_GEMINI_MODEL
+    if classifier is None:
+        classifier = ReviewClassifier(api_key=gemini_api_key, model=model_name)
     budget = CreditBudget(max_credits=credit_budget)
 
     target_products = research_set.products[:competitor_limit]
@@ -38,6 +41,8 @@ def run_review_intelligence(
     all_raw_reviews = []
 
     for rank, product in enumerate(target_products, start=1):
+        if on_progress:
+            on_progress(f"[{rank}/{len(target_products)}] Fetching reviews for '{product.title[:45]}'...")
         pr = fetch_product_reviews(
             product,
             rank=rank,
@@ -61,10 +66,12 @@ def run_review_intelligence(
     total_verified_quotes = 0
     complaint_category_counter = Counter()
 
-    for pr in product_review_list:
+    for idx, pr in enumerate(product_review_list, start=1):
         p_reviews = reviews_by_product.get(pr.product_id, [])
         pr.reviews = p_reviews
         if p_reviews:
+            if on_progress:
+                on_progress(f"[{idx}/{len(product_review_list)}] Classifying {len(p_reviews)} reviews with Gemini...")
             classifier.classify_batch(p_reviews, product_title=pr.product_title)
             for r in p_reviews:
                 if r.classification and r.classification.is_complaint:
@@ -91,7 +98,7 @@ def run_review_intelligence(
         market=research_set.market,
         source_run=f"{research_set.query} ({research_set.created_at})",
         created_at=datetime.now(timezone.utc),
-        llm_model=classifier.model_name if classifier.client else "heuristic_fallback",
+        llm_model=classifier.model_name,
         products=product_review_list,
         stats=stats,
     )

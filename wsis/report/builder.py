@@ -1,486 +1,322 @@
-"""Builder and formatting logic for Step 8 Evidence-Backed Final Opportunity Report."""
+"""Builder and formatting logic for Evidence-Backed Market-Gap Research Report."""
 from __future__ import annotations
 
 import logging
+import re
 from datetime import datetime, timezone
-from typing import Any, Optional
+from typing import Optional
 
-from ..assessment.models import CompetitorAssessment
-from ..challenge.models import ChallengeLoopAnalysis
+from rich.console import Console
+from rich.panel import Panel
+from rich.table import Table
+
 from ..reviews.models import ReviewIntelligence
 from ..reviews.problem_models import ProblemAnalysis, ProblemCluster
 from ..schema import ResearchSet
-from ..spec.models import ProductSpec
-from .models import (
-    CitationItem,
-    CompetitorRow,
-    EvidenceStats,
-    FinalOpportunityReport,
-    ReportQuote,
-)
+from .models import CitationItem, CompetitorRow, MarketGapReport
 
 logger = logging.getLogger(__name__)
+
+CURRENCY_SYMBOLS = {
+    "INR": "₹",
+    "USD": "$",
+    "GBP": "£",
+    "EUR": "€",
+    "JPY": "¥",
+    "CAD": "CA$",
+    "AUD": "A$",
+}
+
+
+def format_price(price: Optional[float], currency: Optional[str] = "INR") -> str:
+    """Format numeric price with appropriate currency symbol (e.g. ₹699, $24.99)."""
+    if price is None:
+        return "-"
+    curr = (currency or "INR").upper()
+    symbol = CURRENCY_SYMBOLS.get(curr, f"{curr} ")
+    if curr in ("INR", "JPY") or price.is_integer():
+        return f"{symbol}{int(price)}"
+    return f"{symbol}{price:.2f}"
+
+
+def clean_brand_name(title: str) -> str:
+    """Extract a concise readable product name from a long marketplace title."""
+    parts = title.split()
+    if len(parts) <= 4:
+        return title
+    clean = re.split(r"[,|\-–/:]", title)[0].strip()
+    words = clean.split()
+    if len(words) > 5:
+        return " ".join(words[:5])
+    return clean or " ".join(parts[:5])
 
 
 def build_final_report(
     research_set: ResearchSet,
     review_intel: Optional[ReviewIntelligence] = None,
     prob_analysis: Optional[ProblemAnalysis] = None,
-    challenge_analysis: Optional[ChallengeLoopAnalysis] = None,
-    assessment: Optional[CompetitorAssessment] = None,
-    spec: Optional[ProductSpec] = None,
-) -> FinalOpportunityReport:
-    """Synthesize all research stages into an evidence-backed final opportunity report."""
+) -> MarketGapReport:
+    """Synthesize pipeline data into an evidence-backed market gap report.
 
-    # 1. Determine primary opportunity title and focus
-    query_clean = research_set.query.strip().title()
-    title = f"OPTIMIZED {query_clean.upper()}"
-    confidence: str = "HIGH"
-    
-    top_cluster: Optional[ProblemCluster] = None
-    if prob_analysis and prob_analysis.clusters:
-        top_cluster = prob_analysis.clusters[0]
-
-    # Resolve from Step 5 challenge analysis
-    if challenge_analysis and challenge_analysis.final_opportunities:
-        top_opp = challenge_analysis.final_opportunities[0]
-        title = top_opp.title.upper()
-        
-        # Confidence mapping
-        if top_opp.verdict == "STRENGTHENED" or top_opp.confidence >= 0.75:
-            confidence = "HIGH"
-        elif top_opp.verdict == "CONFIRMED" or top_opp.confidence >= 0.50:
-            confidence = "MODERATE"
-        else:
-            confidence = "LOW"
-    elif spec:
-        title = spec.opportunity_title.upper()
-        if spec.confidence >= 0.70:
-            confidence = "HIGH"
-        elif spec.confidence >= 0.45:
-            confidence = "MODERATE"
-        else:
-            confidence = "LOW"
-
-    # 2. Customer Problem statement
-    problem_title = "Frequent buyer dissatisfaction with core product functionality."
-    problem_name = "Core Product Defect"
-    if top_cluster:
-        problem_title = top_cluster.description
-        problem_name = top_cluster.name
-    elif challenge_analysis and challenge_analysis.final_opportunities:
-        problem_name = challenge_analysis.final_opportunities[0].problem_name
-        problem_title = f"Buyers frequently report persistent issues with {problem_name.lower()}."
-
-    # 3. Evidence Stats
-    total_reviews = (
-        prob_analysis.total_reviews_analyzed
-        if prob_analysis
-        else (review_intel.total_reviews_analyzed if review_intel else 0)
+    Derives all counts programmatically from actual review objects.
+    """
+    total_found = len(research_set.products)
+    total_analyzed = len(review_intel.products) if review_intel else 0
+    total_reviews = prob_analysis.total_reviews_analyzed if prob_analysis else (
+        review_intel.total_reviews_analyzed if review_intel else 0
     )
-    total_prods = len(research_set.products)
+    total_complaints = prob_analysis.total_complaints_analyzed if prob_analysis else 0
 
-    unique_reviews = top_cluster.total_complaints if top_cluster else 0
-    competing_prods = (
-        top_cluster.affected_product_count
-        if top_cluster and top_cluster.affected_product_count > 0
-        else (len(top_cluster.affected_products) if top_cluster else 0)
-    )
-    if competing_prods == 0 and total_prods > 0:
-        competing_prods = min(total_prods, max(1, unique_reviews))
+    problems = prob_analysis.clusters if prob_analysis else []
+    has_insufficient = len(problems) == 0 or total_complaints == 0
 
-    share_pct = (
-        round((unique_reviews / max(total_reviews, 1)) * 100, 1)
-        if total_reviews > 0
-        else 0.0
-    )
-
-    evidence_stats = EvidenceStats(
-        unique_reviews=unique_reviews,
-        competing_products=competing_prods,
-        review_share_pct=share_pct,
-        total_reviews_analyzed=total_reviews,
-        total_products_analyzed=total_prods,
-    )
-
-    # 4. Review Quotes
-    review_quotes: list[ReportQuote] = []
-    seen_quote_texts: set[str] = set()
-
-    if top_cluster and top_cluster.sample_evidence:
-        for ev in top_cluster.sample_evidence[:4]:
-            quote_str = (ev.evidence_quote or ev.original_text).strip()
-            if len(quote_str) > 160:
-                quote_str = quote_str[:157].rstrip() + "..."
-            if quote_str.lower() in seen_quote_texts:
-                continue
-            seen_quote_texts.add(quote_str.lower())
-            
-            review_quotes.append(
-                ReportQuote(
-                    review_id=ev.review_id,
-                    product_title=ev.product_title[:50],
-                    rating=ev.rating,
-                    text=quote_str,
-                    url=ev.url,
-                )
-            )
-
-    # 5. Product Gap
-    product_gap = (
-        f"Existing products in the {research_set.query} market compromise between durability and convenience. "
-        "Few competitors deliver reliable performance without excessive bulk or prohibitive pricing."
-    )
-    if assessment and assessment.gap_analysis:
-        gap = assessment.gap_analysis
-        if gap.tradeoff_to_break and gap.unmet_need_summary:
-            product_gap = (
-                f"Existing products force buyers into a compromise between {gap.tradeoff_to_break}. "
-                f"{gap.unmet_need_summary} "
-                f"Entrants who eliminate this friction capture high-conviction demand."
-            )
-        elif gap.where_is_the_gap:
-            product_gap = gap.where_is_the_gap
-
-    # 6. What to Build & Avoid
-    what_to_build: list[str] = []
-    what_to_avoid: list[str] = []
-
-    if spec:
-        if spec.build.statement:
-            # Check if build statement has comma-separated attributes
-            parts = [p.strip() for p in spec.build.statement.split(",") if p.strip()]
-            for p in parts:
-                what_to_build.append(p)
-        for item in spec.must_have:
-            if item.statement not in what_to_build:
-                what_to_build.append(item.statement)
-        for item in spec.avoid:
-            what_to_avoid.append(item.statement)
-    else:
-        what_to_build.extend([
-            f"Optimized form factor tailored for {research_set.query}",
-            "Reinforced structural build with food-grade / durable materials",
-            "Enhanced seal and latch mechanism addressing observed failures",
-        ])
-        what_to_avoid.extend([
-            "Flimsy closure mechanisms prone to misalignment",
-            "Bulky multi-piece assemblies that hinder portability",
-        ])
-
-    # 7. Price
-    target_price = "Market Mid-Tier"
-    if spec and spec.target_price.statement:
-        target_price = spec.target_price.statement
-    elif assessment and assessment.gap_analysis and assessment.gap_analysis.price_gap_range:
-        target_price = assessment.gap_analysis.price_gap_range
-    else:
-        # Fallback to currency and median price
-        prices = [p.price for p in research_set.products if p.price and p.price > 0]
-        cur = research_set.currency or "USD"
-        sym = "₹" if cur == "INR" else ("$" if cur == "USD" else cur + " ")
-        if prices:
-            prices.sort()
-            p25 = prices[len(prices) // 4]
-            p75 = prices[(len(prices) * 3) // 4]
-            target_price = f"{sym}{p25:.0f}–{sym}{p75:.0f}"
-
-    # 8. Primary Customer
-    primary_customer = None
-    if spec and spec.primary_customer and spec.primary_customer.statement:
-        primary_customer = spec.primary_customer.statement
-
-    # 9. Why this opportunity? (2-3 sentence strategic rationale)
-    if challenge_analysis and challenge_analysis.final_opportunities:
-        top_opp = challenge_analysis.final_opportunities[0]
-        why_this_opportunity = (
-            f"Analysis of {total_reviews} customer reviews across {total_prods} competing products reveals that "
-            f"{problem_name.lower()} is a persistent category failure mode. "
-            f"{top_opp.agent_assessment} "
-            f"Delivering an engineered solution at {target_price} captures clear whitespace where incumbents underdeliver."
-        )
-    elif spec and spec.must_have:
-        must_str = ", ".join(m.statement for m in spec.must_have[:2])
-        why_this_opportunity = (
-            f"Customer sentiment reveals concentrated frustration with {problem_name.lower()}, accounting for "
-            f"{share_pct}% of analyzed buyer complaints. "
-            f"Current products fail to provide {must_str} without substantial bulk or cost trade-offs. "
-            f"Targeting this verified defect creates immediate differentiation in the {target_price} pricing corridor."
-        )
-    else:
-        why_this_opportunity = (
-            f"Buyer feedback across the {research_set.query} market indicates consistent demand for "
-            f"improved build quality and reliable everyday performance. Existing products suffer from preventable design flaws. "
-            f"Entering at {target_price} with verified defect mitigations provides a strong competitive advantage."
-        )
-
-    # 10. Competitors
+    # Build competitor rows
     competitors: list[CompetitorRow] = []
-    if assessment and assessment.competitors:
-        for c in assessment.competitors[:5]:
-            rating_str = f"★{c.rating:.1f}" if c.rating else "N/A"
-            competitors.append(
-                CompetitorRow(
-                    name=c.name,
-                    price=c.price_display,
-                    rating=rating_str,
-                    main_strength=c.main_strength,
-                    problem=c.problem,
-                )
-            )
-    else:
-        for p in research_set.products[:4]:
-            rating_str = f"★{p.rating:.1f}" if p.rating else "N/A"
-            price_str = f"${p.price:.2f}" if p.price else "N/A"
-            competitors.append(
-                CompetitorRow(
-                    name=p.title[:35],
-                    price=price_str,
-                    rating=rating_str,
-                    main_strength="Established market listing",
-                    problem="Generic review complaints",
-                )
-            )
+    prod_complaint_map: dict[str, int] = {}
+    if review_intel:
+        for pr in review_intel.products:
+            c_count = sum(1 for r in pr.reviews if r.classification and r.classification.is_complaint)
+            prod_complaint_map[pr.product_id] = c_count
 
-    # 11. Evidence Citations
-    evidence_citations: list[CitationItem] = []
-    seen_cit_ids: set[str] = set()
+    for rank, p in enumerate(research_set.products[:total_analyzed], start=1):
+        price_val = p.price or p.price_min
+        price_str = format_price(price_val, research_set.currency)
+        r_str = f"{p.rating:.1f}" if p.rating else "-"
+        rc_str = f"{p.review_count:,}" if p.review_count else "-"
+        complaints_count = prod_complaint_map.get(p.id, 0)
 
-    # Add review citations
-    if top_cluster and top_cluster.sample_evidence:
-        for ev in top_cluster.sample_evidence[:5]:
-            if ev.review_id in seen_cit_ids:
-                continue
-            seen_cit_ids.add(ev.review_id)
-            rating_label = f"★{ev.rating:.1f} Review" if ev.rating else "Buyer Review"
-            evidence_citations.append(
-                CitationItem(
-                    id=ev.review_id,
-                    kind="review",
-                    label=f"{rating_label} ({ev.product_title[:28]})",
-                    source=ev.product_title,
-                    url=ev.url,
-                )
-            )
-
-    # Add product citations
-    for p in research_set.products[:4]:
-        if p.id in seen_cit_ids:
-            continue
-        seen_cit_ids.add(p.id)
-        src_label = p.sources[0] if p.sources else "marketplace"
-        evidence_citations.append(
-            CitationItem(
-                id=p.id,
-                kind="product",
-                label=f"Competitor: {p.title[:35]}",
-                source=src_label,
+        competitors.append(
+            CompetitorRow(
+                rank=rank,
+                title=clean_brand_name(p.title),
+                price=price_str,
+                rating=r_str,
+                review_count=rc_str,
+                complaints_count=complaints_count,
                 url=p.url,
             )
         )
 
-    # 12. Counter-Evidence (Why this opportunity might be weaker than it appears)
-    counter_evidence: list[str] = []
+    # Build executive synthesis summary
+    query_str = research_set.query.strip().title()
+    market_str = research_set.market.upper()
+    if has_insufficient:
+        summary = (
+            f"Insufficient customer complaint evidence found for '{query_str}' on Amazon {market_str}. "
+            f"Across {total_analyzed} competitor listings and {total_reviews} reviews analyzed, no recurring "
+            f"functional defects or systematic buyer dissatisfaction themes were detected."
+        )
+    else:
+        top_prob = problems[0]
+        widespread_count = sum(1 for p in problems if p.is_widespread_gap)
+        summary = (
+            f"Analysis of {total_analyzed} competitor products and {total_reviews} customer reviews on Amazon {market_str} "
+            f"identified {len(problems)} customer problem clusters for '{query_str}'. "
+            f"{widespread_count} problem(s) represent widespread market gaps affecting multiple competitors. "
+            f"The primary gap is '{top_prob.problem}', supported by {top_prob.review_count} verified buyer complaints "
+            f"across {top_prob.product_count} of {total_analyzed} competing products ({top_prob.product_prevalence_pct}% market prevalence)."
+        )
 
-    # Pull from Step 5 adversarial evaluation
-    if challenge_analysis and challenge_analysis.evaluations:
-        top_eval = challenge_analysis.evaluations[0]
-        for item in top_eval.contradictory_evidence:
-            counter_evidence.append(f"{item.summary}: {item.detail}")
+    # Build citations list
+    citations: list[CitationItem] = []
+    for s in research_set.searches:
+        if s.serpapi_json_url:
+            citations.append(
+                CitationItem(
+                    id=s.search_id or f"search_{len(citations)+1}",
+                    kind="search",
+                    label=f"SerpAPI {s.engine} search query: '{research_set.query}'",
+                    source="serpapi",
+                    url=s.serpapi_json_url,
+                )
+            )
 
-    # Pull from Step 7 caveats
-    if spec and spec.caveats:
-        for cav in spec.caveats:
-            if cav not in counter_evidence:
-                counter_evidence.append(cav)
+    for p in research_set.products[:total_analyzed]:
+        citations.append(
+            CitationItem(
+                id=f"prod_{p.id}",
+                kind="product",
+                label=clean_brand_name(p.title),
+                source=p.sources[0] if p.sources else "amazon",
+                url=p.url,
+            )
+        )
 
-    # If counter-evidence is empty, add realistic manufacturing & market stress-tests
-    if not counter_evidence:
-        counter_evidence.extend([
-            f"Isolated defect concentration: Complaints may be disproportionately concentrated in lower-tier budget suppliers rather than premium category incumbents.",
-            f"Unit economics & tooling: Engineering high-tolerance seals and specialized locking components requires precision tooling, which risks compressing gross margins at {target_price}.",
-            f"Maintenance degradation: Buyer satisfaction hinges on long-term seal longevity; repeated cleaning and heat cycles can cause material fatigue and delayed return rates.",
-        ])
-
-    return FinalOpportunityReport(
+    return MarketGapReport(
         query=research_set.query,
         market=research_set.market,
+        currency=research_set.currency,
         created_at=datetime.now(timezone.utc),
-        title=title,
-        confidence=confidence,  # type: ignore[arg-type]
-        why_this_opportunity=why_this_opportunity,
-        customer_problem=problem_title,
-        evidence_stats=evidence_stats,
-        review_quotes=review_quotes,
-        product_gap=product_gap,
-        what_to_build=what_to_build,
-        what_to_avoid=what_to_avoid,
-        target_price=target_price,
-        primary_customer=primary_customer,
+        total_competitors_found=total_found,
+        total_competitors_analyzed=total_analyzed,
+        total_reviews_analyzed=total_reviews,
+        total_complaints_found=total_complaints,
+        summary=summary,
+        has_insufficient_evidence=has_insufficient,
         competitors=competitors,
-        evidence_citations=evidence_citations,
-        counter_evidence=counter_evidence,
+        problems=problems,
+        citations=citations,
         metadata={
-            "query": research_set.query,
-            "total_products": total_prods,
-            "total_reviews": total_reviews,
+            "run_at": datetime.now(timezone.utc).isoformat(),
+            "sources": research_set.stats.get("listings_normalized", {}),
         },
     )
 
 
-def render_terminal_report(report: FinalOpportunityReport, width: int = 40) -> str:
-    """Render the exact ASCII opportunity report format specified in user guidelines."""
-    border = "━" * width
-    divider = "─" * (width // 2)
+def render_terminal_report(report: MarketGapReport) -> str:
+    """Render the evidence-backed market gap report using rich formatting."""
+    console = Console(width=100, record=True)
 
-    lines: list[str] = []
-    lines.append(border)
-    lines.append("        PRODUCT OPPORTUNITY".center(width).rstrip())
-    lines.append(border)
-    lines.append("")
-    lines.append(report.title)
-    lines.append("")
-    lines.append(f"Opportunity confidence: {report.confidence}")
-    lines.append("")
-    lines.append("Why this opportunity?")
-    lines.append(report.why_this_opportunity)
-    lines.append("")
-    lines.append("CUSTOMER PROBLEM")
-    lines.append(divider)
-    lines.append(report.customer_problem)
-    lines.append("")
-    lines.append("Evidence")
-    lines.append(f"• {report.evidence_stats.unique_reviews} unique reviews")
-    lines.append(f"• {report.evidence_stats.competing_products} competing products")
-    lines.append(f"• {report.evidence_stats.review_share_pct}% of analyzed reviews mentioning defect")
-    lines.append("")
-    if report.review_quotes:
-        for q in report.review_quotes:
-            rating_badge = f"★{q.rating:.1f} " if q.rating else ""
-            lines.append(f'"{q.text}"')
-            lines.append(f"({rating_badge}{q.product_title})")
-            lines.append("")
+    # 1. Header & Summary Panel
+    header_title = f"[bold cyan]AMAZON MARKET-GAP RESEARCH REPORT: {report.query.upper()} ({report.market.upper()})[/bold cyan]"
+    summary_text = (
+        f"[bold]Scope:[/bold] {report.total_competitors_analyzed} competitors analyzed | "
+        f"{report.total_reviews_analyzed} customer reviews | "
+        f"{report.total_complaints_found} verified complaints\n\n"
+        f"{report.summary}"
+    )
+    console.print(Panel(summary_text, title=header_title, expand=False))
+    console.print()
 
-    lines.append("PRODUCT GAP")
-    lines.append(divider)
-    lines.append(report.product_gap)
-    lines.append("")
-
-    lines.append("WHAT TO BUILD")
-    lines.append(divider)
-    for b in report.what_to_build:
-        lines.append(f"✓ {b}")
-    for a in report.what_to_avoid:
-        lines.append(f"✕ {a}")
-    lines.append("")
-
-    lines.append("PRICE")
-    lines.append(divider)
-    lines.append(report.target_price)
-    lines.append("")
-
-    if report.primary_customer:
-        lines.append("PRIMARY CUSTOMER")
-        lines.append(divider)
-        lines.append(report.primary_customer)
-        lines.append("")
-
-    lines.append("COMPETITORS")
-    lines.append(divider)
+    # 2. Competitors Benchmark Table
     if report.competitors:
-        for comp in report.competitors:
-            lines.append(f"• {comp.name} ({comp.price} | {comp.rating})")
-            lines.append(f"  Main strength: {comp.main_strength} | Problem: {comp.problem}")
-    else:
-        lines.append("None identified.")
-    lines.append("")
+        comp_table = Table(title="[bold]Competitor Benchmark Landscape[/bold]")
+        comp_table.add_column("#", width=3)
+        comp_table.add_column("Competitor", style="cyan", overflow="fold")
+        comp_table.add_column("Price", width=10)
+        comp_table.add_column("Rating", width=8)
+        comp_table.add_column("Reviews", width=10)
+        comp_table.add_column("Verified Complaints", width=20)
 
-    lines.append("EVIDENCE")
-    lines.append(divider)
-    if report.evidence_citations:
-        for cit in report.evidence_citations:
-            lines.append(f"• [{cit.id}] {cit.label}")
-            if cit.url:
-                lines.append(f"  {cit.url}")
-    else:
-        lines.append("No direct citations collected.")
-    lines.append("")
+        for c in report.competitors:
+            comp_table.add_row(
+                str(c.rank),
+                c.title,
+                c.price,
+                c.rating,
+                c.review_count,
+                str(c.complaints_count),
+            )
+        console.print(comp_table)
+        console.print()
 
-    lines.append("COUNTER-EVIDENCE")
-    lines.append(divider)
-    if report.counter_evidence:
-        for ce in report.counter_evidence:
-            lines.append(f"• {ce}")
+    # 3. Market Gaps & Recurring Customer Problems
+    if report.problems:
+        console.print("[bold yellow]════════════════════════════════════════════════════════════════════════════════════════════════════[/bold yellow]")
+        console.print("[bold yellow]  IDENTIFIED CUSTOMER PROBLEMS & MARKET GAPS (EVIDENCE-BACKED)[/bold yellow]")
+        console.print("[bold yellow]════════════════════════════════════════════════════════════════════════════════════════════════════[/bold yellow]")
+        console.print()
+
+        for idx, prob in enumerate(report.problems, start=1):
+            gap_badge = (
+                "[bold green][WIDESPREAD MARKET GAP][/bold green]"
+                if prob.is_widespread_gap
+                else "[yellow][ISOLATED DEFECT][/yellow]"
+            )
+            prob_title = f"[bold white]Problem {idx}: {prob.problem}[/bold white]  {gap_badge}"
+            
+            lines = [
+                f"[bold]Category:[/bold] {prob.category.replace('_', ' ').title()}",
+                f"[bold]Evidence:[/bold] [bold cyan]{prob.review_count}[/bold cyan] buyer complaints across [bold cyan]{prob.product_count}[/bold cyan] of {report.total_competitors_analyzed} competitors ({prob.product_prevalence_pct}% market prevalence)",
+                f"[bold]Severity:[/bold] {prob.avg_severity:.1f}/3.0",
+                f"[bold]Root Pain Point:[/bold] {prob.description}",
+            ]
+
+            # Verbatim Quotes
+            if prob.supporting_reviews:
+                lines.append("\n[bold]Verbatim Customer Evidence Quotes:[/bold]")
+                for ev in prob.supporting_reviews[:3]:
+                    quote_txt = ev.evidence_quote or ev.original_text[:140]
+                    verified_mark = " [green]✓ verbatim[/green]" if ev.evidence_verified else ""
+                    rating_mark = f" ({ev.rating}★)" if ev.rating else ""
+                    lines.append(f'  • "{quote_txt}"{rating_mark} — [dim]{clean_brand_name(ev.product_title)}[/dim]{verified_mark}')
+
+            # Counter-Evidence / Competitor Contrast
+            if prob.unaffected_products:
+                unaffected_names = []
+                for pid in prob.unaffected_products:
+                    match = next((c.title for c in report.competitors if pid in c.url or c.title in pid), pid)
+                    unaffected_names.append(match)
+                lines.append(
+                    f"\n[bold]Counter-Evidence (Competitor Contrast):[/bold] "
+                    f"This complaint was NOT reported on {len(prob.unaffected_products)} competitors in the sample: "
+                    f"[dim]{', '.join(unaffected_names[:3])}[/dim]"
+                )
+
+            console.print(Panel("\n".join(lines), title=prob_title, expand=False))
+            console.print()
     else:
-        lines.append("No counter-evidence observed.")
-    lines.append(border)
+        console.print("[bold yellow]No customer problem clusters identified.[/bold yellow]\n")
+
+    return console.export_text()
+
+
+def render_markdown_report(report: MarketGapReport) -> str:
+    """Render the evidence-backed market gap report as GitHub-flavored Markdown."""
+    lines = [
+        f"# Amazon Market-Gap Research Report: {report.query.title()}",
+        "",
+        f"**Market:** Amazon {report.market.upper()} ({report.currency})  ",
+        f"**Generated:** {report.created_at.strftime('%Y-%m-%d %H:%M:%S UTC')}  ",
+        f"**Scope:** {report.total_competitors_analyzed} competitors analyzed | {report.total_reviews_analyzed} customer reviews | {report.total_complaints_found} verified complaints  ",
+        "",
+        "## Executive Summary",
+        "",
+        report.summary,
+        "",
+        "## Competitor Benchmark Landscape",
+        "",
+        "| # | Competitor | Price | Rating | Reviews | Verified Complaints |",
+        "|---|---|---|---|---|---|",
+    ]
+
+    for c in report.competitors:
+        lines.append(f"| {c.rank} | [{c.title}]({c.url}) | {c.price} | {c.rating} | {c.review_count} | {c.complaints_count} |")
+
+    lines.extend([
+        "",
+        "## Identified Customer Problems & Market Gaps",
+        "",
+    ])
+
+    if not report.problems:
+        lines.append("_No customer problem clusters identified._\n")
+    else:
+        for idx, prob in enumerate(report.problems, start=1):
+            badge = "**[WIDESPREAD MARKET GAP]**" if prob.is_widespread_gap else "**[ISOLATED DEFECT]**"
+            lines.extend([
+                f"### {idx}. {prob.problem} {badge}",
+                "",
+                f"- **Category:** {prob.category.replace('_', ' ').title()}",
+                f"- **Evidence Counts:** {prob.review_count} buyer complaints across {prob.product_count}/{report.total_competitors_analyzed} competitors ({prob.product_prevalence_pct}% prevalence)",
+                f"- **Average Severity:** {prob.avg_severity:.1f} / 3.0",
+                f"- **Root Pain Point:** {prob.description}",
+                "",
+                "#### Verbatim Customer Evidence Quotes",
+                "",
+            ])
+
+            for ev in prob.supporting_reviews[:4]:
+                quote_txt = ev.evidence_quote or ev.original_text[:160]
+                rating_str = f"({ev.rating}★) " if ev.rating else ""
+                verified_str = " *(verified verbatim)*" if ev.evidence_verified else ""
+                lines.append(f"> \"{quote_txt}\"  \n> — {rating_str}[{clean_brand_name(ev.product_title)}]({ev.url}){verified_str}")
+                lines.append("")
+
+            if prob.unaffected_products:
+                lines.extend([
+                    "#### Counter-Evidence (Competitor Contrast)",
+                    "",
+                    f"This complaint did not appear in {len(prob.unaffected_products)} analyzed competitor products in the sample, indicating this defect is not universal across all alternatives.",
+                    "",
+                ])
+
+    lines.extend([
+        "## Verifiable Citations",
+        "",
+    ])
+    for c in report.citations[:10]:
+        lines.append(f"- [{c.label}]({c.url}) ({c.source})")
+    lines.append("")
 
     return "\n".join(lines)
-
-
-def render_markdown_report(report: FinalOpportunityReport) -> str:
-    """Generate clean executive markdown documentation for the opportunity report."""
-    md: list[str] = []
-    md.append(f"# Product Opportunity Report: {report.title}")
-    md.append("")
-    md.append(f"**Query:** `{report.query}` | **Market:** `{report.market}` | **Date:** {report.created_at.strftime('%Y-%m-%d %H:%M UTC')}")
-    md.append("")
-    md.append(f"> **Opportunity Confidence:** `{report.confidence}`")
-    md.append("")
-    md.append("## Why This Opportunity?")
-    md.append(report.why_this_opportunity)
-    md.append("")
-    md.append("## Customer Problem")
-    md.append(report.customer_problem)
-    md.append("")
-    md.append("### Empirical Evidence")
-    md.append(f"- **{report.evidence_stats.unique_reviews}** unique reviews documenting this issue")
-    md.append(f"- **{report.evidence_stats.competing_products}** competing products exhibiting this defect")
-    md.append(f"- **{report.evidence_stats.review_share_pct}%** of all analyzed reviews mentioning this problem")
-    md.append("")
-    if report.review_quotes:
-        md.append("#### Verbatim Buyer Quotes")
-        for q in report.review_quotes:
-            rating_str = f"★{q.rating:.1f}" if q.rating else "Review"
-            md.append(f'> "{q.text}"')
-            md.append(f"> — *{rating_str} on [{q.product_title}]({q.url or '#'})*")
-            md.append("")
-
-    md.append("## Product Gap")
-    md.append(report.product_gap)
-    md.append("")
-    md.append("## What to Build")
-    for b in report.what_to_build:
-        md.append(f"- [x] **Build/Feature:** {b}")
-    for a in report.what_to_avoid:
-        md.append(f"- [ ] **Avoid/Anti-Pattern:** {a}")
-    md.append("")
-    md.append("## Target Price")
-    md.append(f"**{report.target_price}**")
-    md.append("")
-    if report.primary_customer:
-        md.append("## Primary Customer")
-        md.append(report.primary_customer)
-        md.append("")
-
-    md.append("## Competitor Matrix")
-    if report.competitors:
-        md.append("| Competitor | Price | Rating | Main Strength | Problem |")
-        md.append("| :--- | :--- | :--- | :--- | :--- |")
-        for c in report.competitors:
-            md.append(f"| {c.name} | {c.price} | {c.rating} | {c.main_strength} | {c.problem} |")
-        md.append("")
-
-    md.append("## Evidence Citations")
-    for cit in report.evidence_citations:
-        md.append(f"- `[{cit.id}]` **{cit.label}** ([Source]({cit.url}))")
-    md.append("")
-
-    md.append("## Counter-Evidence & Risks")
-    md.append("*Why this opportunity might be weaker than it appears:*")
-    md.append("")
-    for ce in report.counter_evidence:
-        md.append(f"- ⚠️ {ce}")
-    md.append("")
-
-    return "\n".join(md)

@@ -1,4 +1,4 @@
-"""Models for recurring problem clusters."""
+"""Models for recurring problem clusters backed by programmatic evidence."""
 from __future__ import annotations
 
 from datetime import datetime
@@ -24,23 +24,60 @@ class ComplaintEvidence(BaseModel):
 
 
 class ProblemCluster(BaseModel):
-    """A recurring buyer problem aggregated from multiple competitor reviews."""
+    """A recurring buyer problem aggregated from multiple competitor reviews.
+
+    Evidence is the source of truth: counts are strictly derived from supporting arrays.
+    """
 
     id: str
-    name: str = Field(..., description="Concise, actionable problem name (e.g. 'Slippery when wet/sweaty').")
-    category: str = Field(..., description="High-level category (e.g. 'performance', 'durability').")
-    description: str = Field(..., description="Detailed explanation of what buyers experience and why it frustrates them.")
-    affected_products: list[str] = Field(default_factory=list, description="List of product IDs impacted.")
-    affected_product_count: int = 0
-    total_complaints: int = 0
-    avg_severity: float = Field(0.0, description="Mean severity rating (1.0 to 3.0).")
-    frequency_score: float = Field(0.0, description="Share of complaints belonging to this cluster.")
-    opportunity_score: float = Field(0.0, description="Combined index of frequency, severity, and product breadth.")
-    sample_evidence: list[ComplaintEvidence] = Field(default_factory=list, description="Verbatim cited evidence backing this problem.")
+    problem: str = Field(..., description="Actionable name/theme of the customer problem.")
+    category: str = Field("other", description="High-level category (e.g. durability, performance).")
+    description: str = Field(..., description="Detailed explanation of the root buyer pain point.")
+
+    # Core evidence arrays (Source of Truth)
+    supporting_reviews: list[ComplaintEvidence] = Field(
+        default_factory=list,
+        description="Reviews explicitly classified and assigned as evidence for this problem.",
+    )
+    supporting_products: list[str] = Field(
+        default_factory=list,
+        description="IDs of products that suffer from this problem.",
+    )
+    unaffected_products: list[str] = Field(
+        default_factory=list,
+        description="IDs of analyzed competitor products where this complaint was NOT found (counter-evidence).",
+    )
+
+    # Programmatically computed metrics
+    review_count: int = Field(0, description="Derived programmatically from len(supporting_reviews).")
+    product_count: int = Field(0, description="Derived programmatically from len(supporting_products).")
+    product_prevalence_pct: float = Field(0.0, description="Percentage of analyzed products affected.")
+    avg_severity: float = Field(0.0, description="Mean severity rating (1.0 to 3.0) of supporting reviews.")
+    is_widespread_gap: bool = Field(False, description="True if problem is cross-checked across multiple competitors.")
+
+    @property
+    def name(self) -> str:
+        return self.problem
+
+    @property
+    def total_complaints(self) -> int:
+        return self.review_count
+
+    @property
+    def affected_products(self) -> list[str]:
+        return self.supporting_products
+
+    @property
+    def affected_product_count(self) -> int:
+        return self.product_count
+
+    @property
+    def sample_evidence(self) -> list[ComplaintEvidence]:
+        return self.supporting_reviews
 
 
 class ProblemAnalysis(BaseModel):
-    """Output of Step 3: clustered recurring problems with evidence citations."""
+    """Clustered recurring problems with programmatic evidence counts and counter-evidence."""
 
     query: str
     market: str
@@ -48,5 +85,5 @@ class ProblemAnalysis(BaseModel):
     total_reviews_analyzed: int
     total_complaints_analyzed: int
     clusters: list[ProblemCluster] = Field(default_factory=list)
-    method: str = "llm_cluster"
+    method: str = "gemini_clustering"
     stats: dict[str, Any] = Field(default_factory=dict)

@@ -5,7 +5,7 @@ from collections import Counter
 from datetime import datetime, timezone
 from typing import Iterable
 
-from .config import Market, get_market
+from .config import DEFAULT_MARKET, Market, get_market
 from .dedupe import merge_listings
 from .normalize import normalize_amazon, normalize_google_shopping
 from .normalize.common import build_search_record, query_tokens
@@ -38,7 +38,7 @@ def build_competitor_set(
     query: str,
     client: SerpClient,
     *,
-    market: str = "us",
+    market: str = DEFAULT_MARKET,
     limit: int = 30,
     min_relevance: float = 0.5,
     sources: Iterable[str] = ("amazon", "google_shopping"),

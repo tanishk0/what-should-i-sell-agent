@@ -10,7 +10,6 @@ from dotenv import load_dotenv
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
 CACHE_DIR = DATA_DIR / "cache"
-RUNS_DIR = DATA_DIR / "runs"
 
 load_dotenv(PROJECT_ROOT / ".env")
 
@@ -22,8 +21,20 @@ def get_api_key() -> str:
     return key
 
 
+DEFAULT_GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-3.5-flash").strip() or "gemini-3.5-flash"
+
+
 def get_gemini_api_key() -> str | None:
     return os.getenv("GEMINI_API_KEY", "").strip() or None
+
+
+def require_gemini_api_key() -> str:
+    key = get_gemini_api_key()
+    if not key:
+        raise RuntimeError(
+            "GEMINI_API_KEY is not set. Add GEMINI_API_KEY to your .env file at the project root."
+        )
+    return key
 
 
 def get_mongo_uri() -> str | None:
@@ -56,6 +67,8 @@ MARKETS: dict[str, Market] = {
     "fr": Market("fr", "amazon.fr", "fr", "fr", "EUR"),
     "jp": Market("jp", "amazon.co.jp", "jp", "ja", "JPY"),
 }
+
+DEFAULT_MARKET: str = os.getenv("DEFAULT_MARKET", "in").strip().lower() or "in"
 
 
 def get_market(code: str) -> Market:
