@@ -145,24 +145,7 @@ def test_credit_budget():
     assert budget.skipped == 1
 
 
-def test_heuristic_classifier_fallback():
-    classifier = ReviewClassifier(api_key=None)
-    citation = ReviewCitation(source="amazon", engine="amazon_product", product_url="https://example.com")
-    review = Review(
-        id="amazon:test1",
-        product_id="amazon:TEST",
-        product_title="Yoga Mat",
-        source="amazon",
-        listing_id="TEST",
-        text="Terrible mat. It slips constantly on hardwood floor and the rubber smells awful.",
-        original_text="Terrible mat. It slips constantly on hardwood floor and the rubber smells awful.",
-        rating=1.0,
-        url="https://example.com/rev",
-        citation=citation,
-    )
-    classifier.classify_batch([review], product_title="Yoga Mat")
-    assert review.classification is not None
-    assert review.classification.sentiment == "negative"
-    assert review.classification.is_complaint is True
-    assert "performance" in review.classification.categories
-    assert "materials_safety" in review.classification.categories
+def test_classifier_requires_api_key(monkeypatch):
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    with pytest.raises(RuntimeError, match="GEMINI_API_KEY is not set"):
+        ReviewClassifier(api_key=None)

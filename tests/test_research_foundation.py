@@ -57,7 +57,7 @@ def test_google_normalization():
 
 
 def test_pipeline_produces_clean_set():
-    rs = build_competitor_set("yoga mat", FixtureClient(), limit=30)
+    rs = build_competitor_set("yoga mat", FixtureClient(), market="us", limit=30)
     assert 20 <= len(rs.products) <= 30
     ids = [p.id for p in rs.products]
     assert len(ids) == len(set(ids)), "duplicate products"

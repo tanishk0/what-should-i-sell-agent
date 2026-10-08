@@ -54,18 +54,58 @@ def test_clustering_groups_complaints():
         products=[pr1, pr2],
     )
 
-    analysis = cluster_complaints(intel)
+    import json
+
+    class MockResponse:
+        text = json.dumps({
+            "clusters": [
+                {
+                    "name": "Slippery surface / poor grip",
+                    "category": "performance",
+                    "description": "Users report slipping on the mat during workouts.",
+                    "complaint_ids": ["r1", "r2"],
+                    "avg_severity": 3.0,
+                },
+                {
+                    "name": "Material tears easily",
+                    "category": "durability",
+                    "description": "Mat tears along edges quickly.",
+                    "complaint_ids": ["r3"],
+                    "avg_severity": 2.0,
+                },
+            ]
+        })
+
+    class MockClient:
+        class models:
+            @staticmethod
+            def generate_content(*args, **kwargs):
+                return MockResponse()
+
+    analysis = cluster_complaints(intel, llm_client=MockClient())
     assert len(analysis.clusters) >= 2
     assert analysis.total_complaints_analyzed == 3
 
-    # Check top problem
+    # Programmatic evidence source of truth verification
     top = analysis.clusters[0]
-    assert top.name == "Slippery / poor grip"
-    assert top.total_complaints == 2
-    assert top.affected_product_count == 2
+    assert top.problem == "Slippery surface / poor grip"
+    assert top.review_count == len(top.supporting_reviews) == 2
+    assert top.product_count == len(top.supporting_products) == 2
+    assert top.supporting_products == ["p1", "p2"]
+    assert top.unaffected_products == []
+    assert top.is_widespread_gap is True
     assert top.avg_severity == 3.0
     assert len(top.sample_evidence) == 2
     assert all(ev.evidence_verified for ev in top.sample_evidence)
+
+    # Problem 2 was isolated to product p1 only
+    second = analysis.clusters[1]
+    assert second.problem == "Material tears easily"
+    assert second.review_count == 1
+    assert second.product_count == 1
+    assert second.supporting_products == ["p1"]
+    assert second.unaffected_products == ["p2"]  # Counter-evidence!
+    assert second.is_widespread_gap is False
 
 
 def test_clustering_handles_empty():
