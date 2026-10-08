@@ -1,52 +1,48 @@
-"""Cluster complaints into recurring problem themes.
+"""Cluster complaints into recurring problem themes using Gemini.
 
-Takes individual classified complaints across all competitors, groups them
-by semantic similarity using Gemini (with an offline embedding/category heuristic fallback),
-and ranks problem clusters by severity, frequency, and market breadth.
+Takes individual classified complaints across competitors, groups them
+by semantic similarity, and programmatically computes evidence counts from actual review objects.
 """
 from __future__ import annotations
 
 import json
 import logging
-import re
-from collections import Counter, defaultdict
 from datetime import datetime, timezone
-from typing import Optional
+from typing import Any, Optional
 
 from pydantic import BaseModel, Field
 
-from ..config import get_gemini_api_key
+from ..config import DEFAULT_GEMINI_MODEL, require_gemini_api_key
 from .models import Review, ReviewIntelligence
 from .problem_models import ComplaintEvidence, ProblemAnalysis, ProblemCluster
 
 logger = logging.getLogger(__name__)
 
 CLUSTER_PROMPT = """You are an elite product market researcher.
-Analyze the following list of customer complaints and frustrations collected from competing products in the "{query}" category.
+Analyze the following customer complaints and frustrations collected from competing products in the "{query}" category on Amazon.
 
-Your mission is to turn these individual complaints into distinct, recurring PROBLEMS (clusters) that represent genuine market frustrations.
+Your mission is to group these individual complaints into distinct, recurring customer PROBLEMS (clusters).
 
-Instructions:
-1. Group similar complaints into cohesive problem clusters.
+Rules:
+1. Group complaints that share the same underlying defect, frustration, or friction.
 2. For each cluster:
-   - name: A punchy, descriptive name (e.g., "Slipping and lack of traction during sweaty workouts", "Premature flaking and edge peeling").
+   - name: Concise, descriptive title of the customer problem (e.g. "Frame hinges break easily", "Lenses peel and scratch quickly").
    - category: One of "performance", "durability", "materials_safety", "comfort_ergonomics", "size_fit", "quality_defects", "ease_of_use", "design_aesthetics", "value_price", "shipping_packaging", "other".
-   - description: 2-3 sentences explaining the root customer pain point and why it hurts buyer satisfaction.
-   - assigned_complaint_ids: List of complaint IDs belonging to this cluster.
-   - avg_severity: Estimated average severity 1.0 - 3.0 (3 = dangerous/deal-breaker, 2 = major dissatisfaction, 1 = annoyance).
+   - description: 2-3 sentences explaining the root customer pain point and why it frustrates buyers.
+   - assigned_complaint_ids: List of exact complaint IDs (from the data below) that belong to this problem.
+3. Do NOT invent complaints. Only assign IDs that actually express this problem.
 
 Complaints data:
 {complaints_payload}
 
-Return JSON with a single key "clusters" mapping to a list of cluster objects matching this structure:
+Return JSON with a single key "clusters" mapping to a list of cluster objects matching:
 {{
   "clusters": [
     {{
       "name": "string",
       "category": "string",
       "description": "string",
-      "assigned_complaint_ids": ["string"],
-      "avg_severity": 2.5
+      "assigned_complaint_ids": ["string"]
     }}
   ]
 }}
@@ -55,10 +51,9 @@ Return JSON with a single key "clusters" mapping to a list of cluster objects ma
 
 class LLMClusterItem(BaseModel):
     name: str
-    category: str
+    category: str = "other"
     description: str
     assigned_complaint_ids: list[str] = Field(default_factory=list)
-    avg_severity: float = 2.0
 
 
 class LLMClusterResponse(BaseModel):
@@ -85,13 +80,19 @@ def cluster_complaints(
     review_intel: ReviewIntelligence,
     *,
     gemini_api_key: Optional[str] = None,
-    gemini_model: str = "gemini-2.5-flash",
-    max_evidence_per_cluster: int = 5,
+    gemini_model: Optional[str] = None,
+    llm_client: Optional[Any] = None,
 ) -> ProblemAnalysis:
-    """Cluster complaints from a ReviewIntelligence run into ranked recurring problems."""
-    # Collect all complaint reviews across all products
+    """Cluster complaints from a ReviewIntelligence run into ranked recurring problems using Gemini.
+
+    All evidence counts (review_count, product_count, prevalence) are derived programmatically.
+    """
+    model_name = gemini_model or DEFAULT_GEMINI_MODEL
+
+    # 1. Collect all complaint reviews across all products
     all_complaints: list[Review] = []
     total_reviews = 0
+    all_product_ids = [pr.product_id for pr in review_intel.products]
 
     for pr in review_intel.products:
         total_reviews += len(pr.reviews)
@@ -111,105 +112,114 @@ def cluster_complaints(
             stats={"message": "No complaints found to cluster."},
         )
 
-    api_key = gemini_api_key or get_gemini_api_key()
-    client = None
-    if api_key:
+    # 2. Get LLM client
+    if llm_client is not None:
+        client = llm_client
+    else:
+        api_key = gemini_api_key or require_gemini_api_key()
         try:
             from google import genai
-            client = genai.Client(api_key=api_key)
-        except Exception as e:
-            logger.warning(f"Could not initialize Gemini client: {e}")
-
-    clusters = []
-    method = "gemini_llm"
-
-    if client:
-        try:
-            clusters = _cluster_with_gemini(
-                client=client,
-                model_name=gemini_model,
-                query=review_intel.query,
-                complaints=all_complaints,
+            from google.genai import types
+            http_options = types.HttpOptions(
+                timeout=90000,
+                retry_options=types.HttpRetryOptions(attempts=1),
             )
+            client = genai.Client(api_key=api_key, http_options=http_options)
         except Exception as e:
-            logger.warning(f"LLM clustering failed: {e}; falling back to heuristic clustering")
-            clusters = _cluster_heuristic(all_complaints)
-            method = "heuristic_fallback"
-    else:
-        clusters = _cluster_heuristic(all_complaints)
-        method = "heuristic_fallback"
+            raise RuntimeError(f"Could not initialize Gemini client: {e}") from e
 
-    # Post-process, compute scores, attach evidence
+    # 3. Call Gemini
+    try:
+        raw_clusters = _cluster_with_gemini(
+            client=client,
+            model_name=model_name,
+            query=review_intel.query,
+            complaints=all_complaints,
+        )
+    except Exception as e:
+        raise RuntimeError(
+            f"Gemini complaint clustering failed using {model_name}: {e}"
+        ) from e
+
+    # 4. Programmatic Aggregation: Evidence is the Source of Truth
     review_by_id = {r.id: r for r in all_complaints}
     final_clusters: list[ProblemCluster] = []
-    total_complaints_count = len(all_complaints)
+    total_products_count = max(1, len(review_intel.products))
 
-    for idx, c_data in enumerate(clusters, start=1):
-        assigned_ids = c_data["assigned_complaint_ids"]
+    for idx, c_data in enumerate(raw_clusters, start=1):
+        assigned_ids = c_data.get("assigned_complaint_ids") or c_data.get("complaint_ids") or []
+        # Filter strictly to reviews that exist in the classified dataset
         matching_reviews = [review_by_id[cid] for cid in assigned_ids if cid in review_by_id]
         if not matching_reviews:
             continue
 
-        affected_prods = sorted({r.product_id for r in matching_reviews})
-        count = len(matching_reviews)
-        freq = count / max(1, total_complaints_count)
+        # Programmatically derive supporting evidence arrays
+        supporting_ev = [_build_complaint_evidence(r) for r in matching_reviews]
+        supporting_prods = sorted({r.product_id for r in matching_reviews})
+        unaffected_prods = [pid for pid in all_product_ids if pid not in supporting_prods]
 
-        # Average severity
+        # Programmatically derive counts
+        rev_count = len(supporting_ev)
+        prod_count = len(supporting_prods)
+        prevalence = round((prod_count / total_products_count) * 100, 1)
+
+        # Average severity from actual review objects
         severities = [
             r.classification.severity
             for r in matching_reviews
             if r.classification and r.classification.severity is not None
         ]
-        avg_sev = sum(severities) / len(severities) if severities else c_data.get("avg_severity", 2.0)
-        avg_sev = round(float(avg_sev), 2)
+        avg_sev = round(sum(severities) / len(severities), 2) if severities else 2.0
 
-        # Opportunity score combines frequency, severity (scaled 1-3 -> 0.33-1.0), and breadth across competitors
-        breadth_ratio = len(affected_prods) / max(1, len(review_intel.products))
-        opportunity = round(freq * (avg_sev / 3.0) * (1.0 + breadth_ratio), 4)
-
-        # Attach citations/evidence samples
-        evidence_samples = [
-            _build_complaint_evidence(r)
-            for r in matching_reviews[:max_evidence_per_cluster]
-        ]
+        is_widespread = prod_count >= 2 and len(review_intel.products) >= 2
 
         final_clusters.append(
             ProblemCluster(
                 id=f"prob_{idx:02d}",
-                name=c_data["name"],
-                category=c_data["category"],
+                problem=c_data["name"],
+                category=c_data.get("category", "other"),
                 description=c_data["description"],
-                affected_products=affected_prods,
-                affected_product_count=len(affected_prods),
-                total_complaints=count,
+                supporting_reviews=supporting_ev,
+                supporting_products=supporting_prods,
+                unaffected_products=unaffected_prods,
+                review_count=rev_count,
+                product_count=prod_count,
+                product_prevalence_pct=prevalence,
                 avg_severity=avg_sev,
-                frequency_score=round(freq, 3),
-                opportunity_score=opportunity,
-                sample_evidence=evidence_samples,
+                is_widespread_gap=is_widespread,
             )
         )
 
-    # Sort clusters by opportunity_score descending
-    final_clusters.sort(key=lambda c: c.opportunity_score, reverse=True)
+    # Sort clusters by evidence breadth and depth:
+    # 1. Number of affected products (market prevalence)
+    # 2. Number of supporting reviews
+    # 3. Severity
+    final_clusters.sort(key=lambda c: (c.product_count, c.review_count, c.avg_severity), reverse=True)
+
+    # Re-index IDs in sorted order
+    for idx, c in enumerate(final_clusters, start=1):
+        c.id = f"prob_{idx:02d}"
 
     return ProblemAnalysis(
         query=review_intel.query,
         market=review_intel.market,
         created_at=datetime.now(timezone.utc),
         total_reviews_analyzed=total_reviews,
-        total_complaints_analyzed=total_complaints_count,
+        total_complaints_analyzed=len(all_complaints),
         clusters=final_clusters,
-        method=method,
+        method="gemini_clustering",
         stats={
             "total_clusters": len(final_clusters),
-            "unassigned_complaints": total_complaints_count - sum(c.total_complaints for c in final_clusters),
-            "top_problem": final_clusters[0].name if final_clusters else None,
+            "widespread_market_gaps": sum(1 for c in final_clusters if c.is_widespread_gap),
+            "isolated_defects": sum(1 for c in final_clusters if not c.is_widespread_gap),
+            "unassigned_complaints": len(all_complaints) - sum(c.review_count for c in final_clusters),
+            "top_problem": final_clusters[0].problem if final_clusters else None,
         },
     )
 
 
 def _cluster_with_gemini(
-    client,
+    client: Any,
     model_name: str,
     query: str,
     complaints: list[Review],
@@ -242,37 +252,3 @@ def _cluster_with_gemini(
     )
     data = json.loads(response.text)
     return [item for item in data.get("clusters", [])]
-
-
-def _cluster_heuristic(complaints: list[Review]) -> list[dict]:
-    """Semantic category & issue clustering fallback."""
-    by_category_and_issue = defaultdict(list)
-
-    category_default_names = {
-        "performance": "Grip, traction & slippage issues",
-        "durability": "Premature wear, peeling & tearing",
-        "comfort_ergonomics": "Insufficient cushioning & joint discomfort",
-        "materials_safety": "Strong odor & chemical smells",
-        "quality_defects": "Manufacturing defects & poor finish",
-        "size_fit": "Inaccurate thickness or dimensions",
-        "ease_of_use": "Difficult to roll, pack, or carry",
-        "value_price": "Poor value for money compared to alternatives",
-    }
-
-    for r in complaints:
-        cats = r.classification.categories if r.classification else []
-        issues = r.classification.issues if r.classification else []
-        primary_cat = cats[0] if cats else "performance"
-        primary_issue = issues[0] if issues else category_default_names.get(primary_cat, "General product dissatisfaction")
-        by_category_and_issue[(primary_cat, primary_issue)].append(r.id)
-
-    clusters = []
-    for (cat, issue), r_ids in by_category_and_issue.items():
-        clusters.append({
-            "name": issue,
-            "category": cat,
-            "description": f"Buyers report recurring frustrations related to {cat.replace('_', ' ')}: specifically, {issue.lower()}.",
-            "assigned_complaint_ids": r_ids,
-            "avg_severity": 2.0,
-        })
-    return clusters

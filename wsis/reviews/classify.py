@@ -12,6 +12,7 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
+from ..config import DEFAULT_GEMINI_MODEL, require_gemini_api_key
 from .models import CATEGORIES, Review, ReviewClassification
 
 logger = logging.getLogger(__name__)
@@ -78,28 +79,41 @@ def verify_evidence(quote: Optional[str], review_text: str, original_text: str) 
 
 
 class ReviewClassifier:
-    """Classifies reviews using Gemini LLM, with fallback when API key is missing or calls fail."""
+    """Classifies reviews using Gemini LLM without fake fallbacks."""
 
-    def __init__(self, api_key: Optional[str] = None, model: str = "gemini-2.5-flash") -> None:
-        self.api_key = api_key
-        self.model_name = model
-        self.client = None
-        if api_key:
+    def __init__(
+        self,
+        api_key: Optional[str] = None,
+        model: Optional[str] = None,
+        client: Optional[Any] = None,
+    ) -> None:
+        self.model_name = model or DEFAULT_GEMINI_MODEL
+        if client is not None:
+            self.client = client
+        else:
+            effective_key = api_key or require_gemini_api_key()
             try:
                 from google import genai
-                self.client = genai.Client(api_key=api_key)
+                from google.genai import types
+                http_options = types.HttpOptions(
+                    timeout=90000,
+                    retry_options=types.HttpRetryOptions(attempts=1),
+                )
+                self.client = genai.Client(api_key=effective_key, http_options=http_options)
             except Exception as e:
-                logger.warning(f"Could not initialize Gemini client: {e}")
+                raise RuntimeError(f"Could not initialize Gemini client: {e}") from e
 
     def classify_batch(self, reviews: list[Review], product_title: str) -> None:
         """Classify a list of reviews in-place."""
         if not reviews:
             return
 
-        if not self.client:
-            self._heuristic_classify(reviews)
-            return
+        chunk_size = 10
+        for i in range(0, len(reviews), chunk_size):
+            chunk = reviews[i : i + chunk_size]
+            self._classify_chunk(chunk, product_title)
 
+    def _classify_chunk(self, reviews: list[Review], product_title: str) -> None:
         categories_fmt = "\n".join(f"- {k}: {v}" for k, v in CATEGORIES.items())
         payload = [
             {"review_id": r.id, "text": r.text, "rating": r.rating}
@@ -121,79 +135,40 @@ class ReviewClassifier:
                     "response_schema": BatchClassificationResponse,
                 },
             )
-            raw_text = response.text
-            parsed = json.loads(raw_text)
-            classified_items = {
-                item["review_id"]: item for item in parsed.get("results", [])
-            }
-
-            for r in reviews:
-                item = classified_items.get(r.id)
-                if item:
-                    quote, verified = verify_evidence(item.get("evidence_quote"), r.text, r.original_text)
-                    valid_cats = [c for c in item.get("categories", []) if c in CATEGORIES]
-                    r.classification = ReviewClassification(
-                        sentiment=item.get("sentiment", "neutral"),
-                        is_complaint=item.get("is_complaint", False),
-                        noise=item.get("noise", False),
-                        categories=valid_cats,
-                        issues=item.get("issues", []),
-                        severity=item.get("severity"),
-                        evidence_quote=quote,
-                        evidence_verified=verified,
-                        model=self.model_name,
-                        prompt_version=PROMPT_VERSION,
-                    )
-                else:
-                    self._heuristic_single(r)
         except Exception as e:
-            logger.warning(f"LLM classification failed: {e}; falling back to heuristics")
-            self._heuristic_classify(reviews)
+            raise RuntimeError(
+                f"Gemini review classification failed for product '{product_title}' using {self.model_name}: {e}"
+            ) from e
 
-    def _heuristic_classify(self, reviews: list[Review]) -> None:
-        """Rule-based fallback when Gemini is unavailable, ensuring the pipeline never breaks."""
+        raw_text = response.text
+        try:
+            parsed = json.loads(raw_text)
+        except Exception as e:
+            raise RuntimeError(
+                f"Failed to parse Gemini classification JSON for '{product_title}': {e}\nRaw output: {raw_text}"
+            ) from e
+
+        classified_items = {
+            item["review_id"]: item for item in parsed.get("results", [])
+        }
+
         for r in reviews:
-            self._heuristic_single(r)
-
-    def _heuristic_single(self, r: Review) -> None:
-        text_lower = r.text.lower()
-        rating = r.rating
-
-        is_negative = (rating is not None and rating <= 2.0) or any(
-            w in text_lower for w in ["terrible", "horrible", "awful", "waste of money", "disappointed", "poor", "broken"]
-        )
-        is_mixed = (rating == 3.0) or any(
-            w in text_lower for w in ["however", "but", "although", "mixed"]
-        )
-        is_positive = (rating is not None and rating >= 4.0) and not is_negative
-
-        sentiment = "negative" if is_negative else ("positive" if is_positive else ("mixed" if is_mixed else "neutral"))
-        is_complaint = is_negative or is_mixed
-
-        cats = []
-        issues = []
-        if any(w in text_lower for w in ["slip", "slide", "grip", "traction"]):
-            cats.append("performance")
-            issues.append("Slippery surface / lack of grip")
-        if any(w in text_lower for w in ["rip", "tear", "peel", "flaking", "durab"]):
-            cats.append("durability")
-            issues.append("Material rips, tears or wears out quickly")
-        if any(w in text_lower for w in ["smell", "odor", "chemical", "toxic"]):
-            cats.append("materials_safety")
-            issues.append("Strong chemical or rubber odor")
-        if any(w in text_lower for w in ["thin", "cushion", "knees hurt", "pain"]):
-            cats.append("comfort_ergonomics")
-            issues.append("Too thin or insufficient joint cushioning")
-
-        r.classification = ReviewClassification(
-            sentiment=sentiment,
-            is_complaint=is_complaint,
-            noise=False,
-            categories=cats,
-            issues=issues,
-            severity=2 if is_negative else (1 if is_mixed else None),
-            evidence_quote=None,
-            evidence_verified=False,
-            model="heuristic_fallback",
-            prompt_version="rule_v1",
-        )
+            item = classified_items.get(r.id)
+            if not item:
+                raise RuntimeError(
+                    f"Gemini did not return classification for review {r.id} of '{product_title}'."
+                )
+            quote, verified = verify_evidence(item.get("evidence_quote"), r.text, r.original_text)
+            valid_cats = [c for c in item.get("categories", []) if c in CATEGORIES]
+            r.classification = ReviewClassification(
+                sentiment=item.get("sentiment", "neutral"),
+                is_complaint=item.get("is_complaint", False),
+                noise=item.get("noise", False),
+                categories=valid_cats,
+                issues=item.get("issues", []),
+                severity=item.get("severity"),
+                evidence_quote=quote,
+                evidence_verified=verified,
+                model=self.model_name,
+                prompt_version=PROMPT_VERSION,
+            )
