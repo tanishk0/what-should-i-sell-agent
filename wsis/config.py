@@ -21,7 +21,23 @@ def get_api_key() -> str:
     return key
 
 
+DEFAULT_NVIDIA_MODEL: str = os.getenv("NVIDIA_MODEL", "nvidia/nemotron-3-ultra-550b-a55b").strip() or "nvidia/nemotron-3-ultra-550b-a55b"
+DEFAULT_NVIDIA_BASE_URL: str = os.getenv("NVIDIA_BASE_URL", "https://integrate.api.nvidia.com/v1").strip() or "https://integrate.api.nvidia.com/v1"
 DEFAULT_GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-3.5-flash").strip() or "gemini-3.5-flash"
+DEFAULT_LLM_MODEL: str = DEFAULT_NVIDIA_MODEL
+
+
+def get_nvidia_api_key() -> str | None:
+    return os.getenv("NVIDIA_API_KEY", "").strip() or None
+
+
+def require_nvidia_api_key() -> str:
+    key = get_nvidia_api_key()
+    if not key:
+        raise RuntimeError(
+            "NVIDIA_API_KEY is not set. Add NVIDIA_API_KEY to your .env file at the project root."
+        )
+    return key
 
 
 def get_gemini_api_key() -> str | None:
@@ -35,6 +51,20 @@ def require_gemini_api_key() -> str:
             "GEMINI_API_KEY is not set. Add GEMINI_API_KEY to your .env file at the project root."
         )
     return key
+
+
+def get_llm_api_key() -> str | None:
+    return get_nvidia_api_key() or get_gemini_api_key()
+
+
+def require_llm_api_key() -> str:
+    key = get_llm_api_key()
+    if not key:
+        raise RuntimeError(
+            "Neither NVIDIA_API_KEY nor GEMINI_API_KEY is set. Add NVIDIA_API_KEY to your .env file."
+        )
+    return key
+
 
 
 def get_mongo_uri() -> str | None:
