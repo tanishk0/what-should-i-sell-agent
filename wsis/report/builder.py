@@ -109,11 +109,17 @@ def build_final_report(
     else:
         top_prob = problems[0]
         widespread_count = sum(1 for p in problems if p.is_widespread_gap)
+        multi_count = sum(1 for p in problems if not p.is_widespread_gap and p.product_count >= 2)
+        gap_desc = (
+            f"{widespread_count} problem(s) qualify as widespread market gaps (affecting >=3 competitors with >=50% prevalence)"
+            if widespread_count
+            else f"0 problems qualify as widespread market gaps ({multi_count} show cross-competitor patterns)"
+        )
         summary = (
             f"Analysis of {total_analyzed} competitor products and {total_reviews} customer reviews on Amazon {market_str} "
             f"identified {len(problems)} customer problem clusters for '{query_str}'. "
-            f"{widespread_count} problem(s) represent widespread market gaps affecting multiple competitors. "
-            f"The primary gap is '{top_prob.problem}', supported by {top_prob.review_count} verified buyer complaints "
+            f"{gap_desc}. "
+            f"The primary finding is '{top_prob.problem}', supported by {top_prob.review_count} verified buyer complaints "
             f"across {top_prob.product_count} of {total_analyzed} competing products ({top_prob.product_prevalence_pct}% market prevalence)."
         )
 
@@ -165,7 +171,9 @@ def build_final_report(
 
 def render_terminal_report(report: MarketGapReport) -> str:
     """Render the evidence-backed market gap report using rich formatting."""
-    console = Console(width=100, record=True)
+    import io
+    buf = io.StringIO()
+    console = Console(file=buf, width=100, record=True)
 
     # 1. Header & Summary Panel
     header_title = f"[bold cyan]AMAZON MARKET-GAP RESEARCH REPORT: {report.query.upper()} ({report.market.upper()})[/bold cyan]"
@@ -208,11 +216,13 @@ def render_terminal_report(report: MarketGapReport) -> str:
         console.print()
 
         for idx, prob in enumerate(report.problems, start=1):
-            gap_badge = (
-                "[bold green][WIDESPREAD MARKET GAP][/bold green]"
-                if prob.is_widespread_gap
-                else "[yellow][ISOLATED DEFECT][/yellow]"
-            )
+            if prob.product_count >= 3 and prob.product_prevalence_pct >= 50.0:
+                gap_badge = "[bold green][WIDESPREAD MARKET GAP][/bold green]"
+            elif prob.product_count >= 2:
+                gap_badge = "[bold cyan][MULTI-COMPETITOR PATTERN][/bold cyan]"
+            else:
+                gap_badge = "[yellow][ISOLATED DEFECT][/yellow]"
+
             prob_title = f"[bold white]Problem {idx}: {prob.problem}[/bold white]  {gap_badge}"
             
             lines = [
@@ -222,25 +232,26 @@ def render_terminal_report(report: MarketGapReport) -> str:
                 f"[bold]Root Pain Point:[/bold] {prob.description}",
             ]
 
-            # Verbatim Quotes
+            # Verbatim Quotes referencing review IDs (Requirement 1)
             if prob.supporting_reviews:
                 lines.append("\n[bold]Verbatim Customer Evidence Quotes:[/bold]")
                 for ev in prob.supporting_reviews[:3]:
                     quote_txt = ev.evidence_quote or ev.original_text[:140]
                     verified_mark = " [green]✓ verbatim[/green]" if ev.evidence_verified else ""
                     rating_mark = f" ({ev.rating}★)" if ev.rating else ""
-                    lines.append(f'  • "{quote_txt}"{rating_mark} — [dim]{clean_brand_name(ev.product_title)}[/dim]{verified_mark}')
+                    lines.append(f'  • "{quote_txt}"{rating_mark} [dim]({ev.review_id})[/dim] — [dim]{clean_brand_name(ev.product_title)}[/dim]{verified_mark}')
 
-            # Counter-Evidence / Competitor Contrast
+            # Not observed in sampled reviews (Requirement 6)
             if prob.unaffected_products:
                 unaffected_names = []
                 for pid in prob.unaffected_products:
                     match = next((c.title for c in report.competitors if pid in c.url or c.title in pid), pid)
                     unaffected_names.append(match)
                 lines.append(
-                    f"\n[bold]Counter-Evidence (Competitor Contrast):[/bold] "
-                    f"This complaint was NOT reported on {len(prob.unaffected_products)} competitors in the sample: "
-                    f"[dim]{', '.join(unaffected_names[:3])}[/dim]"
+                    f"\n[bold]Not observed in sampled reviews:[/bold] "
+                    f"This complaint was not observed in the sampled reviews of {len(prob.unaffected_products)} competitors: "
+                    f"[dim]{', '.join(unaffected_names[:3])}[/dim] "
+                    f"(Absence in sampled reviews does not infer that a competitor lacks this issue)."
                 )
 
             console.print(Panel("\n".join(lines), title=prob_title, expand=False))
@@ -283,7 +294,13 @@ def render_markdown_report(report: MarketGapReport) -> str:
         lines.append("_No customer problem clusters identified._\n")
     else:
         for idx, prob in enumerate(report.problems, start=1):
-            badge = "**[WIDESPREAD MARKET GAP]**" if prob.is_widespread_gap else "**[ISOLATED DEFECT]**"
+            if prob.product_count >= 3 and prob.product_prevalence_pct >= 50.0:
+                badge = "**[WIDESPREAD MARKET GAP]**"
+            elif prob.product_count >= 2:
+                badge = "**[MULTI-COMPETITOR PATTERN]**"
+            else:
+                badge = "**[ISOLATED DEFECT]**"
+
             lines.extend([
                 f"### {idx}. {prob.problem} {badge}",
                 "",
@@ -300,14 +317,18 @@ def render_markdown_report(report: MarketGapReport) -> str:
                 quote_txt = ev.evidence_quote or ev.original_text[:160]
                 rating_str = f"({ev.rating}★) " if ev.rating else ""
                 verified_str = " *(verified verbatim)*" if ev.evidence_verified else ""
-                lines.append(f"> \"{quote_txt}\"  \n> — {rating_str}[{clean_brand_name(ev.product_title)}]({ev.url}){verified_str}")
+                lines.append(f"> \"{quote_txt}\"  \n> — {rating_str}[{clean_brand_name(ev.product_title)}]({ev.url}) (Review ID: `{ev.review_id}`){verified_str}")
                 lines.append("")
 
             if prob.unaffected_products:
+                unaffected_names = []
+                for pid in prob.unaffected_products:
+                    match = next((c.title for c in report.competitors if pid in c.url or c.title in pid), pid)
+                    unaffected_names.append(match)
                 lines.extend([
-                    "#### Counter-Evidence (Competitor Contrast)",
+                    "#### Not observed in sampled reviews",
                     "",
-                    f"This complaint did not appear in {len(prob.unaffected_products)} analyzed competitor products in the sample, indicating this defect is not universal across all alternatives.",
+                    f"This complaint was not observed in the sampled reviews of {len(prob.unaffected_products)} analyzed competitor products in the sample ({', '.join(unaffected_names[:3])}). Note: absence in sampled reviews does not infer that a competitor lacks this issue.",
                     "",
                 ])
 

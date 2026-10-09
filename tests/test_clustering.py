@@ -93,7 +93,9 @@ def test_clustering_groups_complaints():
     assert top.product_count == len(top.supporting_products) == 2
     assert top.supporting_products == ["p1", "p2"]
     assert top.unaffected_products == []
-    assert top.is_widespread_gap is True
+    # Requirement 7: Two affected products alone must not qualify as widespread
+    assert top.is_widespread_gap is False
+    assert top.classification_label == "Multi-Competitor Pattern"
     assert top.avg_severity == 3.0
     assert len(top.sample_evidence) == 2
     assert all(ev.evidence_verified for ev in top.sample_evidence)
@@ -104,8 +106,9 @@ def test_clustering_groups_complaints():
     assert second.review_count == 1
     assert second.product_count == 1
     assert second.supporting_products == ["p1"]
-    assert second.unaffected_products == ["p2"]  # Counter-evidence!
+    assert second.unaffected_products == ["p2"]
     assert second.is_widespread_gap is False
+    assert second.classification_label == "Isolated Defect"
 
 
 def test_clustering_handles_empty():

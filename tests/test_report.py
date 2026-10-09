@@ -92,7 +92,7 @@ def _make_mock_fixture():
         product_count=2,
         product_prevalence_pct=66.7,
         avg_severity=2.8,
-        is_widespread_gap=True,
+        is_widespread_gap=False,
     )
 
     prob = ProblemAnalysis(
@@ -178,7 +178,9 @@ def test_build_final_report_structure():
     p = report.problems[0]
     assert p.review_count == len(p.supporting_reviews) == 2
     assert p.product_count == len(p.supporting_products) == 2
-    assert p.is_widespread_gap is True
+    # Two affected products alone must not qualify as widespread
+    assert p.is_widespread_gap is False
+    assert p.classification_label == "Multi-Competitor Pattern"
     assert p.unaffected_products == ["prod_03"]
 
     # Verify competitor benchmark rows
@@ -210,12 +212,15 @@ def test_render_terminal_and_markdown():
     term = render_terminal_report(report)
     assert "MARKET-GAP RESEARCH REPORT" in term
     assert "Liquid leakage when carried sideways" in term
-    assert "WIDESPREAD MARKET GAP" in term
-    assert "Counter-Evidence" in term
+    assert "MULTI-COMPETITOR PATTERN" in term
+    assert "Not observed in sampled reviews" in term
     assert "Signoraware" in term or "prod_03" in term
+    assert "rev_01" in term  # References specific review ID
 
     md = render_markdown_report(report)
     assert "# Amazon Market-Gap Research Report: Lunch Box" in md
     assert "Liquid leakage when carried sideways" in md
-    assert "Counter-Evidence (Competitor Contrast)" in md
+    assert "MULTI-COMPETITOR PATTERN" in md
+    assert "Not observed in sampled reviews" in md
     assert "Milton Compact" in md
+    assert "Review ID: `rev_01`" in md

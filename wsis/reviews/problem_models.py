@@ -45,7 +45,7 @@ class ProblemCluster(BaseModel):
     )
     unaffected_products: list[str] = Field(
         default_factory=list,
-        description="IDs of analyzed competitor products where this complaint was NOT found (counter-evidence).",
+        description="IDs of analyzed competitor products where this complaint was not observed in sampled reviews.",
     )
 
     # Programmatically computed metrics
@@ -53,7 +53,17 @@ class ProblemCluster(BaseModel):
     product_count: int = Field(0, description="Derived programmatically from len(supporting_products).")
     product_prevalence_pct: float = Field(0.0, description="Percentage of analyzed products affected.")
     avg_severity: float = Field(0.0, description="Mean severity rating (1.0 to 3.0) of supporting reviews.")
-    is_widespread_gap: bool = Field(False, description="True if problem is cross-checked across multiple competitors.")
+    is_widespread_gap: bool = Field(False, description="True if problem is cross-checked across at least 3 competitors with >=50% prevalence.")
+
+    @property
+    def classification_label(self) -> str:
+        """Neutral evidence-based classification label (Requirement 7)."""
+        if self.product_count >= 3 and self.product_prevalence_pct >= 50.0:
+            return "Widespread Market Gap"
+        elif self.product_count >= 2:
+            return "Multi-Competitor Pattern"
+        else:
+            return "Isolated Defect"
 
     @property
     def name(self) -> str:
