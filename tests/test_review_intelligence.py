@@ -146,6 +146,9 @@ def test_credit_budget():
 
 
 def test_classifier_requires_api_key(monkeypatch):
+    monkeypatch.delenv("NVIDIA_API_KEY", raising=False)
     monkeypatch.delenv("GEMINI_API_KEY", raising=False)
-    with pytest.raises(RuntimeError, match="GEMINI_API_KEY is not set"):
+    with pytest.raises(RuntimeError, match=".*API_KEY is not set"):
         ReviewClassifier(api_key=None)
+    with pytest.raises(RuntimeError, match="GEMINI_API_KEY is not set"):
+        ReviewClassifier(api_key=None, model="gemini-3.5-flash")

@@ -57,16 +57,19 @@ Create a `.env` file at the root:
 
 ```env
 SERPAPI_KEY=your_serpapi_key_here
-GEMINI_API_KEY=your_gemini_api_key_here
-GEMINI_MODEL=gemini-3.5-flash
+NVIDIA_API_KEY=your_nvidia_api_key_here
+NVIDIA_MODEL=nvidia/nemotron-3-ultra-550b-a55b
 DEFAULT_MARKET=in
 ```
 
 ### 2. Run Market Research
 
 ```powershell
-# Run full market-gap research for sunglasses on Amazon India:
-.\.venv\Scripts\python -m wsis "sunglasses" --with-reviews --review-limit 5 --credit-budget 10
+# Run full market-gap research using NVIDIA Nemotron-3-Ultra-550B:
+.\.venv\Scripts\python -m wsis "sunglasses" --with-reviews --review-limit 5 --max-reviews-per-product 6 --credit-budget 10
+
+# Run for iPhone cases:
+.\.venv\Scripts\python -m wsis "iphone cases" --with-reviews --review-limit 4 --max-reviews-per-product 6
 
 # Run for lunch boxes:
 .\.venv\Scripts\python -m wsis "lunch box" --with-reviews --review-limit 5
