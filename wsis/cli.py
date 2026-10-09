@@ -40,6 +40,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--offline", action="store_true", help="Use cached SerpAPI responses only.")
     ap.add_argument("--with-reviews", action="store_true", help="Analyze customer reviews to uncover market gaps.")
     ap.add_argument("--review-limit", type=int, default=5, help="Number of top competitors to fetch reviews for.")
+    ap.add_argument("--max-reviews-per-product", type=int, default=6, help="Max reviews per competitor to send to LLM (default: 6).")
+    ap.add_argument("--model", default=None, help="LLM model (default: nvidia/nemotron-3-ultra-550b-a55b).")
     ap.add_argument("--credit-budget", type=int, default=10, help="Max fresh SerpAPI credits to spend on reviews.")
     ap.add_argument("--out", help="Custom output JSON path.")
     ap.add_argument("--no-mongo", action="store_true", help="Skip saving to MongoDB even if MONGODB_URI is set.")
@@ -100,12 +102,14 @@ def main(argv: list[str] | None = None) -> int:
                 client,
                 competitor_limit=args.review_limit,
                 credit_budget=args.credit_budget,
+                max_reviews_per_product=args.max_reviews_per_product,
+                llm_model=args.model,
                 on_progress=lambda msg: status.update(f"[cyan]{msg}[/cyan]"),
             )
 
-        # Step 3: Cluster complaints semantically with Gemini & derive programmatic evidence
+        # Step 3: Cluster complaints semantically with NVIDIA Nemotron & derive programmatic evidence
         with console.status("Clustering complaints into recurring problem themes & deriving evidence..."):
-            prob_analysis = cluster_complaints(rev_intel)
+            prob_analysis = cluster_complaints(rev_intel, model=args.model)
 
         # Step 4: Build evidence-backed market gap report
         with console.status("Synthesizing evidence-backed market gap report..."):

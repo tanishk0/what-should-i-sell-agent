@@ -12,7 +12,8 @@ from typing import Any, Optional
 
 from pydantic import BaseModel, Field
 
-from ..config import DEFAULT_GEMINI_MODEL, require_gemini_api_key
+from ..config import DEFAULT_LLM_MODEL, require_gemini_api_key, require_nvidia_api_key
+from ..llm_client import call_llm, clean_json_response
 from .models import Review, ReviewIntelligence
 from .problem_models import ComplaintEvidence, ProblemAnalysis, ProblemCluster
 
@@ -79,15 +80,18 @@ def _build_complaint_evidence(r: Review) -> ComplaintEvidence:
 def cluster_complaints(
     review_intel: ReviewIntelligence,
     *,
+    api_key: Optional[str] = None,
     gemini_api_key: Optional[str] = None,
+    model: Optional[str] = None,
     gemini_model: Optional[str] = None,
     llm_client: Optional[Any] = None,
 ) -> ProblemAnalysis:
-    """Cluster complaints from a ReviewIntelligence run into ranked recurring problems using Gemini.
+    """Cluster complaints from a ReviewIntelligence run into ranked recurring problems using NVIDIA Nemotron (or Gemini).
 
     All evidence counts (review_count, product_count, prevalence) are derived programmatically.
     """
-    model_name = gemini_model or DEFAULT_GEMINI_MODEL
+    model_name = model or gemini_model or DEFAULT_LLM_MODEL
+    effective_key = api_key or gemini_api_key
 
     # 1. Collect all complaint reviews across all products
     all_complaints: list[Review] = []
@@ -112,33 +116,18 @@ def cluster_complaints(
             stats={"message": "No complaints found to cluster."},
         )
 
-    # 2. Get LLM client
-    if llm_client is not None:
-        client = llm_client
-    else:
-        api_key = gemini_api_key or require_gemini_api_key()
-        try:
-            from google import genai
-            from google.genai import types
-            http_options = types.HttpOptions(
-                timeout=90000,
-                retry_options=types.HttpRetryOptions(attempts=1),
-            )
-            client = genai.Client(api_key=api_key, http_options=http_options)
-        except Exception as e:
-            raise RuntimeError(f"Could not initialize Gemini client: {e}") from e
-
-    # 3. Call Gemini
+    # 2. Call LLM to cluster complaints semantically
     try:
-        raw_clusters = _cluster_with_gemini(
-            client=client,
+        raw_clusters = _cluster_with_llm(
+            client=llm_client,
             model_name=model_name,
+            api_key=effective_key,
             query=review_intel.query,
             complaints=all_complaints,
         )
     except Exception as e:
         raise RuntimeError(
-            f"Gemini complaint clustering failed using {model_name}: {e}"
+            f"Complaint clustering failed using {model_name}: {e}"
         ) from e
 
     # 4. Programmatic Aggregation: Evidence is the Source of Truth
@@ -218,23 +207,26 @@ def cluster_complaints(
     )
 
 
-def _cluster_with_gemini(
+def _cluster_with_llm(
     client: Any,
     model_name: str,
+    api_key: Optional[str],
     query: str,
     complaints: list[Review],
 ) -> list[dict]:
+    # Cap to top 30 complaints to avoid giant payloads and preserve context budget
+    sample_complaints = complaints[:30]
     payload = []
-    for r in complaints:
+    for r in sample_complaints:
         issues = r.classification.issues if r.classification else []
         cats = r.classification.categories if r.classification else []
         payload.append({
             "id": r.id,
-            "product_title": r.product_title[:60],
+            "product_title": (r.product_title or "Product")[:50],
             "rating": r.rating,
             "categories": cats,
             "issues": issues,
-            "snippet": r.text[:250],
+            "snippet": r.text[:200],
         })
 
     prompt = CLUSTER_PROMPT.format(
@@ -242,13 +234,13 @@ def _cluster_with_gemini(
         complaints_payload=json.dumps(payload, ensure_ascii=False, indent=2),
     )
 
-    response = client.models.generate_content(
+    raw_text = call_llm(
+        prompt=prompt,
         model=model_name,
-        contents=prompt,
-        config={
-            "response_mime_type": "application/json",
-            "response_schema": LLMClusterResponse,
-        },
+        api_key=api_key,
+        client=client,
     )
-    data = json.loads(response.text)
+    data = clean_json_response(raw_text)
     return [item for item in data.get("clusters", [])]
+
+

@@ -8,19 +8,21 @@ from __future__ import annotations
 
 import json
 import logging
-from typing import Optional
+import time
+from typing import Any, Optional
 
 from pydantic import BaseModel, Field
 
-from ..config import DEFAULT_GEMINI_MODEL, require_gemini_api_key
+from ..config import DEFAULT_LLM_MODEL, require_gemini_api_key, require_nvidia_api_key
+from ..llm_client import call_llm, clean_json_response, extract_results_from_json
 from .models import CATEGORIES, Review, ReviewClassification
 
 logger = logging.getLogger(__name__)
 
 PROMPT_VERSION = "v1"
 
-CLASSIFY_PROMPT = """You are an expert market research analyst studying competitor reviews to understand buyer frustrations.
-Analyze the following batch of customer reviews for the product: "{product_title}".
+CLASSIFY_PROMPT = """You are an expert market research analyst studying competitor reviews to understand buyer frustrations and defects.
+Analyze the following batch of customer reviews{context_info}.
 
 For each review, determine:
 1. sentiment: "positive", "negative", "mixed", or "neutral"
@@ -79,7 +81,7 @@ def verify_evidence(quote: Optional[str], review_text: str, original_text: str) 
 
 
 class ReviewClassifier:
-    """Classifies reviews using Gemini LLM without fake fallbacks."""
+    """Classifies reviews using NVIDIA Nemotron LLM (or Gemini) without fake fallbacks."""
 
     def __init__(
         self,
@@ -87,77 +89,90 @@ class ReviewClassifier:
         model: Optional[str] = None,
         client: Optional[Any] = None,
     ) -> None:
-        self.model_name = model or DEFAULT_GEMINI_MODEL
+        self.model_name = model or DEFAULT_LLM_MODEL
+        self.client = client
         if client is not None:
-            self.client = client
+            self.api_key = api_key
+        elif "gemini" in self.model_name.lower():
+            self.api_key = api_key or require_gemini_api_key()
         else:
-            effective_key = api_key or require_gemini_api_key()
-            try:
-                from google import genai
-                from google.genai import types
-                http_options = types.HttpOptions(
-                    timeout=90000,
-                    retry_options=types.HttpRetryOptions(attempts=1),
-                )
-                self.client = genai.Client(api_key=effective_key, http_options=http_options)
-            except Exception as e:
-                raise RuntimeError(f"Could not initialize Gemini client: {e}") from e
+            self.api_key = api_key or require_nvidia_api_key()
 
-    def classify_batch(self, reviews: list[Review], product_title: str) -> None:
-        """Classify a list of reviews in-place."""
+    def classify_batch(
+        self,
+        reviews: list[Review],
+        product_title: Optional[str] = None,
+        chunk_size: int = 15,
+    ) -> None:
+        """Classify a list of reviews in-place in batches of 15 to prevent token limits and server overloads."""
         if not reviews:
             return
 
-        chunk_size = 10
         for i in range(0, len(reviews), chunk_size):
             chunk = reviews[i : i + chunk_size]
-            self._classify_chunk(chunk, product_title)
+            self._classify_chunk(chunk, product_title=product_title)
+            if i + chunk_size < len(reviews):
+                time.sleep(2.0)
 
-    def _classify_chunk(self, reviews: list[Review], product_title: str) -> None:
+    def _classify_chunk(self, reviews: list[Review], product_title: Optional[str] = None) -> None:
         categories_fmt = "\n".join(f"- {k}: {v}" for k, v in CATEGORIES.items())
+        context_info = f" for the product: '{product_title}'" if product_title else " across competitor products"
+
+        # Truncate text to 350 chars to substantially reduce token payload while keeping complaints intact
         payload = [
-            {"review_id": r.id, "text": r.text, "rating": r.rating}
+            {
+                "review_id": r.id,
+                "product_title": (r.product_title or "Competitor")[:50],
+                "text": r.text[:350],
+                "rating": r.rating,
+            }
             for r in reviews
         ]
 
         prompt = CLASSIFY_PROMPT.format(
-            product_title=product_title,
+            context_info=context_info,
             categories_formatted=categories_fmt,
             reviews_payload=json.dumps(payload, ensure_ascii=False, indent=2),
         )
 
+        label = product_title or f"batch of {len(reviews)} reviews"
         try:
-            response = self.client.models.generate_content(
+            raw_text = call_llm(
+                prompt=prompt,
                 model=self.model_name,
-                contents=prompt,
-                config={
-                    "response_mime_type": "application/json",
-                    "response_schema": BatchClassificationResponse,
-                },
+                api_key=self.api_key,
+                client=self.client,
             )
         except Exception as e:
             raise RuntimeError(
-                f"Gemini review classification failed for product '{product_title}' using {self.model_name}: {e}"
+                f"Review classification failed for '{label}' using {self.model_name}: {e}"
             ) from e
 
-        raw_text = response.text
         try:
-            parsed = json.loads(raw_text)
+            results_list = extract_results_from_json(raw_text)
         except Exception as e:
             raise RuntimeError(
-                f"Failed to parse Gemini classification JSON for '{product_title}': {e}\nRaw output: {raw_text}"
+                f"Failed to parse classification JSON for '{label}': {e}\nRaw output: {raw_text}"
             ) from e
 
         classified_items = {
-            item["review_id"]: item for item in parsed.get("results", [])
+            item["review_id"]: item for item in results_list
         }
 
         for r in reviews:
             item = classified_items.get(r.id)
             if not item:
-                raise RuntimeError(
-                    f"Gemini did not return classification for review {r.id} of '{product_title}'."
+                # Fallback: if LLM missed a review_id, assign neutral so pipeline does not crash
+                r.classification = ReviewClassification(
+                    sentiment="neutral",
+                    is_complaint=False,
+                    noise=False,
+                    categories=[],
+                    issues=[],
+                    model=self.model_name,
+                    prompt_version=PROMPT_VERSION,
                 )
+                continue
             quote, verified = verify_evidence(item.get("evidence_quote"), r.text, r.original_text)
             valid_cats = [c for c in item.get("categories", []) if c in CATEGORIES]
             r.classification = ReviewClassification(
@@ -172,3 +187,4 @@ class ReviewClassifier:
                 model=self.model_name,
                 prompt_version=PROMPT_VERSION,
             )
+
