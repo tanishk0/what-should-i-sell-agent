@@ -443,3 +443,51 @@ def test_counter_evidence_renamed_to_not_observed_in_sampled_reviews():
     # Clarification that absence does not infer competitor lacks the issue
     assert "does not infer" in term.lower()
     assert "does not infer" in md.lower()
+
+
+def test_extract_clusters_from_truncated_json():
+    """Test resilient recovery from cutoffs with unterminated string errors."""
+    from wsis.llm_client import extract_clusters_from_json
+
+    truncated_raw = (
+        '{\n'
+        '  "clusters": [\n'
+        '    {\n'
+        '      "name": "Case loosens and stretches out",\n'
+        '      "category": "durability",\n'
+        '      "description": "Case fits loosely over time.",\n'
+        '      "assigned_complaint_ids": ["r1"]\n'
+        '    },\n'
+        '    {\n'
+        '      "name": "Yellowing within weeks",\n'
+        '      "category": "design_aesthetics",\n'
+        '      "description": "Unterminated string starting at line 173 column 57...'
+    )
+
+    clusters = extract_clusters_from_json(truncated_raw)
+    assert len(clusters) >= 1
+    assert clusters[0]["name"] == "Case loosens and stretches out"
+
+
+def test_extract_clusters_with_unescaped_quotes_and_delimiter_error():
+    """Test resilient recovery when unescaped quotes trigger 'Expecting , delimiter' errors."""
+    from wsis.llm_client import extract_clusters_from_json
+
+    # Contains unescaped quotes inside description ("anti-yellow" and "non yellowing") that break standard json.loads
+    raw_with_delimiter_error = (
+        '{\n'
+        '  "clusters": [\n'
+        '    {\n'
+        '      "name": "Yellowing despite claims",\n'
+        '      "category": "quality_defects",\n'
+        '      "description": "Customers report case is not "anti-yellow" as advertised and turns "yellow" quickly.",\n'
+        '      "assigned_complaint_ids": ["amazon:R10OAFU1Y98FU7", "amazon:R34LTVG7KL7YD0"]\n'
+        '    }\n'
+        '  ]\n'
+        '}'
+    )
+
+    clusters = extract_clusters_from_json(raw_with_delimiter_error)
+    assert len(clusters) == 1
+    assert clusters[0]["name"] == "Yellowing despite claims"
+    assert "amazon:R10OAFU1Y98FU7" in clusters[0]["assigned_complaint_ids"]

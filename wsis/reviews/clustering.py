@@ -15,7 +15,7 @@ from typing import Any, Optional
 from pydantic import BaseModel, Field
 
 from ..config import DEFAULT_LLM_MODEL, require_gemini_api_key, require_nvidia_api_key
-from ..llm_client import call_llm, clean_json_response
+from ..llm_client import call_llm, clean_json_response, extract_clusters_from_json
 from .evidence_validation import (
     deduplicate_and_merge_clusters,
     detect_themes,
@@ -36,18 +36,17 @@ Your mission is to group these individual complaints into distinct, recurring cu
 
 Rules:
 1. Group complaints that share the same underlying defect, frustration, or friction.
-2. Do NOT create duplicate or overlapping clusters that represent the same problem.
+2. Group into at most 5-7 distinct recurring problems. Do not create duplicate or overlapping clusters.
 3. For each cluster:
    - name: Concise, descriptive title of the customer problem (e.g. "Frame hinges break easily", "Lenses peel and scratch quickly").
    - category: One of "performance", "durability", "materials_safety", "comfort_ergonomics", "size_fit", "quality_defects", "ease_of_use", "design_aesthetics", "value_price", "shipping_packaging", "other".
-   - description: 2-3 sentences explaining the root customer pain point and why it frustrates buyers.
+   - description: 1-2 concise sentences explaining the root customer pain point.
    - assigned_complaint_ids: List of exact complaint IDs (from the data below) that belong to this problem.
-   - assigned_complaints: List of objects with "review_id" and "quote" (exact verbatim text span proving this complaint).
 4. CRITICAL EVIDENCE INTEGRITY:
    - Only assign review IDs that actually express this specific problem.
    - Never assign a loose-fit complaint to a packaging damage problem.
    - Never assign a drop-protection complaint to a yellowing problem.
-   - Do not reuse quotes across unrelated problem clusters.
+   - Do NOT use unescaped double quotes inside descriptions or strings.
 
 Complaints data:
 {complaints_payload}
@@ -59,10 +58,7 @@ Return JSON with a single key "clusters" mapping to a list of cluster objects ma
       "name": "string",
       "category": "string",
       "description": "string",
-      "assigned_complaint_ids": ["string"],
-      "assigned_complaints": [
-        {{"review_id": "string", "quote": "string"}}
-      ]
+      "assigned_complaint_ids": ["string"]
     }}
   ]
 }}
@@ -384,5 +380,4 @@ def _cluster_with_llm(
         api_key=api_key,
         client=client,
     )
-    data = clean_json_response(raw_text)
-    return [item for item in data.get("clusters", [])]
+    return extract_clusters_from_json(raw_text)
